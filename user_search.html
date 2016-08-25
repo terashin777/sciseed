@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja" ng-app="concierAdminApp">
+<head>
+    <meta charset = "UTF-8">
+    <title>絞込み検索</title>
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src = "userSearchController.js"></script>
+    <link rel="stylesheet" type="text/css" href="user_search.css">
+</head>
+<body>
+<div ng-controller="UserSearchCtrl">
+<form>
+<div>
+    大学名:
+    <div>
+    <label>
+        <input type="radio" ng-model="selected.univ" value="" name="univ_search">
+            全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'univ' }">
+        <input type="radio" ng-model="selected.univ" value="{{tag.name}}" name="univ_search">
+        <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+            {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した大学：{{selected.univ}}
+選択した大学ID：{{search.univ}}
+</div>
+
+<div>
+    卒業年度:
+    <div>
+    <label>
+      <input type="radio" ng-model="selected.grade" value="" name="grade_search">
+        全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'grade' }">
+      <input type="radio" ng-model="selected.grade" value="{{tag.name}}" name="grade_search">
+      <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+        {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した大学：{{selected.grade}}
+</div>
+
+<div>
+    専攻(文系):
+    <div>
+    <label>
+      <input type="radio" ng-model="selected.major_art" value="" name="major_art_search">
+        全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'major_art' }">
+      <input type="radio" ng-model="selected.major_art" value="{{tag.name}}" name="major_art_search">
+      <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+        {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した専攻：{{selected.major_art}}
+</div>
+
+<div>
+    専攻(理系):
+    <div>
+    <label>
+      <input type="radio" ng-model="selected.major_sci" value="" name="major_sci_search">
+        全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'major_sci' }">
+      <input type="radio" ng-model="selected.major_sci" value="{{tag.name}}" name="major_sci_search">
+      <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+        {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した専攻：{{selected.major_sci}}
+</div>
+
+<div>
+    志向:
+    <div>
+    <label>
+      <input type="radio" ng-model="selected.preference" value="" name="preference_search">
+        全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'preference' }">
+      <input type="radio" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
+      <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+        {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した志向：{{selected.preference}}
+</div>
+
+<div>
+    志望業界:
+    <div>
+    <label>
+      <input type="radio" ng-model="selected.industry" value="" name="industry_search">
+        全て表示
+    </label>
+    <label ng-repeat="tag in userTag|filter: { category:'industry' }">
+      <input type="radio" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
+      <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+        {{tag.name}}
+    </label>
+    </div>
+</div>
+<div>
+選択した志望業界：{{selected.industry}}
+</div>
+
+<div>
+    性別:
+    <div>
+      <label>
+        <input type="radio" selected="selected" ng-model="selected.sex" value="" name="sex_search">
+          全て表示
+      </label>
+      <label>
+        <input type="radio" ng-model="selected.sex" value="男" name="sex_search">
+          男
+      </label>
+      <label>
+        <input type="radio" ng-model="selected.sex" value="女" name="sex_search">
+          女
+      </label>
+    </div>
+</div>
+<div>
+選択した性別：{{selected.sex}}
+選択した性別ID：{{search.sex}}
+</div>
+
+<div>
+    <span>最小やりとり数：</span>
+                    <select  ng-model="selected.loyalty" name="loyalty_search">
+                        <option value="">以下から選択してください。</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option selected="selected" value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+</div>
+<div>
+選択したやり取り数：{{selected.loyalty}}
+</div>
+
+<div>
+    キーワード検索：<input type="text" ng-model="selected.keyword" name="keyword_search">
+</div>
+<div>
+検索キーワード：{{selected.keyword}}
+</div>
+
+<button ng-click="doSearch()">
+    検索
+</button>
+    
+</form>
+<p>
+    <span >
+        表示件数：{{(users|filter:search.user_univ|filter:search.key|filter:filterByLoyalty).length}}
+    </span>
+</p>
+
+<!--<div>
+    タグ：
+</div>
+<div ng-repeat="item in filteredList = (lineUserList | filter:filterUser) track by $index">
+    <div ng-if="currentUser.id!=item.id">
+        <div>
+            <span ng-repeat="tag in item.user_tag">
+                <a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
+            </span>
+        </div>
+    </div>
+</div>-->
+
+<div>
+    ユーザー:
+</div>
+<div>
+    <!--<div ng-repeat="user in lineUserList| filter: search.user_univ | filter:search.key | filter: filterByLoyalty | limitTo: num: begin">
+        {{user.name}}
+    </div>-->
+    <!--<div ng-repeat="user in lineUserList| filter: filterByTagId_Univ">-->
+     <div ng-repeat="user in lineUserList| filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt
+     | filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword">
+        {{user.name}}
+    </div>
+</div>
+
+
+
+<ul ng-repeat="user in users" class="pagination">
+  <li><a href="#" ng-click="onpaging(0)">{{1}}</a></li>
+</ul>
+
+</div>
+</body>
