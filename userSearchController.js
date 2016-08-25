@@ -203,6 +203,29 @@ $scope.filterByKeyword = function(user) {
     }
 };
 
+ $scope.getUserMessages = function(user){
+
+    var url = LINE_API_URL+"/user/"+user.id+"/message";
+    $http({
+      url: url,
+      method: "GET",
+      dataType: "json",
+    }).
+    success(function(data, status, headers, config) {
+      for(var i in data){
+        data[i]['datetime'] = timeConverter(data[i]['created_date']);
+      }
+
+      $scope.userMessages = data;
+      $scope.currentUser = user;
+      $scope.showMessage = true;
+      $scope.messageSent = false;
+    }).
+    error(function(data, status, headers, config) {
+
+    });  
+  };
+
 $scope.displayedResult = function(display, limit) {
     return result = Math.floor(display/limit) + 1;
 };
