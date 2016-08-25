@@ -38,7 +38,7 @@ angular.module('concierAdminApp',[])
     $scope.asignee = localStorage.getItem("asignee");
         
     $http({
-                url: 'tag_list.json',
+                url: LINE_API_URL+"/user_tag?productID="+$scope.selectedProductId+"&token=nishishinjuku",
                 method:"GET",
                 datatype:"json"
             }).
@@ -51,7 +51,7 @@ angular.module('concierAdminApp',[])
                 $scope.userTag = d; //ここにユーザータグが入る
 
                 $http({
-                    url: 'user_list.json',
+                    url: LINE_API_URL+"/product_user?productID="+$scope.selectedProductId+"&token=nishishinjuku",
                     method: "GET",
                     dataType: "json"
                 }).
