@@ -35,6 +35,8 @@ angular.module('concierAdminApp',[])
 
     $scope.currentUser;
 
+    $scope.show_edit_tag;
+
     $scope.asignee = localStorage.getItem("asignee");
         
     $http({
@@ -66,14 +68,22 @@ angular.module('concierAdminApp',[])
     });
 
     $scope.openTagAddField = function(user){
+        $scope.show_edit_tag = true;
         $scope.currentUser = user;
         $scope.tag_add = true;
 
     };
 
     $scope.openTagRemoveField = function(user){
+        $scope.show_edit_tag = true;
         $scope.currentUser = user;
         $scope.tag_add = false;
+    };
+
+    $scope.canselEditTag = function(){
+        $scope.show_edit_tag = false;
+        $scope.show_edit_tag = true;
+        $scope.currentUser = "";
     };
 
     $scope.getTagName = function(tagId){
@@ -109,7 +119,7 @@ angular.module('concierAdminApp',[])
             }
             return true;
         }else{
-          return false
+          return false;
         }
     };
 
