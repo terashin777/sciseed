@@ -38,7 +38,7 @@ angular.module('concierAdminApp',[])
     $scope.asignee = localStorage.getItem("asignee");
         
     $http({
-                url: LINE_API_URL+"/user_tag?productID="+$scope.selectedProductId+"&token=nishishinjuku",
+                url: 'tag_list.json',
                 method:"GET",
                 datatype:"json"
             }).
@@ -51,7 +51,7 @@ angular.module('concierAdminApp',[])
                 $scope.userTag = d; //ここにユーザータグが入る
 
                 $http({
-                    url: LINE_API_URL+"/product_user?productID="+$scope.selectedProductId+"&token=nishishinjuku",
+                    url: 'user_list.json',
                     method: "GET",
                     dataType: "json"
                 }).
@@ -83,6 +83,24 @@ angular.module('concierAdminApp',[])
     return ""; /*絞り込みで、全て表示を実装するには、ここはnullではなく、””でなくてはならない。下のフィルタの、if($scope.search.univ != "")での""と対応している。
     両方ともnullにするという手も考えられるが、初期値が””なのでうまくいかない。初めの変数宣言で初期値をnullにすればnullでも問題ない。*/
   };
+
+$scope.filterUser = function(item) {
+    if(item.loyalty>=$scope.minLoyalty){
+        if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
+            var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
+            if(tagId){
+                return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する
+            }else{
+                return false;
+            }
+        }else if($scope.serchQuery.type == "text" && $scope.serchQuery.queryText != ""){
+        return item.name.indexOf($scope.serchQuery.queryText)!=-1;         
+      }
+        return true;
+    }else{
+      return false
+    }
+};
 
 $scope.searchByTag = function(tagId){ //検索するタイプを指定し，serchQuery.queryTagに引数として渡されたタグIDからタグの名前を代入する
     $scope.serchQuery.type = "tag";
