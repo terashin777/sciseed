@@ -202,9 +202,6 @@
             <div>
                     <a ng-click="canselEditTag()" href="javascript:">キャンセル</a>
             </div>
-            <div>
-               show_edit_tag:{{show_edit_tag}}
-            </div>
 
             <div ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
                 <div class="col-sm-4 col-md-4"><span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span></div>
