@@ -273,9 +273,8 @@ angular.module('concierAdminApp',[])
 
     $scope.updateProduct = function(){
         $scope.getLineUserList();
+        $scope.getLineUserList();
     };
-
-    $scope.getLineUserList();
 
 
     $scope.submitMessage = function(userId){
@@ -319,7 +318,23 @@ angular.module('concierAdminApp',[])
             $scope.begin = $scope.num * page;
     };
 
-        function categoryMapper(cat){
+}]);
+
+    function timeConverter(UNIX_timestamp){
+
+      var a = new Date(UNIX_timestamp);
+      var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+      var year = a.getFullYear();
+      var month = months[a.getMonth()];
+      var date = a.getDate();
+      var hour = a.getHours();
+      var min = a.getMinutes();
+      var sec = a.getSeconds();
+      var time = month + '/' + date + ' ' + hour + ':' + min  ;
+      return time;
+    };
+
+    function categoryMapper(cat){
       switch (cat){
         case "univ":
           return "大学"
@@ -358,8 +373,7 @@ angular.module('concierAdminApp',[])
           return "その他"
           break;  
       }
-    }
-}]);
+    };
 
 
 
