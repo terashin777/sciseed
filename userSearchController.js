@@ -263,7 +263,53 @@ angular.module('concierAdminApp',[])
         error(function(data, status, headers, config) {
 
         });  
-      };
+    };
+
+    $scope.closeMessageWindow = function(){
+        $scope.userMessages = undefined;
+        $scope.showMessage = false;
+        $scope.messageSent = false;
+    };
+
+    $scope.updateProduct = function(){
+        $scope.getLineUserList();
+    };
+
+    $scope.getLineUserList();
+
+
+    $scope.submitMessage = function(userId){
+
+    var asignee = $scope.asignee;
+    if(!asignee){   //asigneeが空であれば，何もせずに戻る
+      return;
+    }
+
+    localStorage.setItem("asignee", $scope.asignee);    //localStrageにキーがasignee，要素が$scope.asigneeの配列を保存する．
+
+    var messageText = $("#text_area_wrapper > #text_area").val();   //text_area_wrapperというidを持つタグの中のtext_areaというidを持つタグのvalueを取ってくる．
+
+    if (!messageText || messageText=="") {   //messageTextがからであれば，何もせずに戻る．
+      return;
+    }
+
+    var url = LINE_API_URL+"/response_message";
+    $http({
+      url: url,
+      method: "POST",
+      dataType: "json",
+      data: {"user": userId, "asignee": asignee, "message": messageText, "productId": $scope.selectedProductId}
+    }).
+    success(function(data, status, headers, config) {
+      $scope.messageSent = true;
+      $("#text_area_wrapper > #text_area").val("");   //valueを空にしている．
+
+    }).
+    error(function(data, status, headers, config) {
+      
+    });
+
+    };
 
     $scope.displayedResult = function(display, limit) {
         return result = Math.floor(display/limit) + 1;

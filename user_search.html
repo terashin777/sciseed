@@ -236,6 +236,49 @@
     </li>
 </ul>
 
+<div id="user_message_wrapper" class="ui-widget-content" ng-show="showMessage">
+              <table class="table" id="user_message_table" style="background-color: #FFF">
+                <thead>
+                  <tr>
+                    <th>ユーザー： {{ currentUser.name }}</th>
+                    <th><a href="javascript:" class="close-icon" ng-click="closeMessageWindow()"></a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in userMessages" ng-class="item.is_admin ? 'admin':'user'">
+                    <td class="message_text"><div ng-class="item.is_admin ? 'admin': 'user'">{{ item.text }}</div></td>
+                    <td class="datetime"><div ng-class="item.is_admin ? 'admin': 'user'">{{ item.datetime }}</div></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div id="text_area_wrapper">
+                <textarea id="text_area" name="reply_message" rows="5"></textarea>
+                <div ng-show="!messageSent">
+                  <select name="studentSupporter" ng-model="asignee">
+                    <option value="荒木">荒木</option>
+                    <option value="新田目">新田目</option>
+                    <option value="小武内">小武内</option>
+                    <option value="金親">金親</option>
+                    <option value="叶">叶</option>
+                    <option value="菊池">菊池</option>
+                    <option value="田辺">田辺</option>
+                    <option value="西田">西田</option>
+                    <option value="藤松">藤松</option>
+                    <option value="渕野">渕野</option>
+                    <option value="牧野">牧野</option>
+                    <option value="宮">宮</option>
+                    <option value="渡辺">渡辺</option>
+                    <option value="藤田">藤田</option>
+                  </select>
+                  <input type="submit" value="送信" ng-click="submitMessage(currentUser.id)" />
+                </div>
+                <div ng-show="messageSent">
+                  <p>メッセージが送信されました。</p>
+                  <input type="submit" value="続けて送信" ng-click="submitMessage(currentUser.id)" />
+                </div>
+              </div>
+            </div>
+
     <ul ng-repeat="user in users" class="pagination">
         <li><a href="#" ng-click="onpaging(0)">{{1}}</a></li>
     </ul>
