@@ -29,8 +29,11 @@ angular.module('concierAdminApp',[])
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.num = 3;
-    $scope.begin = 0;
+
+    $scope.len = 20;
+    $scope.start = 0;
+    $scope.searchedValue = "";
+
     $scope.selectedProductId = 1;
 
     $scope.currentUser;
@@ -349,6 +352,14 @@ angular.module('concierAdminApp',[])
 
     $scope.onpaging = function(page){ 
             $scope.begin = $scope.num * page;
+    };
+
+    $scope.pager = function(page){ 
+            $scope.start = $scope.len * page;
+    };
+
+    $scope.pagerCal = function(len){ 
+            $scope.numOfPage = Math.floor(searchedValue/len);
     };
 
 }]);
