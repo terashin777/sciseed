@@ -156,18 +156,11 @@ angular.module('concierAdminApp',[])
         $scope.search.status     = $scope.getTagId($scope.selected.status);
         $scope.search.loyalty    = $scope.selected.loyalty;
         $scope.search.keyword        = $scope.selected.keyword;
-        $scope.serchQuery.queryTag != "";
-        $scope.serchQuery.queryText != "";
+        $scope.serchQuery.queryTag = "";
+        $scope.serchQuery.queryText = "";
     };
 
     $scope.canselSearch = function() {
-        /*if($scope.user_univ.name == ""){
-            $scope.search.user_univ = "";
-            //$scope.search.user_univ = $scope.user_univ;
-        }else{
-            $scope.search.user_univ = $scope.user_univ.name;
-            //$scope.search.user_univ = $scope.user_univ;
-        }*/
         $scope.search.univ        = "";
         $scope.search.grade      = "";
         $scope.search.preference = "";
@@ -178,7 +171,24 @@ angular.module('concierAdminApp',[])
         $scope.search.operator   = "";
         $scope.search.status     = "";
         $scope.search.loyalty    = "";
-         $scope.search.keyword        = "";
+        $scope.search.keyword        = "";
+        $scope.serchQuery.queryTag = "";
+        $scope.serchQuery.queryText = "";
+
+        $scope.selected.univ        = "";
+        $scope.selected.grade      = "";
+        $scope.selected.preference = "";
+        $scope.selected.major_art  = "";
+        $scope.selected.major_sci  = "";
+        $scope.selected.industry   = "";
+        $scope.selected.sex        = "";
+        $scope.selected.operator   = "";
+        $scope.selected.status     = "";
+        $scope.selected.loyalty    = "";
+        $scope.selected.keyword        = "";
+        //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
+
+        document.frm.reset();
     };
 
     $scope.filterByUniv = function(user) {
@@ -258,10 +268,10 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByKeyword = function(user) {
-         if($scope.search.status != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-              return $user == $scope.search.keyword; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+         if($scope.search.keyword != ""){
+              return $user == $scope.search.keyword; 
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1;
         }
     };
 

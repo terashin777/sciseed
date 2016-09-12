@@ -9,12 +9,12 @@
 </head>
 <body>
 <div ng-controller="UserSearchCtrl">
-<form>
+<form name = "frm">
 <div>
     大学名:
     <div>
     <label>
-        <input type="radio" ng-model="selected.univ" value="" name="univ_search">
+        <input type="radio" ng-model="selected.univ" value="" name="univ_search" checked="checked">
             全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'univ' }">
@@ -33,7 +33,7 @@
     卒業年度:
     <div>
     <label>
-      <input type="radio" ng-model="selected.grade" value="" name="grade_search">
+      <input type="radio" ng-model="selected.grade" value="" name="grade_search" checked="checked">
         全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'grade' }">
@@ -51,7 +51,7 @@
     専攻(文系):
     <div>
     <label>
-      <input type="radio" ng-model="selected.major_art" value="" name="major_art_search">
+      <input type="radio" ng-model="selected.major_art" value="" name="major_art_search" checked="checked">
         全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'major_art' }">
@@ -69,7 +69,7 @@
     専攻(理系):
     <div>
     <label>
-      <input type="radio" ng-model="selected.major_sci" value="" name="major_sci_search">
+      <input type="radio" ng-model="selected.major_sci" value="" name="major_sci_search" checked="checked">
         全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'major_sci' }">
@@ -87,7 +87,7 @@
     志向:
     <div>
     <label>
-      <input type="radio" ng-model="selected.preference" value="" name="preference_search">
+      <input type="radio" ng-model="selected.preference" value="" name="preference_search" checked="checked">
         全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'preference' }">
@@ -105,7 +105,7 @@
     志望業界:
     <div>
     <label>
-      <input type="radio" ng-model="selected.industry" value="" name="industry_search">
+      <input type="radio" ng-model="selected.industry" value="" name="industry_search" checked="checked">
         全て表示
     </label>
     <label ng-repeat="tag in userTag|filter: { category:'industry' }">
@@ -123,7 +123,7 @@
     性別:
     <div>
       <label>
-        <input type="radio" selected="selected" ng-model="selected.sex" value="" name="sex_search">
+        <input type="radio" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
           全て表示
       </label>
       <label>
@@ -144,11 +144,11 @@
 <div>
     <span>最小やりとり数：</span>
                     <select  ng-model="selected.loyalty" name="loyalty_search">
-                        <option value="">以下から選択してください。</option>
+                        <option value="" selected="selected">以下から選択してください。</option>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
-                        <option selected="selected" value="3">3</option>
+                        <option value="3">3</option>
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="20">20</option>
