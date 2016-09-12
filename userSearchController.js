@@ -106,7 +106,7 @@ angular.module('concierAdminApp',[])
       };
 
     $scope.filterUser = function(item) {
-        if(item.loyalty>=$scope.minLoyalty){
+        if(item.loyalty>=$scope.selected.loyalty){
             if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
                 var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
                 if(tagId){
@@ -114,12 +114,10 @@ angular.module('concierAdminApp',[])
                 }else{
                   return -1;
                 }
-            }else if($scope.serchQuery.type == "text" && $scope.serchQuery.queryText != ""){
-                return item.name.indexOf($scope.serchQuery.queryText)!=-1;
+                return true;
+            }else{
+                return -1;
             }
-            return true;
-        }else{
-          return -1;
         }
     };
 
