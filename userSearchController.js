@@ -1,4 +1,5 @@
 var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000/api';
+
 angular.module('concierAdminApp',[])
     .controller('UserSearchCtrl',['$scope','$http',function($scope,$http){
 
@@ -30,7 +31,7 @@ angular.module('concierAdminApp',[])
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
 
-    $scope.len = 20;
+    $scope.len = 50;
     $scope.start = 0;
     $scope.searchedValue = "";
     $scope.numOfPage = "";
@@ -42,7 +43,7 @@ angular.module('concierAdminApp',[])
     $scope.show_edit_tag;
 
     $scope.asignee = localStorage.getItem("asignee");
-        
+
     $http({
         url: 'tag_list.json',
         method:"GET",
@@ -354,8 +355,14 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.pagerCal = function(len){ 
-            $scope.numOfPage = Math.floor(searchedValue/len);
+            var num = $scope.searchedValue/$scope.len;
+            $scope.numOfPage = Math.floor(num);
     };
+
+    angular.element(document).ready(function () {
+        var num = $scope.searchedValue/$scope.len;
+        $scope.numOfPage = Math.floor(num);
+    });
 
 }]);
 

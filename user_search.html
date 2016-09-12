@@ -176,18 +176,23 @@
 </form>
 
 <span>ページ当たり表示する件数：</span>
-                    <select  ng-model="len" name="pageValue">
-                        <option value="5">5</option>
+                    <select  ng-model="len" name="pageValue" ng-change="pagerCal(len)">
                         <option value="10">10</option>
-                        <option value="20"  selected="selected">20</option>
-                        <option value="50">50</option>
+                        <option value="20">20</option>
+                        <option value="50" ng-selected = "true">50</option>
+                        <!-->ng-selectedをtrueにしないと選択されない<-->
                         <option value="100">100</option>
-                        <option ng-value= "seachedValue">全件</option>
+                        <option value="200">200</option>
+                        <option ng-value= "searchedValue">全件</option>
                     </select>
+
+<div>
+ページ当たり表示する件数：{{len}}
+</div>
 
 <p>
     <span >
-        全表示件数：{{seachedValue = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
+        全表示件数：{{searchedValue = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
     </span>
 </p>
 
