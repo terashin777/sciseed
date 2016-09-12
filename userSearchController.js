@@ -33,6 +33,7 @@ angular.module('concierAdminApp',[])
     $scope.len = 20;
     $scope.start = 0;
     $scope.searchedValue = "";
+    $scope.numOfPage = "";
 
     $scope.selectedProductId = 1;
 
@@ -350,11 +351,7 @@ angular.module('concierAdminApp',[])
         return result = Math.floor(display/limit) + 1;
     };
 
-    $scope.onpaging = function(page){ 
-            $scope.begin = $scope.num * page;
-    };
-
-    $scope.pager = function(page){ 
+     $scope.pager = function(page){ 
             $scope.start = $scope.len * page;
     };
 
