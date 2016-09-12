@@ -1,14 +1,28 @@
 var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000/api';
 
 angular.module('concierAdminApp',[])
-    .controller('UserSearchCtrl',['$scope','$http',function($scope,$http){
-
+    .directive('onFinishRender', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('pagerCal');
+                    });
+                }
+            }
+        }
+    })
+    //↑ng-repeatが終わった時にpagerCalを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
+    //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
+    .controller('UserSearchCtrl',['$scope','$http',function($scope,$http){ 
     $scope.serchQuery = {
         "type": "tag",
         "queryTag": "",
         "queryText": "" 
     };
-    
+     $scope.numOfTry = 0;
+
     $scope.lineUserList = [];
     $scope.userTag = [];
     $scope.currnentIndex = -1;
@@ -354,15 +368,17 @@ angular.module('concierAdminApp',[])
             $scope.start = $scope.len * page;
     };
 
-    $scope.pagerCal = function(len){ 
-            var num = $scope.searchedValue/$scope.len;
-            $scope.numOfPage = Math.floor(num);
-    };
-
-    angular.element(document).ready(function () {
-        var num = $scope.searchedValue/$scope.len;
-        $scope.numOfPage = Math.floor(num);
+    $scope.$on('pagerCal', function(len) {
+        if ($scope.numOfTry == 0) { 
+        $scope.numOfPage = Math.floor( $scope.searchedValue/$scope.len);
+        $scope.numOfTry += 1;
+        }
     });
+    //↑イベント監視を行う。指定のイベント（ここでは、pagerCal）が発生した際に実行されるリスナーを登録できる。
+
+    $scope.pagerCal = function(len){ 
+        $scope.numOfPage = Math.floor( $scope.searchedValue/$scope.len);
+    };
 
 }]);
 

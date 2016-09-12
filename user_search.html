@@ -199,7 +199,7 @@
 {{showMessage}}
 
 <ul class="list-group">
-    <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start) track by $index">
+    <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start) track by $index" on-finish-render >
         <div class="row" >
             <div class="col-sm-3 col-md-3">
                 <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
@@ -301,8 +301,18 @@
     <ul class="pagination">
         <li><a href="#" ng-repeat = "i in numOfPage" ng-click="pager(i)">{{i+1}}</a></li>
     </ul>
+
     <div>
     ページ数：{{numOfPage}}
+    </div>
+    <div>
+    ページ当たり表示する件数：{{len}}
+    </div>
+    <div>
+    全表示数：{{searchedValue}}
+    </div>
+     <div>
+    読み込み回数：{{numOfTry}}
     </div>
 </div>
 </body>
