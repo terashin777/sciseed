@@ -180,9 +180,10 @@
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50" ng-selected = "true">50</option>
-                        <!-->ng-selectedをtrueにしないと選択されない<-->
+                        <!--ng-selectedをtrueにしないと選択されない-->
                         <option value="100">100</option>
                         <option value="200">200</option>
+                        <option value="500">500</option>
                         <option ng-value= "searchedValue">全件</option>
                     </select>
 
@@ -198,7 +199,7 @@
 
 {{showMessage}}
 
-<ul class="list-group">
+<ol class="list-group">
     <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start) track by $index" on-finish-render >
         <div class="row" >
             <div class="col-sm-3 col-md-3">
@@ -253,7 +254,7 @@
                 </div>
         </div>
     </li>
-</ul>
+</ol>
 
 <div id="user_message_wrapper" class="ui-widget-content" ng-show="showMessage">
               <table class="table" id="user_message_table" style="background-color: #FFF">
@@ -299,7 +300,7 @@
             </div>
 
     <ul class="pagination">
-        <li><a href="#" ng-repeat = "i in numOfPage" ng-click="pager(i)">{{i+1}}</a></li>
+        <li ng-repeat = "i in arrOfPage(numOfPage)"><a href="#"  ng-click="pager(i)">{{i+1}}</a></li>
     </ul>
 
     <div>

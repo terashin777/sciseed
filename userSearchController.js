@@ -1,6 +1,17 @@
 var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000/api';
 
 angular.module('concierAdminApp',[])
+
+    .run(function($rootScope) {
+        $rootScope.arrOfPage = function(n) {
+            var arr = [];
+            for (var i=0; i<n; ++i) arr.push(i);
+            return arr;
+        };
+    })
+    //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
+    //↑$rootScopeはアプリケーション全体で共有される。
+    //↑ただの数をng-repeatで繰り返すために、配列を作っている。
     .directive('onFinishRender', function ($timeout) {
         return {
             restrict: 'A',
@@ -13,6 +24,7 @@ angular.module('concierAdminApp',[])
             }
         }
     })
+    //↑ページの読み込み完了時に処理を実行するといったやり方ができないためカスタムのディレクティブを用いる。
     //↑ng-repeatが終わった時にpagerCalを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
     .controller('UserSearchCtrl',['$scope','$http',function($scope,$http){ 
@@ -370,14 +382,14 @@ angular.module('concierAdminApp',[])
 
     $scope.$on('pagerCal', function(len) {
         if ($scope.numOfTry == 0) { 
-        $scope.numOfPage = Math.floor( $scope.searchedValue/$scope.len);
+        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
         $scope.numOfTry += 1;
         }
     });
     //↑イベント監視を行う。指定のイベント（ここでは、pagerCal）が発生した際に実行されるリスナーを登録できる。
 
     $scope.pagerCal = function(len){ 
-        $scope.numOfPage = Math.floor( $scope.searchedValue/$scope.len);
+        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
     };
 
 }]);
