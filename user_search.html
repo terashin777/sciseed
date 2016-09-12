@@ -169,18 +169,22 @@
 <button ng-click="doSearch()">
     検索
 </button>
-    
+
+<button ng-click="canselSearch()">
+    絞込み解除
+</button>
+
 </form>
 <p>
     <span >
-        表示件数：{{(lineUserList| filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
+        表示件数：{{(lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
     </span>
 </p>
 
 {{showMessage}}
 
 <ul class="list-group">
-    <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList| filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword) track by $index">
+    <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword) track by $index">
         <div class="row" >
             <div class="col-sm-3 col-md-3">
                 <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>

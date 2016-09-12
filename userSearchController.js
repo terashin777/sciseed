@@ -110,16 +110,16 @@ angular.module('concierAdminApp',[])
             if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
                 var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
                 if(tagId){
-                  return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する
+                  return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する indexOfは検索したもの（ここではtagId）がなければ-1を返す
                 }else{
-                  return false;
+                  return -1;
                 }
             }else if($scope.serchQuery.type == "text" && $scope.serchQuery.queryText != ""){
-              return item.name.indexOf($scope.serchQuery.queryText)!=-1;
+                return item.name.indexOf($scope.serchQuery.queryText)!=-1;
             }
             return true;
         }else{
-          return false;
+          return -1;
         }
     };
 
@@ -155,7 +155,30 @@ angular.module('concierAdminApp',[])
         $scope.search.operator   = $scope.getTagId($scope.selected.operator);
         $scope.search.status     = $scope.getTagId($scope.selected.status);
         $scope.search.loyalty    = $scope.selected.loyalty;
-         $scope.search.keyword        = $scope.selected.keyword;
+        $scope.search.keyword        = $scope.selected.keyword;
+        $scope.serchQuery.queryTag != "";
+        $scope.serchQuery.queryText != "";
+    };
+
+    $scope.canselSearch = function() {
+        /*if($scope.user_univ.name == ""){
+            $scope.search.user_univ = "";
+            //$scope.search.user_univ = $scope.user_univ;
+        }else{
+            $scope.search.user_univ = $scope.user_univ.name;
+            //$scope.search.user_univ = $scope.user_univ;
+        }*/
+        $scope.search.univ        = "";
+        $scope.search.grade      = "";
+        $scope.search.preference = "";
+        $scope.search.major_art  = "";
+        $scope.search.major_sci  = "";
+        $scope.search.industry   = "";
+        $scope.search.sex        = "";
+        $scope.search.operator   = "";
+        $scope.search.status     = "";
+        $scope.search.loyalty    = "";
+         $scope.search.keyword        = "";
     };
 
     $scope.filterByUniv = function(user) {
