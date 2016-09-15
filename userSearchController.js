@@ -26,8 +26,10 @@ angular.module('concierAdminApp',[])
     })
     //↑ページの読み込み完了時に処理を実行するといったやり方ができないためカスタムのディレクティブを用いる。
     //↑ng-repeatが終わった時にpagerCalを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
+    //↑linkでディレクティブの具体的な挙動を決める。
+    //↑要素（E）とは、<custom-directive></custom-directive>など。属性（A）とは、<div custom-directive>のcustom-directiveなど
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
-    .controller('UserSearchCtrl',['$scope','$http',function($scope,$http){ 
+    .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
     $scope.serchQuery = {
         "type": "tag",
         "queryTag": "",
@@ -61,6 +63,8 @@ angular.module('concierAdminApp',[])
     $scope.start = 0;
     $scope.searchedValue = "";
     $scope.numOfPage = "";
+
+    $scope.icon = { name:"▼", univ:"▼", grade:"▼", preference:"▼", major_sci:"▼", major_art:"▼", industry:"▼", loyalty:"▼", created_date:"▼" };
 
     $scope.selectedProductId = 1;
 
@@ -390,6 +394,21 @@ angular.module('concierAdminApp',[])
 
     $scope.pagerCal = function(len){ 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
+    };
+
+    $scope.univSort = function(univ){
+        var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };
+        return univs[univ.name];
+    };
+
+    $scope.sort = function(exp, reverse){
+        if(reverse){
+            $scope.icon[exp] = "▲";
+        }
+        else{
+            $scope.icon[exp] = "▼";
+        }
+    $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
 }]);

@@ -17,7 +17,7 @@
         <input type="radio" ng-model="selected.univ" value="" name="univ_search" checked="checked">
             全て表示
     </label>
-    <label ng-repeat="tag in userTag|filter: { category:'univ' }">
+    <label ng-repeat="tag in userTag|filter: { category:'univ' }| orderBy: univSort: true ">
         <input type="radio" ng-model="selected.univ" value="{{tag.name}}" name="univ_search">
         <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
             {{tag.name}}
@@ -199,31 +199,55 @@
 
 {{showMessage}}
 
-<ol class="list-group">
-    <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start) track by $index" on-finish-render >
+<table class="list-group">
+    <tr>
+        <th ng-click="re_name=!re_name;sort('name',re_name)">名前 {{icon.name}}</th>
+        <!--↑
+            name=!name;
+            sort('name',name);
+            という関数を埋め込んでいる。
+        -->
+        <th ng-click="re_univ=!re_univ;sort('univ',re_univ)">大学 {{icon.univ}}</th>
+        <th ng-click="re_grade=!re_grade;sort('grade',re_grade)">卒年 {{icon.grade}}</th>
+        <th ng-click="re_preference=!re_preference;sort('preference',re_preference)">志向 {{icon.preference}}</th>
+        <th ng-click="re_major_art=!re_major_art;sort('major_art',re_major_art)">文系専攻 {{icon.major_art}}</th>
+        <th ng-click="re_major_sci=!re_major_sci;sort('major_sci',re_major_sci)">理系専攻 {{icon.major_sci}}</th>
+        <th ng-click="re_industry=!re_industry;sort('industry',re_industry)">志望 {{icon.industry}}</th>
+        <th ng-click="re_loyalty=!re_loyalty;sort('loyalty',re_loyalty)">やり取り {{icon.loyalty}}</th>
+        <th ng-click="re_created_date=!re_created_date;sort('created_date',re_created_date)">登録日 {{icon.created_date}}</th>
+    </tr>
+    <div>
+    時間：{{re_created_date}} アイコン：{{icon.created_date}}
+    </div>
+    <div>
+    大学：{{re_univ}} アイコン：{{icon.univ}}
+    </div>
+    <tr class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         <div class="row" >
-            <div class="col-sm-3 col-md-3">
+            <td class="col-sm-3 col-md-3">
                 <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
-            </div>
-            <div class="col-sm-1 col-md-1">{{item.loyalty}}</div>
-            <div ng-if="currentUser.id!=item.id">
-                <div class="col-sm-6 col-md-6">
-                    <span ng-repeat="tag in item.user_tag" class="tag-wrapper">
+            </td>
+            <td ng-if="currentUser.id!=item.id">
+                <td class="col-sm-6 col-md-6">
+                    <td ng-repeat="tag in item.user_tag" class="tag-wrapper">
                         <a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
-                    </span>
-                </div>
+                    </td>
+                </td>
+                <td>
                 <div class="col-sm-1 col-md-1">
                     <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
                 </div>
                 <div class="col-sm-1 col-md-1">
                     <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
                 </div>
-            </div>
-            <div>
+                <div>
                     <a ng-click="canselEditTag()" href="javascript:">キャンセル</a>
-            </div>
+                </div>
+                </td>
+            </td>
+            <td class="col-sm-1 col-md-1">{{item.loyalty}}</td>
 
-            <div ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
+            <td ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
                 <div class="col-sm-4 col-md-4"><span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span></div>
                 <div class="col-sm-3 col-md-3 tag-edit-field">
                     <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
@@ -236,7 +260,7 @@
                 <div class="col-sm-1 col-md-1">
                     <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
                 </div>
-            </div>
+            </td>
 
             <div ng-show="show_edit_tag" ng-if="currentUser.id==item.id && !tag_add">
                 <div class="col-sm-4 col-md-4">
@@ -253,8 +277,8 @@
                     </div>
                 </div>
         </div>
-    </li>
-</ol>
+    </tr>
+</table>
 
 <div id="user_message_wrapper" class="ui-widget-content" ng-show="showMessage">
               <table class="table" id="user_message_table" style="background-color: #FFF">
