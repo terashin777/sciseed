@@ -222,6 +222,9 @@
     <div>
     大学：{{re_univ}} アイコン：{{icon.univ}}
     </div>
+    <div>
+    要素数：{{numOfProperty}}
+    </div>
     <tr class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         <div class="row" >
             <td class="col-sm-3 col-md-3">
@@ -229,8 +232,10 @@
             </td>
             <td ng-if="currentUser.id!=item.id">
                 <td class="col-sm-6 col-md-6">
-                    <td ng-repeat="tag in item.user_tag" class="tag-wrapper">
-                        <a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
+                    <td ng-repeat="i in arrOfProperty(numOfProperty)" class="tag-wrapper">
+                        <td ng-repeat="tag in " class="tag-wrapper">
+                            <a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
+                        </td>
                     </td>
                 </td>
                 <td>

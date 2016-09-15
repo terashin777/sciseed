@@ -12,6 +12,15 @@ angular.module('concierAdminApp',[])
     //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
     //↑$rootScopeはアプリケーション全体で共有される。
     //↑ただの数をng-repeatで繰り返すために、配列を作っている。
+    
+    .run(function($rootScope) {
+        $rootScope.arrOfProperty = function(n) {
+            var arr = [];
+            for (var i=0; i<n; ++i) arr.push(i);
+            return arr;
+        };
+    })
+    
     .directive('onFinishRender', function ($timeout) {
         return {
             restrict: 'A',
@@ -65,6 +74,7 @@ angular.module('concierAdminApp',[])
     $scope.numOfPage = "";
 
     $scope.icon = { name:"▼", univ:"▼", grade:"▼", preference:"▼", major_sci:"▼", major_art:"▼", industry:"▼", loyalty:"▼", created_date:"▼" };
+    $scope.numOfProperty =  Object.keys($scope.icon).length;
 
     $scope.selectedProductId = 1;
 
