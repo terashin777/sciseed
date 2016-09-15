@@ -21,23 +21,39 @@ angular.module('concierAdminApp',[])
         };
     })
     
-    .directive('onFinishRender', function ($timeout) {
+    .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function () {
                         scope.$emit('pagerCal');
+                        //↑scope.$emit('pagerCal');は必ず必要
                     });
                 }
             }
         }
-    })
+    }])
     //↑ページの読み込み完了時に処理を実行するといったやり方ができないためカスタムのディレクティブを用いる。
     //↑ng-repeatが終わった時にpagerCalを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
     //↑linkでディレクティブの具体的な挙動を決める。
     //↑要素（E）とは、<custom-directive></custom-directive>など。属性（A）とは、<div custom-directive>のcustom-directiveなど
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
+    
+    .directive('tagSort', ['$timeout', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                if (scope.$last === true) {
+                    $timeout(function () {
+                        scope.$emit('pagerCal');
+                        //↑scope.$emit('pagerCal');は必ず必要
+                    });
+                }
+            }
+        }
+    }])
+
     .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
     $scope.serchQuery = {
         "type": "tag",
@@ -401,11 +417,18 @@ angular.module('concierAdminApp',[])
         }
     });
     //↑イベント監視を行う。指定のイベント（ここでは、pagerCal）が発生した際に実行されるリスナーを登録できる。
+    //↑pageCalが呼び出されるたびに実行してしまうので、numOfTryを使って読み込みごとに一回だけ実行されるようにしている。
 
     $scope.pagerCal = function(len){ 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
+        $scope.numOfTry += 1;
     };
 
+    $scope.$watch('searchedValue', function(newValue, oldValue) {
+        $scope.numOfPage = Math.ceil( newValue/$scope.len);
+    });
+    //↑searchedValueの値が変化するたびにページ数を計算しなおす。
+    
     $scope.univSort = function(univ){
         var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };
         return univs[univ.name];

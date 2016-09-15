@@ -192,12 +192,15 @@
 </div>
 
 <p>
-    <span >
+    <span>
         全表示件数：{{searchedValue = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
     </span>
 </p>
 
 {{showMessage}}
+全表示件数：{{searchedValue}}
+
+実行回数:{{numOfTry}}
 
 <table class="list-group">
     <tr>
