@@ -235,20 +235,9 @@
             </td>
             <td ng-if="currentUser.id!=item.id">
                 <td class="col-sm-6 col-md-6">
-                <td ng-repeat = "i in arrOfProperty ">
                     <td ng-repeat="ic in icon" class="tag-wrapper">
-                        <div>繰り返し:{{i}}</div>
-                        <td ng-repeat="tag in item.user_tag" class="tag-wrapper">
-                            <div>繰り返し:{{i}}</div>
-                            <div>アイコン:{{icon}}</div>
-                            <div>カテゴリ:{{ic.category}}</div>
-                            <div>タグ:{{tag}}</div>
-                            <div>アイテム:{{item}}</div>
-                            <div>タグ配列:{{item.user_tag}}</div>
-                            <a href="javascript:" ng-click="searchByTag(tag)">{{sortTag = getSortTag(ic.category, tag)}}</a>
-                        </td>
+                         <a href="javascript:" ng-click="searchByTag(tag)">{{getSortTag(ic.category, item.user_tag)}}</a>
                     </td>
-                </td>
                 </td>
                 <td>
                 <div class="col-sm-1 col-md-1">
