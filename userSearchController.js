@@ -21,25 +21,6 @@ angular.module('concierAdminApp',[])
         };
     })
 
-    .run(function($rootScope) {
-        $rootScope.arrOfProperty = function(n) {
-            var arr = [];
-            for (var i=0; i<n; ++i) arr.push(i);
-            return arr;
-        };
-    })
-    
-    .run(function($rootScope) {
-         $rootScope.add = function(){
-            for(i in $scope.lineUserList){
-                        for(j in $scope.lineUserList[i].user_tag){
-                            var key = $scope.getTagName($scope.lineUserList[i].user_tag[j]);
-                            $scope.lineUserList[i].push({ key:""});
-                        }
-            }
-        };
-    })
-
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
@@ -74,6 +55,8 @@ angular.module('concierAdminApp',[])
             }
         }
     }])
+
+
 
     .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
     $scope.serchQuery = {
@@ -110,12 +93,14 @@ angular.module('concierAdminApp',[])
     $scope.searchedValue = "";
     $scope.numOfPage = "";
 
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.sortList = [{category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+    scope.icon = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
     $scope.sortTag = "";
+    $scope.couter = 0;
 
     $scope.selectedProductId = 1;
 
@@ -151,6 +136,31 @@ angular.module('concierAdminApp',[])
             for(var q = 0; q<$scope.numOfSort; q++){
                 $scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
             }
+        }
+        $scope.numOfTag = Object.keys($scope.userTag).length;
+        for(var user_idx = 0; user_idx < $scope.numOfUser ;user_idx++){
+            //↑ユーザー1人1人にソート項目の要素を追加する。
+            for(var i = 0; i <  $scope.lineUserList[user_idx].user_tag.length; i++){
+            //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
+                $scope .test2 = "テスト２"
+                for(var j = 0; j < $scope.numOfTag; j++){
+                //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
+                    if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
+                        for(var k = 0; k < $scope.numOfSort; k++){
+                        //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
+                            if($scope.userTag[j].category == $scope.sortList[k].category ){
+                                if($scope.userTag[j].name != ""){
+                                    $scope .test5 = $scope.userTag[j].name;
+                                    $scope .test4 = $scope.sortList[k].category;
+                                    $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
+                                    $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                    //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                }
+                            }
+                    }
+                }
+            }
+        }
         }
     }).
         error(function(data, status, headers, config) {
@@ -497,31 +507,35 @@ angular.module('concierAdminApp',[])
         return univs[univ.name];
     };
 
-    $scope.sort = function(exp, reverse){
-        if(reverse){
-            $scope.icon[exp] = "▲";
+    $scope.sort = function(idx, exp, reverse){
+        $scope.test6 = idx;
+        if(reverse == "false"){
+            $scope.icon[idx][exp] = "▼";
         }
         else{
-            $scope.icon[exp] = "▼";
+            $scope.test6 = idx;
+            $scope.icon[idx][exp]  = "▲";
         }
-    $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
+        $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
-        $scope.test2 += 1;
+        $scope.numOfTag = Object.keys($scope.userTag).length;
+        $scope.saveItem = 0;
         if(ic_cat != "name"){
-            for(var i in tag){
-                for(var j in $scope.userTag){
+        if(item.id != $scope.saveItem){
+            for(var i = 0; i < tag.length; i++){
+                for(var j = 0; j < $scope.numOfTag; j++){
                     if($scope.userTag[j].id == tag[i]){
                         if($scope.userTag[j].category == ic_cat){
                             if($scope.userTag[j].name != ""){
-                                $scope.lineUserList[item[ic_cat]] = $scope.userTag[j].name;
                                 return $scope.userTag[j].name;
                             }
                         }
                     }
                 }
             }
+        }
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
