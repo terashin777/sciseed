@@ -111,8 +111,11 @@ angular.module('concierAdminApp',[])
     $scope.numOfPage = "";
 
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-
-    $scope.testlist = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+    $scope.sortList = [{category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+    //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
+    //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
+    //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
+    $scope.sortTag = "";
 
     $scope.selectedProductId = 1;
 
@@ -142,6 +145,13 @@ angular.module('concierAdminApp',[])
     }).
         success(function(data, status, headers, config) {
         $scope.lineUserList = data; //ここにユーザーリストが入る
+        $scope.numOfUser = Object.keys($scope.lineUserList).length;
+        $scope.numOfSort = Object.keys($scope.sortList).length ;
+        for(var p = 0; p< $scope.numOfUser; p++){
+            for(var q = 0; q<$scope.numOfSort; q++){
+                $scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
+            }
+        }
     }).
         error(function(data, status, headers, config) {
     });
@@ -150,13 +160,10 @@ angular.module('concierAdminApp',[])
 
     });
 
-    $scope.add = function(){
+    //$scope.add = function(){
+        //$scope.numOfUser = Object.keys($scope.lineUserList).length;
+        //$scope.numOfSort = Object.keys($scope.sortList).length ;
         //↓配列の追加実験
-        $scope.testlistnum = Object.keys($scope.testlist).length;
-        $scope.numuser = Object.keys($scope.lineUserList).length;
-        $scope.numicon = Object.keys($scope.icon).length ;
-        var one = "fuyu";
-        var s = 0;
         //for(var u = 0; u<$scope.testnum; u++){ 
             //for(var t = 0; t<$scope.numicon; t++){ 
                 //$scope.test[u][$scope.icon[t]["category"]] = "";
@@ -178,12 +185,12 @@ angular.module('concierAdminApp',[])
                // $scope.lineUserList[p][$scope.icon[q]["category"]] = "";
            // }
         //}
-        for(var p = 0; p< $scope.numuser; p++){
-            for(var q = 0; q<$scope.testlistnum; q++){
-                $scope.lineUserList[p][$scope.testlist[q]["category"]] = "";
-            }
-        }
-    };
+        //for(var p = 0; p< $scope.numOfUser; p++){
+            //for(var q = 0; q<$scope.numOfSort; q++){
+                //$scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
+            //}
+        //}
+    //};
 
     $scope.openTagAddField = function(user){
         $scope.show_edit_tag = true;
@@ -500,19 +507,24 @@ angular.module('concierAdminApp',[])
     $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
-    $scope.getSortTag = function(ic, tag){
-        for(var i in tag){
-            for(var j in $scope.userTag){
-                if($scope.userTag[j].id == tag[i]){
-                    if($scope.userTag[j].category == ic){
-                        if($scope.userTag[j].name != ""){
-                            return $scope.userTag[j].name;
+    $scope.getSortTag = function(ic_cat, tag, item){
+        $scope.test2 += 1;
+        if(ic_cat != "name"){
+            for(var i in tag){
+                for(var j in $scope.userTag){
+                    if($scope.userTag[j].id == tag[i]){
+                        if($scope.userTag[j].category == ic_cat){
+                            if($scope.userTag[j].name != ""){
+                                $scope.lineUserList[item[ic_cat]] = $scope.userTag[j].name;
+                                return $scope.userTag[j].name;
+                            }
                         }
                     }
                 }
             }
         }
     };
+    //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
 
 }]);
 

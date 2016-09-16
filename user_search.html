@@ -228,8 +228,9 @@
     <div>
     要素数：{{numOfProperty}}
     </div>
+    <!--
     <button ng-click="add()">
-        ボタン：
+        ボタン
     </button>
     <div>
     長さ：{{testnum}}
@@ -240,9 +241,14 @@
     アイコン最初の要素：{{icon[0].category}}
     3番目の要素：{{testlist[0][2]}}
     </div>
+     -->
+     <div>
+    テスト2：{{test2}}
+    </div>
     <div>
     ユーザーリスト：{{lineUserList}}
     </div>
+
     <tr class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         <div class="row" >
             <td class="col-sm-3 col-md-3">
@@ -251,7 +257,7 @@
             <td ng-if="currentUser.id!=item.id">
                 <td class="col-sm-6 col-md-6">
                     <td ng-repeat="ic in icon" class="tag-wrapper">
-                            <a href="javascript:" ng-click="searchByTag(tag)">{{sortTag = getSortTag(ic.category, item.user_tag)}}</a>
+                            <a href="javascript:" ng-click="searchByTag(tag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
                     </td>
                 </td>
                 <td>
