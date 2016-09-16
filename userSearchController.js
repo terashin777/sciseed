@@ -447,9 +447,9 @@ angular.module('concierAdminApp',[])
     $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
-    $scope.getSortTag = function(ic, tagid){
+    $scope.getSortTag = function(ic_cat, tagid){
         for(var i in $scope.userTag){
-             if($scope.userTag[i].id == tagid && $scope.userTag[i].category == ic){
+             if($scope.userTag[i].id == tagid && $scope.userTag[i].category == ic_cat){
                 if($scope.sortTag != ""){
                     return $scope.userTag[i].name;
                 }
