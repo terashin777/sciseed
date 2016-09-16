@@ -20,7 +20,26 @@ angular.module('concierAdminApp',[])
             return arr;
         };
     })
+
+    .run(function($rootScope) {
+        $rootScope.arrOfProperty = function(n) {
+            var arr = [];
+            for (var i=0; i<n; ++i) arr.push(i);
+            return arr;
+        };
+    })
     
+    .run(function($rootScope) {
+         $rootScope.add = function(){
+            for(i in $scope.lineUserList){
+                        for(j in $scope.lineUserList[i].user_tag){
+                            var key = $scope.getTagName($scope.lineUserList[i].user_tag[j]);
+                            $scope.lineUserList[i].push({ key:""});
+                        }
+            }
+        };
+    })
+
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
@@ -95,6 +114,10 @@ angular.module('concierAdminApp',[])
     $scope.numOfProperty =  Object.keys($scope.icon).length;
     $scope.sortTag = "";
 
+    $scope.test = [{zero: "natsu", two: "aki"}, {zero: "natsu", two: "aki"}, {zero: "natsu", two: "aki"}];
+    $scope.testlist = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+     $scope.testnum = 0;
+
     $scope.selectedProductId = 1;
 
     $scope.currentUser;
@@ -131,11 +154,46 @@ angular.module('concierAdminApp',[])
 
     });
 
+    $scope.add = function(){
+        //↓配列の追加実験
+        $scope.testnum = Object.keys($scope.test).length;
+        $scope.testlistnum = Object.keys($scope.testlist).length;
+        $scope.numuser = Object.keys($scope.lineUserList).length;
+        $scope.numicon = Object.keys($scope.icon).length ;
+        var one = "fuyu";
+        var s = 0;
+        //for(var u = 0; u<$scope.testnum; u++){ 
+            //for(var t = 0; t<$scope.numicon; t++){ 
+                //$scope.test[u][$scope.icon[t]["category"]] = "";
+            //}
+        //}
+        for(var u = 0; u<$scope.testnum; u++){
+            for(var t = 0; t<$scope.testlistnum; t++){ 
+                $scope.test[u][$scope.testlist[t]["category"]] = "";
+            }
+        }
+        //$scope.test[1] = {one: "haru"};
+        //$scope.test[2] = {one: "haru"};
+        //$scope.test[3] = {};
+        //$scope.test[3][$scope.testlist[0]["A"]] = "success";
+        //[{}]のようになっている時、{}の中にどちらも変数の'キー：要素'を追加したい時は、'配列[インデックス番号][キー]=要素'とする。
+        //[{}]において、{}の外に{}を追加して{}の中に要素を入れたい時は、まず'配列[インデックス番号]={}'として、{}を追加し、その次に'配列[追加した{}のインデックス番号][キー]=要素'で追加する。
+        //for(var p = 0; p< $scope.numuser; p++){
+            //for(var q = 0; q<$scope.numicon; q++){
+               // $scope.lineUserList[p][$scope.icon[q]["category"]] = "";
+           // }
+        //}
+        for(var p = 0; p< $scope.numuser; p++){
+            for(var q = 0; q<$scope.testlistnum; q++){
+                $scope.lineUserList[p][$scope.testlist[q]["category"]] = "";
+            }
+        }
+    };
+
     $scope.openTagAddField = function(user){
         $scope.show_edit_tag = true;
         $scope.currentUser = user;
         $scope.tag_add = true;
-
     };
 
     $scope.openTagRemoveField = function(user){

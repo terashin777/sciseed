@@ -228,6 +228,21 @@
     <div>
     要素数：{{numOfProperty}}
     </div>
+    <button ng-click="add()">
+        ボタン：
+    </button>
+    <div>
+    長さ：{{testnum}}
+    テスト：{{test}}
+    ユーザー長さ:{{numuser}}
+    アイコン長さ:{{numicon}}
+    ユーザー最初の要素：{{lineUserList[0]}}
+    アイコン最初の要素：{{icon[0].category}}
+    3番目の要素：{{testlist[0][2]}}
+    </div>
+    <div>
+    ユーザーリスト：{{lineUserList}}
+    </div>
     <tr class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         <div class="row" >
             <td class="col-sm-3 col-md-3">
