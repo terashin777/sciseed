@@ -111,12 +111,8 @@ angular.module('concierAdminApp',[])
     $scope.numOfPage = "";
 
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.numOfProperty =  Object.keys($scope.icon).length;
-    $scope.sortTag = "";
 
-    $scope.test = [{zero: "natsu", two: "aki"}, {zero: "natsu", two: "aki"}, {zero: "natsu", two: "aki"}];
     $scope.testlist = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-     $scope.testnum = 0;
 
     $scope.selectedProductId = 1;
 
@@ -156,7 +152,6 @@ angular.module('concierAdminApp',[])
 
     $scope.add = function(){
         //↓配列の追加実験
-        $scope.testnum = Object.keys($scope.test).length;
         $scope.testlistnum = Object.keys($scope.testlist).length;
         $scope.numuser = Object.keys($scope.lineUserList).length;
         $scope.numicon = Object.keys($scope.icon).length ;
@@ -167,11 +162,11 @@ angular.module('concierAdminApp',[])
                 //$scope.test[u][$scope.icon[t]["category"]] = "";
             //}
         //}
-        for(var u = 0; u<$scope.testnum; u++){
-            for(var t = 0; t<$scope.testlistnum; t++){ 
-                $scope.test[u][$scope.testlist[t]["category"]] = "";
-            }
-        }
+        //for(var u = 0; u<$scope.testnum; u++){
+            //for(var t = 0; t<$scope.testlistnum; t++){ 
+                //$scope.test[u][$scope.testlist[t]["category"]] = "";
+            //}
+        //}
         //$scope.test[1] = {one: "haru"};
         //$scope.test[2] = {one: "haru"};
         //$scope.test[3] = {};
