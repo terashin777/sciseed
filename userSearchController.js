@@ -447,14 +447,15 @@ angular.module('concierAdminApp',[])
     $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
-    $scope.getSortTag = function(ic, tagid){
-        for(var i in $scope.userTag){
-             if($scope.userTag[i].id == tagid && $scope.userTag[i].category == ic){
-                if($scope.sortTag != ""){
-                    return $scope.userTag[i].name;
-                }
-                else{
-                    return $scope.userTag[i].name = "　";
+    $scope.getSortTag = function(ic, tag){
+        for(var i in tag){
+            for(var j in $scope.userTag){
+                if($scope.userTag[j].id == tag[i]){
+                    if($scope.userTag[j].category == ic){
+                        if($scope.userTag[j].name != ""){
+                            return $scope.userTag[j].name;
+                        }
+                    }
                 }
             }
         }
