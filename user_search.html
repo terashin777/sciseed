@@ -235,10 +235,15 @@
             </td>
             <td ng-if="currentUser.id!=item.id">
                 <td class="col-sm-6 col-md-6">
-                    <td ng-repeat="i in arrOfProperty(numOfProperty)" class="tag-wrapper">
-                        <td ng-repeat="tag in item.user_tag" class="tag-wrapper">
-                            <a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
-                        </td>
+                    <td ng-repeat-start="ic in icon" class="tag-wrapper">
+                    </td>       
+                    <td ng-repeat-end="tag in item.user_tag" class="tag-wrapper">
+                        <div>アイコン:{{ic}}</div>
+                        <div>カテゴリ:{{ic.category}}</div>
+                        <div>タグ:{{tag}}</div>
+                        <div>アイテム:{{item}}</div>
+                        <div>タグ配列:{{item.user_tag}}</div>
+                        <a href="javascript:" ng-click="searchByTag(tag)">{{sortTag = getSortTag(ic.category, tag)}}</a>
                     </td>
                 </td>
                 <td>

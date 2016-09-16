@@ -27,7 +27,7 @@ angular.module('concierAdminApp',[])
             link: function (scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function () {
-                        scope.$emit('pagerCal');
+                        scope.$emit('init_pagerCal');
                         //↑scope.$emit('pagerCal');は必ず必要
                     });
                 }
@@ -39,14 +39,16 @@ angular.module('concierAdminApp',[])
     //↑linkでディレクティブの具体的な挙動を決める。
     //↑要素（E）とは、<custom-directive></custom-directive>など。属性（A）とは、<div custom-directive>のcustom-directiveなど
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
-    
+    //↑$emitによって、HTML上での親となるスコープ（ng-controllerが設定されたタグで入れ子になっている時のng-controllerを含む親要素）に対して、イベントを通知する。
+    //↑$emitによって通知されるイベントは$onメソッドで受け取る。
+    //
     .directive('tagSort', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function () {
-                        scope.$emit('pagerCal');
+                        scope.$emit('sortTag');
                         //↑scope.$emit('pagerCal');は必ず必要
                     });
                 }
@@ -89,8 +91,9 @@ angular.module('concierAdminApp',[])
     $scope.searchedValue = "";
     $scope.numOfPage = "";
 
-    $scope.icon = { name:"▼", univ:"▼", grade:"▼", preference:"▼", major_sci:"▼", major_art:"▼", industry:"▼", loyalty:"▼", created_date:"▼" };
+    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "major_art", major_art:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
     $scope.numOfProperty =  Object.keys($scope.icon).length;
+    $scope.sortTag = "";
 
     $scope.selectedProductId = 1;
 
@@ -410,7 +413,7 @@ angular.module('concierAdminApp',[])
             $scope.start = $scope.len * page;
     };
 
-    $scope.$on('pagerCal', function(len) {
+    $scope.$on('init_pagerCal', function(len) {
         if ($scope.numOfTry == 0) { 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
         $scope.numOfTry += 1;
@@ -442,6 +445,19 @@ angular.module('concierAdminApp',[])
             $scope.icon[exp] = "▼";
         }
     $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
+    };
+
+    $scope.getSortTag = function(ic, tagid){
+        for(var i in $scope.userTag){
+             if($scope.userTag[i].id == tagid && $scope.userTag[i].category == ic){
+                if($scope.sortTag != ""){
+                    return $scope.userTag[i].name;
+                }
+                else{
+                    return $scope.userTag[i].name = "　";
+                }
+            }
+        }
     };
 
 }]);
