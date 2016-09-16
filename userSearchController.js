@@ -508,15 +508,18 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.sort = function( exp, reverse){
+        $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
+    };
+
+    $scope.iconChange = function(exp, reverse){
         $scope.test_exp = exp;
-        if(reverse == "false"){
+        if(!reverse){
             $scope.icons[exp] = "▼";
         }
         else{
             $scope.icons[exp]  = "▲";
         }
-        $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
-        return 0;
+        return $scope.icons[exp];
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
