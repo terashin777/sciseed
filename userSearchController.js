@@ -438,6 +438,7 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.sort = function(exp, reverse){
+        $scope.test1 = exp;
         if(reverse){
             $scope.icon[exp] = "▲";
         }
