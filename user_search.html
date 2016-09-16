@@ -203,28 +203,31 @@
 実行回数:{{numOfTry}}
 
 <div>
-    アイコン:{{icon[0]["name"]}}
+    アイコン:{{icons}}
 </div>
 <div>
-    テスト6:{{test}}
+    テスト6:{{test6}}
+</div>
+<div>
+    テスト7:{{test_exp}}
 </div>
 
 <table class="list-group">
     <tr>
-        <th ng-click="re_name=!re_name;sort(0, 'name', re_name)">名前 {{icon[0].name}}</th>
+        <th ng-click="re_name=!re_name;sort("name", re_name)">名前 {{icons.name}}</th>
         <!--↑
             name=!name;
             sort('name',name);
             という関数を埋め込んでいる。
         -->
-        <th ng-click="re_univ=!re_univ;sort(1, 'univ', re_univ)">大学 {{icon[1].univ}}</th>
-        <th ng-click="re_grade=!re_grade;sort(2, 'grade', re_grade)">卒年 {{icon[2].grade}}</th>
-        <th ng-click="re_preference=!re_preference;sort(3, 'preference', re_preference)">志向 {{icon[3].preference}}</th>
-        <th ng-click="re_major_art=!re_major_art;sort(4, 'major_art', re_major_art)">文系専攻 {{icon[4].major_art}}</th>
-        <th ng-click="re_major_sci=!re_major_sci;sort(5, 'major_sci', re_major_sci)">理系専攻 {{icon[5].major_sci}}</th>
-        <th ng-click="re_industry=!re_industry;sort(6, 'industry', re_industry)">志望 {{icon[6].industry}}</th>
-        <th ng-click="re_loyalty=!re_loyalty;sort(7, 'loyalty', re_loyalty)">やり取り {{icon[7].loyalty}}</th>
-        <th ng-click="re_created_date=!re_created_date;sort(8, 'created_date', re_created_date)">登録日 {{icon[8].created_date}}</th>
+        <th ng-click="re_univ=!re_univ;sort("univ", re_univ)">大学 {{icons.univ}}</th>
+        <th ng-click="re_grade=!re_grade;sort('grade', re_grade)">卒年 {{icons.grade}}</th>
+        <th ng-click="re_preference=!re_preference;sort('preference', re_preference)">志向 {{icons.preference}}</th>
+        <th ng-click="re_major_art=!re_major_art;sort('major_art', re_major_art)">文系専攻 {{icons.major_art}}</th>
+        <th ng-click="re_major_sci=!re_major_sci;sort('major_sci', re_major_sci)">理系専攻 {{icons.major_sci}}</th>
+        <th ng-click="re_industry=!re_industry;sort('industry', re_industry)">志望 {{icons.industry}}</th>
+        <th ng-click="re_loyalty=!re_loyalty;sort('loyalty', re_loyalty)">やり取り {{icons.loyalty}}</th>
+        <th ng-click="re_created_date=!re_created_date;sort('created_date', re_created_date)">登録日 {{icons.created_date}}</th>
     </tr>
     <div>
     時間：{{re_created_date}} アイコン：{{icon.created_date}}

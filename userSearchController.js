@@ -94,7 +94,7 @@ angular.module('concierAdminApp',[])
     $scope.numOfPage = "";
 
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    scope.icon = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
@@ -507,16 +507,16 @@ angular.module('concierAdminApp',[])
         return univs[univ.name];
     };
 
-    $scope.sort = function(idx, exp, reverse){
-        $scope.test6 = idx;
+    $scope.sort = function( exp, reverse){
+        $scope.test_exp = exp;
         if(reverse == "false"){
-            $scope.icon[idx][exp] = "▼";
+            $scope.icons[exp] = "▼";
         }
         else{
-            $scope.test6 = idx;
-            $scope.icon[idx][exp]  = "▲";
+            $scope.icons[exp]  = "▲";
         }
         $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
+        return 0;
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
