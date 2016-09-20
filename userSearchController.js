@@ -541,7 +541,6 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.tag_sort = function(exp, reverse){
-        $scope.re_tags[exp] = !reverse;
         //↑booleanの反転は変数の前に"!"をつけて代入する。
         $scope.sort(exp, reverse);
         for(var icon in $scope.icons){
@@ -555,6 +554,7 @@ angular.module('concierAdminApp',[])
         else{
             $scope.icons[exp]  = "▲";
         }
+        $scope.re_tags[exp] = !reverse;
         return $scope.icons[exp];
     };
 
