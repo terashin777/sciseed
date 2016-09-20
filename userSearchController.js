@@ -95,6 +95,9 @@ angular.module('concierAdminApp',[])
     $scope.searchedValue = "";
     $scope.numOfPage = "";
 
+    $scope.pager_len = 10;
+    $scope.pager_start = 0;
+
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
@@ -503,6 +506,30 @@ angular.module('concierAdminApp',[])
         $scope.numOfPage = Math.ceil( newValue/$scope.len);
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
+    
+    $scope.fastPage =function() {
+        if($scope.numOfPage>10){
+            $scope.pager_len = 10;
+            $scope.pager_start = 0;
+        }
+        else{
+            $scope.pager_len = numOfPage;
+            $scope.pager_start = 0;
+        } 
+        $scope.start = 0;
+    };
+
+    $scope.lastPage =function() {
+        if($scope.numOfPage>10){
+            $scope.pager_len = $scope.numOfPage;
+            $scope.pager_start = $scope.numOfPage - 10;
+        }
+        else{
+            $scope.pager_len = $scope.numOfPage;
+            $scope.pager_start = 0;
+        }
+        $scope.start =  $scope.len * ($scope.numOfPage - 1);
+    };
     
     $scope.univSort = function(univ){
         var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };

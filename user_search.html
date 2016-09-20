@@ -385,9 +385,15 @@
               </div>
             </div>
 
-    <ul class="pagination">
-        <li ng-repeat = "i in arrOfPage(numOfPage)"><a href="#"  ng-click="pager(i)">{{i+1}}</a></li>
-    </ul>
+    <table>
+        <th class = "pagenation"><a href="#"  ng-click="fastPage()"><<最初へ</a><th>
+        <th class = "pagenation" ng-show="start != 0"><a href="#"  ng-click="start = start - len"><前へ</a><th>
+        <span class="pagination">
+            <th ng-repeat = "i in arrOfPage(numOfPage)| limitTo: pager_len: pager_start"><a href="#"  ng-click="pager(i)">{{i+1}}</a></th>
+        </span>
+        <th class = "pagenation" ng-show="start != len * (numOfPage - 1)"><a href="#"  ng-click="start = start + len">次へ></a><th>
+        <th class = "pagenation"><a href="#"  ng-click="lastPage()">最後へ>></a><th>
+    </table>
 
     <div>
     ページ数：{{numOfPage}}
