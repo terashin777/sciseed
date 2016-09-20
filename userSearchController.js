@@ -543,9 +543,14 @@ angular.module('concierAdminApp',[])
             for(var i = 0; i < tag.length; i++){
                 for(var j = 0; j < $scope.numOfTag; j++){
                     if($scope.userTag[j].id == tag[i]){
+                    //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
                         if($scope.userTag[j].category == ic_cat){
+                        //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
                             if($scope.userTag[j].name != ""){
                                 return $scope.userTag[j].name;
+                            }
+                            else{
+                                return "　";
                             }
                         }
                     }
