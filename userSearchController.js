@@ -87,8 +87,8 @@ angular.module('concierAdminApp',[])
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.re_tags = {name:false, univ:false, grade:false, preference:false, major_sci:false, 
-    major_art:false, industry:false, sex:false, operator:false, status:false, loyalty:false, keyword:false };
+    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major_sci:true, 
+    major_art:true, industry:true, sex:true, operator:true, status:true, loyalty:true, keyword:true };
 
     $scope.len = 50;
     $scope.start = 0;
@@ -536,24 +536,20 @@ angular.module('concierAdminApp',[])
         return univs[univ.name];
     };
 
-    $scope.sort = function( exp, reverse){
+    $scope.sort = function(exp, reverse){
         $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
     $scope.tag_sort = function(exp, reverse){
-        $scope.test_exp = exp;
-
         $scope.re_tags[exp] = !reverse;
         //↑booleanの反転は変数の前に"!"をつけて代入する。
         $scope.sort(exp, reverse);
-        $scope.tests = [];
         for(var icon in $scope.icons){
             if(icon != exp){
                 $scope.icons[icon] = "▼";
-                $scope.tests.push(icon);
             }
         }
-        if(!reverse){
+        if(reverse){
             $scope.icons[exp] = "▼";
         }
         else{
