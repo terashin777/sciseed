@@ -257,9 +257,9 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.searchByTag = function(tagId){ //検索するタイプを指定し，serchQuery.queryTagに引数として渡されたタグIDからタグの名前を代入する
+    $scope.searchByTag = function(tag){ //検索するタイプを指定し，serchQuery.queryTagに引数として渡されたタグIDからタグの名前を代入する
         $scope.serchQuery.type = "tag";
-        $scope.serchQuery.queryTag = $scope.getTagName(tagId);
+        $scope.serchQuery.queryTag = tag;
     };
 
     $scope.searchByText = function(){
