@@ -226,20 +226,20 @@
 
 <table class="list-group">
     <tr>
-        <th ng-click="tag_sort('name', re_tags.name)">名前 {{icons.name}}</th>
+        <th><a href ng-click="tag_sort('name', re_tags.name)">名前 <span class = "sort_icon">{{icons.name}}</span></a></th>
         <!--↑
             name=!name;
             sort('name',name);
             という関数を埋め込んでいる。
         -->
-        <th ng-click="tag_sort('univ', re_tags.univ)">大学 {{icons.univ}}</th>
-        <th ng-click="tag_sort('grade', re_tags.grade)">卒年 {{icons.grade}}</th>
-        <th ng-click="tag_sort('preference', re_tags.preference)">志向 {{icons.preference}}</th>
-        <th ng-click="tag_sort('major_art', re_tags.major_art)">文系専攻 {{icons.major_art}}</th>
-        <th ng-click="tag_sort('major_sci', re_tags.major_sci)">理系専攻 {{icons.major_sci}}</th>
-        <th ng-click="tag_sort('industry', re_tags.industry)">志望 {{icons.industry}}</th>
-        <th ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り {{icons.loyalty}}</th>
-        <th ng-click="tag_sort('created_date', re_tags.created_date)">登録日 {{icons.created_date}}</th>
+        <th><a href ng-click="tag_sort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a></th>
+        <th><a href ng-click="tag_sort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a></th>
+        <th><a href ng-click="tag_sort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a></th>
+        <th><a href ng-click="tag_sort('major_art', re_tags.major_art)">文系専攻 <span class = "sort_icon">{{icons.major_art}}</span></a></th>
+        <th><a href ng-click="tag_sort('major_sci', re_tags.major_sci)">理系専攻 <span class = "sort_icon">{{icons.major_sci}}</span></a></th>
+        <th><a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></th>
+        <th><a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a></th>
+        <th><a href ng-click="tag_sort('created_date', re_tags.created_date)">登録日 <span class = "sort_icon">{{icons.created_date}}</span></a></th>
     </tr>
     <div>
     時間：{{re_created_date}} アイコン：{{icon.created_date}}
