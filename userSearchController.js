@@ -87,9 +87,7 @@ angular.module('concierAdminApp',[])
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major_sci:true, 
-    major_art:true, industry:true, sex:true, operator:true, status:true, loyalty:true, keyword:true };
-
+    
     $scope.len = 50;
     $scope.start = 0;
     $scope.searchedValue = "";
@@ -98,8 +96,9 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, keyword:true };
+    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
@@ -139,7 +138,7 @@ angular.module('concierAdminApp',[])
         success(function(data, status, headers, config) {
         $scope.lineUserList = data; //ここにユーザーリストが入る
         $scope.numOfUser = Object.keys($scope.lineUserList).length;
-        $scope.numOfSort = Object.keys($scope.sortList).length ;
+        $scope.numOfSort = Object.keys($scope.addList).length ;
         for(var p = 0; p< $scope.numOfUser; p++){
             for(var q = 0; q<$scope.numOfSort; q++){
                 $scope.lineUserList[p][$scope.addList[q]["category"]] = "";
@@ -162,12 +161,10 @@ angular.module('concierAdminApp',[])
                                 if($scope.userTag[j].name != ""){
                                     if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
                                         $scope.lineUserList[user_idx].major = $scope.userTag[j].name;
-                                        $scope.test11 ++;
                                     }
                                     else{
                                         $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
                                         //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
-                                        $scope.test13 ++;
                                     }
 
                                     $scope .test5 = $scope.userTag[j].name;
@@ -518,7 +515,7 @@ angular.module('concierAdminApp',[])
 
     $scope.$watch('searchedValue', function(newValue, oldValue) {
         $scope.numOfPage = Math.ceil( newValue/$scope.len);
-        $scope.len
+        $scope.len;
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
     
