@@ -99,7 +99,8 @@ angular.module('concierAdminApp',[])
     $scope.pager_start = 0;
 
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
@@ -112,6 +113,8 @@ angular.module('concierAdminApp',[])
     $scope.currentUser;
 
     $scope.show_edit_tag;
+
+    $scope.tests = [];
 
     $scope.asignee = localStorage.getItem("asignee");
 
@@ -139,7 +142,7 @@ angular.module('concierAdminApp',[])
         $scope.numOfSort = Object.keys($scope.sortList).length ;
         for(var p = 0; p< $scope.numOfUser; p++){
             for(var q = 0; q<$scope.numOfSort; q++){
-                $scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
+                $scope.lineUserList[p][$scope.addList[q]["category"]] = "";
             }
         }
         $scope.numOfTag = Object.keys($scope.userTag).length;
@@ -147,19 +150,29 @@ angular.module('concierAdminApp',[])
             //↑ユーザー1人1人にソート項目の要素を追加する。
             for(var i = 0; i <  $scope.lineUserList[user_idx].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
-                $scope .test2 = "テスト２"
+                $scope .test2 = "テスト２";
                 for(var j = 0; j < $scope.numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
+
                         for(var k = 0; k < $scope.numOfSort; k++){
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                             if($scope.userTag[j].category == $scope.sortList[k].category ){
+                                $scope.tests.push($scope.userTag[j].category);
                                 if($scope.userTag[j].name != ""){
+                                    if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
+                                        $scope.lineUserList[user_idx].major = $scope.userTag[j].name;
+                                        $scope.test11 ++;
+                                    }
+                                    else{
+                                        $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                        //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                        $scope.test13 ++;
+                                    }
+
                                     $scope .test5 = $scope.userTag[j].name;
                                     $scope .test4 = $scope.sortList[k].category;
                                     $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
-                                    $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
-                                    //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
                                 }
                             }
                     }

@@ -222,8 +222,21 @@
     テスト9:{{re_tags["name"]}}
 </div>
 <div>
+    テスト11:{{test11}}
+</div>
+<div>
+    テスト12:{{userTag[1].category}}
+</div>
+<div>
+    テスト13:{{test13}}
+</div>
+<div>
+    テスト配列:{{tests}}
+</div>
+<div>
     テスト10:{{lineUserList}}
 </div>
+
 <div>
     ソート:{{univSort}}
 </div>
@@ -242,8 +255,7 @@
         <th><a href ng-click="tag_sort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a></th>
         <th><a href ng-click="tag_sort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a></th>
         <th><a href ng-click="tag_sort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a></th>
-        <th><a href ng-click="tag_sort('major_art', re_tags.major_art)">文系専攻 <span class = "sort_icon">{{icons.major_art}}</span></a></th>
-        <th><a href ng-click="tag_sort('major_sci', re_tags.major_sci)">理系専攻 <span class = "sort_icon">{{icons.major_sci}}</span></a></th>
+        <th><a href ng-click="tag_sort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a></th>
         <th><a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></th>
         <th><a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a></th>
         <th><a href ng-click="tag_sort('created_date', re_tags.created_date)">登録日 <span class = "sort_icon">{{icons.created_date}}</span></a></th>
