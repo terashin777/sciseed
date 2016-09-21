@@ -98,6 +98,8 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
+    $scope .test = 
+
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
@@ -147,6 +149,7 @@ angular.module('concierAdminApp',[])
             //↑ユーザー1人1人にソート項目の要素を追加する。
             for(var i = 0; i <  $scope.lineUserList[user_idx].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
+                 $scope .test2 = "テスト２"
                 for(var j = 0; j < $scope.numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
@@ -161,6 +164,9 @@ angular.module('concierAdminApp',[])
                                         $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
                                     //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
                                     }
+                                    $scope .test5 = $scope.userTag[j].name;
+                                    $scope .test4 = $scope.sortList[k].category;
+                                    $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
                                 }
                             }
                     }
