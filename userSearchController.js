@@ -28,7 +28,7 @@ angular.module('concierAdminApp',[])
                 if (scope.$last === true) {
                     $timeout(function () {
                         scope.$emit('init_pagerCal');
-                        //↑scope.$emit('pagerCal');は必ず必要
+                        //↑scope.$emit('init_pagerCal');は必ず必要
                     });
                 }
             }
@@ -42,21 +42,6 @@ angular.module('concierAdminApp',[])
     //↑$emitによって、HTML上での親となるスコープ（ng-controllerが設定されたタグで入れ子になっている時のng-controllerを含む親要素）に対して、イベントを通知する。
     //↑$emitによって通知されるイベントは$onメソッドで受け取る。
     //
-    .directive('tagSort', ['$timeout', function ($timeout) {
-        return {
-            restrict: 'A',
-            link: function (scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function () {
-                        scope.$emit('sortTag');
-                        //↑scope.$emit('pagerCal');は必ず必要
-                    });
-                }
-            }
-        }
-    }])
-
-
 
     .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
     $scope.serchQuery = {
@@ -96,10 +81,10 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
-    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, keyword:true };
+    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major:true, industry:true, loyalty:true, updated_date:true};
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
-    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
+    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "updated_date"}];
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
@@ -433,7 +418,7 @@ angular.module('concierAdminApp',[])
         }).
         success(function(data, status, headers, config) {
           for(var i in data){
-            data[i]['datetime'] = timeConverter(data[i]['created_date']);
+            data[i]['datetime'] = timeConverter(data[i]['updated_date']);
           }
 
           $scope.userMessages = data;
@@ -571,27 +556,37 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
+        var showTag = "";
         $scope.numOfTag = Object.keys($scope.userTag).length;
         $scope.saveItem = 0;
-        if(ic_cat != "name"){
-        if(item.id != $scope.saveItem){
+        if(ic_cat != "name" && ic_cat != "loyalty" && ic_cat != "updated_date"){
             for(var i = 0; i < tag.length; i++){
                 for(var j = 0; j < $scope.numOfTag; j++){
-                    if($scope.userTag[j].id == tag[i]){
+                    if($scope.userTag[j].id == tag[i] && $scope.userTag[j].category == ic_cat){
                     //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
-                        if($scope.userTag[j].category == ic_cat){
-                        //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
-                            if($scope.userTag[j].name != ""){
-                                return $scope.userTag[j].name;
-                            }
-                            else{
-                                return "　";
-                            }
-                        }
+                    //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じであれば返す。
+                    //↑ソート項目1つ1つ（ic_cat）に対して行う。
+                        $scope.tests.push($scope.userTag[j].name);
+                        showTag = $scope.userTag[j].name;
+                        //↑該当するタグが存在し、値があるかどうかの判定で用いる。
                     }
                 }
             }
+            if(showTag != ""){
+                return showTag;
+            }
+            else{
+                return "　";
+                //↑該当するタグがなければ、全角スペースを返す。
+            }
         }
+        switch (ic_cat){
+            case "loyalty":
+                return item.loyalty;
+            break;
+            case "updated_date":
+                return item.updated_date;
+            break;
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
