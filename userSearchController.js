@@ -98,9 +98,9 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
-    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
+    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
@@ -147,7 +147,6 @@ angular.module('concierAdminApp',[])
             //↑ユーザー1人1人にソート項目の要素を追加する。
             for(var i = 0; i <  $scope.lineUserList[user_idx].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
-                $scope .test2 = "テスト２"
                 for(var j = 0; j < $scope.numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
@@ -155,11 +154,13 @@ angular.module('concierAdminApp',[])
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                             if($scope.userTag[j].category == $scope.sortList[k].category ){
                                 if($scope.userTag[j].name != ""){
-                                    $scope .test5 = $scope.userTag[j].name;
-                                    $scope .test4 = $scope.sortList[k].category;
-                                    $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
-                                    $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                    if($scope.sortList[k].category == tmajor_ar || $scope.sortList[k].category == major_art){
+                                        $scope.lineUserList[user_idx].major = $scope.userTag[j].name;
+                                    }
+                                    else{
+                                        $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
                                     //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                    }
                                 }
                             }
                     }
@@ -423,7 +424,7 @@ angular.module('concierAdminApp',[])
         }).
         success(function(data, status, headers, config) {
           for(var i in data){
-            data[i]['datetime'] = timeConverter(data[i]['created_date']);
+            data[i]['datetime'] = timeConverter(data[i]['updateded_date']);
           }
 
           $scope.userMessages = data;
@@ -563,28 +564,44 @@ angular.module('concierAdminApp',[])
     $scope.getSortTag = function(ic_cat, tag, item){
         $scope.numOfTag = Object.keys($scope.userTag).length;
         $scope.saveItem = 0;
-        if(ic_cat != "name"){
-        if(item.id != $scope.saveItem){
-            for(var i = 0; i < tag.length; i++){
-                for(var j = 0; j < $scope.numOfTag; j++){
-                    if($scope.userTag[j].id == tag[i]){
-                    //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
-                        if($scope.userTag[j].category == ic_cat){
-                        //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
-                            if($scope.userTag[j].name != ""){
-                                return $scope.userTag[j].name;
-                            }
-                            else{
-                                return "　";
+        if(ic_cat != "name" && ic_cat != "loyalty" && ic_cat != "updated_date"){
+            if(item.id != $scope.saveItem){
+                for(var i = 0; i < tag.length; i++){
+                    for(var j = 0; j < $scope.numOfTag; j++){
+                        if($scope.userTag[j].id == tag[i]){
+                        //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
+                            if($scope.userTag[j].category == ic_cat){
+                            //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
+                                if($scope.userTag[j].name != ""){
+                                    return $scope.userTag[j].name;
+                                }
+                                else{
+                                    return "　";
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        switch(ic_cat) {
+            case "loyalty":
+                $scope.sortTag = item.loyalty ;
+            break;
+
+            case "updated_date":
+                return item.updated_date ;
+            break;
         }
+
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
+
+    $scope.showTime = function(){
+        for(var i in data){
+            data[i]['datetime'] = timeConverter(data[i]['updateded_date']);
+        }
+    };
 
 }]);
 

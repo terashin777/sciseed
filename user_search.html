@@ -2,6 +2,8 @@
 <html lang="ja" ng-app="concierAdminApp">
 <head>
     <meta charset = "UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>絞込み検索</title>
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src = "userSearchController.js"></script>
@@ -243,13 +245,13 @@
         <th><a href ng-click="tag_sort('major_sci', re_tags.major_sci)">理系専攻 <span class = "sort_icon">{{icons.major_sci}}</span></a></th>
         <th><a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></th>
         <th><a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a></th>
-        <th><a href ng-click="tag_sort('created_date', re_tags.created_date)">登録日 <span class = "sort_icon">{{icons.created_date}}</span></a></th>
+        <th><a href ng-click="tag_sort('updated_date', re_tags.updated_date)">更新日時 <span class = "sort_icon">{{icons.updated_date}}</span></a></th>
     </tr>
     <div>
-    時間：{{re_created_date}} アイコン：{{icon.created_date}}
+    時間：{{re_updated_date}} アイコン：{{icons.updated_date}}
     </div>
     <div>
-    大学：{{re_univ}} アイコン：{{icon.univ}}
+    大学：{{re_univ}} アイコン：{{icons.univ}}
     </div>
     <div>
     要素数：{{numOfProperty}}
