@@ -504,6 +504,7 @@ angular.module('concierAdminApp',[])
 
     $scope.$watch('searchedValue', function(newValue, oldValue) {
         $scope.numOfPage = Math.ceil( newValue/$scope.len);
+        $scope.len
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
     
