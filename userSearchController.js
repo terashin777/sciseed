@@ -154,7 +154,7 @@ angular.module('concierAdminApp',[])
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                             if($scope.userTag[j].category == $scope.sortList[k].category ){
                                 if($scope.userTag[j].name != ""){
-                                    if($scope.sortList[k].category == tmajor_ar || $scope.sortList[k].category == major_art){
+                                    if($scope.sortList[k].category == major_art || $scope.sortList[k].category == major_sci){
                                         $scope.lineUserList[user_idx].major = $scope.userTag[j].name;
                                     }
                                     else{
