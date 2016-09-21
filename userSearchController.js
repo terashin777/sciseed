@@ -400,10 +400,11 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.filterByLoyalty = function(user) {
-            return user.loyalty >= $scope.search.loyalty;
-    };
-
+    //$scope.filterByLoyalty = function(user) {
+            //return user.loyalty >= $scope.search.loyalty;
+    //};
+    //$scope.filterUserで、変更をすぐに反映するなら必要ない。
+    
     $scope.filterByKeyword = function(user) {
          if($scope.search.keyword != ""){
               return $user == $scope.search.keyword; 
