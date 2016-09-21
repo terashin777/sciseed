@@ -176,7 +176,7 @@
 </form>
 
 <span>ページ当たり表示する件数：</span>
-                    <select  ng-model="len" name="pageValue" ng-change="pagerCal(len)">
+                    <select  ng-model="len" name="pageValue">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50" ng-selected = "true">50</option>
@@ -210,14 +210,14 @@
     アイコン:{{icons}}
 </div>
 <div>
-    テスト6:{{test6}}
+    テスト6:{{userTag}}
 </div>
 <div>
-    テスト7:{{test_exp}}
+    テスト7:{{icon}}
 </div>
 
 <div>
-    テスト9:{{re_tags["name"]}}
+    テスト9:{{userTag[2].category}}
 </div>
 <div>
     テスト11:{{test11}}
@@ -292,7 +292,7 @@
     テスト5：{{test5}}
     </div>
     <div>
-    タグ長さ：{{numOfUser_tag}}
+    タグ長さ：{{_tag}}
     </div>
     <div>
     ユーザーリスト：{{lineUserList}}

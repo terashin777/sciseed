@@ -113,7 +113,8 @@ angular.module('concierAdminApp',[])
         d[tIdx].categoryText = categoryMapper(d[tIdx].category);  //ユーザータグリストの中のcategoryを引数として渡し，それをswichで場合わけして，実際に表示する文字列に直している．
     }
 
-    $scope.userTag = d; //ここにユーザータグが入る
+    $scope.userTag = d;
+    //↑ここにユーザータグが入る
 
     $http({
         url: 'user_list.json',
@@ -121,23 +122,25 @@ angular.module('concierAdminApp',[])
         dataType: "json"
     }).
         success(function(data, status, headers, config) {
-        $scope.lineUserList = data; //ここにユーザーリストが入る
-        $scope.numOfUser = Object.keys($scope.lineUserList).length;
-        $scope.numOfSort = Object.keys($scope.addList).length ;
-        for(var p = 0; p< $scope.numOfUser; p++){
-            for(var q = 0; q<$scope.numOfSort; q++){
-                $scope.lineUserList[p][$scope.addList[q]["category"]] = "";
+        $scope.lineUserList = data;
+        //↑ここにユーザーリストが入る
+        var numOfUser = Object.keys($scope.lineUserList).length;
+        var numOfSort = Object.keys($scope.addList).length ;
+        for(var i = 0; i<$scope.numOfUser; i+){
+            for(var j= 0; j<$scope.numOfSort; j++){
+                $scope.lineUserList[i][$scope.addList[j]["category"]] = "";
             }
         }
-        $scope.numOfTag = Object.keys($scope.userTag).length;
-        for(var user_idx = 0; user_idx < $scope.numOfUser ;user_idx++){
+        //↑ユーザーの持つタグに、ソート項目のタグをキーとして追加している。
+        var numOfTag = Object.keys($scope.userTag).length;
+        for(var a = 0;a< $scope.numOfUser; a++){
             //↑ユーザー1人1人にソート項目の要素を追加する。
-            for(var i = 0; i <  $scope.lineUserList[user_idx].user_tag.length; i++){
+            for(var i = 0; i <  $scope.lineUserList[].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
                 $scope .test2 = "テスト２";
-                for(var j = 0; j < $scope.numOfTag; j++){
+                for(var j = 0; j < numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
-                    if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
+                    if($scope.lineUserList[a].user_tag[i] == $scope.userTag[j].id){
 
                         for(var k = 0; k < $scope.numOfSort; k++){
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
@@ -145,23 +148,24 @@ angular.module('concierAdminApp',[])
                                 $scope.tests.push($scope.userTag[j].category);
                                 if($scope.userTag[j].name != ""){
                                     if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
-                                        $scope.lineUserList[user_idx].major = $scope.userTag[j].name;
+                                        $scope.lineUserList[a].major = $scope.userTag[j].name;
                                     }
                                     else{
-                                        $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                        $scope.lineUserList[a][$scope.sortList[k].category] = $scope.userTag[j].name;
                                         //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
                                     }
 
                                     $scope .test5 = $scope.userTag[j].name;
                                     $scope .test4 = $scope.sortList[k].category;
-                                    $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
+                                    $scope .test3 = $scope.lineUserList[a][$scope.sortList[k].category];
                                 }
                             }
+                        }
                     }
                 }
             }
         }
-        }
+        //↑ユーザーの持つタグに、ソート項目の値を代入している。
     }).
         error(function(data, status, headers, config) {
     });
@@ -201,6 +205,7 @@ angular.module('concierAdminApp',[])
             //}
         //}
     //};
+    //↑配列の実験
 
     $scope.openTagAddField = function(user){
         $scope.show_edit_tag = true;
@@ -218,10 +223,12 @@ angular.module('concierAdminApp',[])
         $scope.show_edit_tag = false;
         $scope.show_edit_tag = true;
         $scope.currentUser = "";
+        //↑キャンセルボタンに対応する。
     };
 
     $scope.getTagName = function(tagId){
-        for(var i in $scope.userTag){ //全タグリストをループし，引数として渡されたタグIDと一致するタグの名前を探す．
+        for(var i in $scope.userTag){ 
+        //↑全タグリストをループし，引数として渡されたタグIDと一致するタグの名前を探す．
             if($scope.userTag[i].id == tagId){
                 return $scope.userTag[i].name;
             }
@@ -230,21 +237,25 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.getTagId = function(tagName){
-        for(var i in $scope.userTag){ //全タグリストをループし，引数として渡されたタグ名と一致するタグIDを探す．
+        for(var i in $scope.userTag){ 
+        //↑全タグリストをループし，引数として渡されたタグ名と一致するタグIDを探す．
             if($scope.userTag[i].name == tagName){
                 return $scope.userTag[i].id;
             }
         }
-        return ""; /*絞り込みで、全て表示を実装するには、ここはnullではなく、””でなくてはならない。下のフィルタの、if($scope.search.univ != "")での""と対応している。
-        両方ともnullにするという手も考えられるが、初期値が””なのでうまくいかない。初めの変数宣言で初期値をnullにすればnullでも問題ない。*/
+        return ""; 
+        //↑絞り込みで、全て表示を実装するには、ここはnullではなく、””でなくてはならない。下のフィルタの、if($scope.search.univ != "")での""と対応している。
+        //↑両方ともnullにするという手も考えられるが、初期値が””なのでうまくいかない。初めの変数宣言で初期値をnullにすればnullでも問題ない。
       };
 
     $scope.filterUser = function(item) {
         if(item.loyalty>=$scope.selected.loyalty){
             if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
-                var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
+                var tagId = $scope.getTagId($scope.serchQuery.queryTag); 
+                //↑タグIDを取得する
                 if(tagId){
-                  return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する indexOfは検索したもの（ここではtagId）がなければ-1を返す
+                  return item.user_tag.indexOf(tagId) != -1; 
+                  //↑タグIDが初めに現れたインデックス番号を取得する indexOfは検索したもの（ここではtagId）がなければ-1を返す
                 }else{
                   return -1;
                 }
@@ -255,7 +266,8 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.searchByTag = function(tag){ //検索するタイプを指定し，serchQuery.queryTagに引数として渡されたタグIDからタグの名前を代入する
+    $scope.searchByTag = function(tag){ 
+    //↑検索するタイプを指定し，serchQuery.queryTagに引数として渡されたタグIDからタグの名前を代入する
         $scope.serchQuery.type = "tag";
         $scope.serchQuery.queryTag = tag;
     };
@@ -270,13 +282,6 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.doSearch = function() {
-        /*if($scope.user_univ.name == ""){
-            $scope.search.user_univ = "";
-            //$scope.search.user_univ = $scope.user_univ;
-        }else{
-            $scope.search.user_univ = $scope.user_univ.name;
-            //$scope.search.user_univ = $scope.user_univ;
-        }*/
         $scope.search.univ        = $scope.getTagId($scope.selected.univ);
         $scope.search.grade      = $scope.getTagId($scope.selected.grade);
         $scope.search.preference = $scope.getTagId($scope.selected.preference);
@@ -318,80 +323,106 @@ angular.module('concierAdminApp',[])
         $scope.selected.status     = "";
         $scope.selected.loyalty    = "";
         $scope.selected.keyword        = "";
-        //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
-
+        //↑絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
         document.frm.reset();
+        //↑formタグに囲まれた部分のラジオボタンやチェックボックスなどを初期の状態に戻す。
     };
 
     $scope.filterByUniv = function(user) {
-        if($scope.search.univ != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.univ) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.univ != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.univ) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByGrade = function(user) {
-        if($scope.search.grade != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.grade) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.grade != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.grade) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByPreference = function(user) {
         if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+            return user.user_tag.indexOf($scope.search.preference) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByMajorArt = function(user) {
-        if($scope.search.major_art != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_art) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.major_art != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.major_art) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByMajorSci = function(user) {
-        if($scope.search.major_sci != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_sci) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.major_sci != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.major_sci) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByIndustry = function(user) {
-        if($scope.search.industry != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.industry) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.industry != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.industry) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterBySex = function(user) {
-        if($scope.search.sex != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.sex) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.sex != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.sex) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1; 
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByOperator = function(user) {
-        if($scope.search.operator != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.operator) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.operator != ""){ 
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.operator) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1;
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
     $scope.filterByStatus = function(user) {
-        if($scope.search.status != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.status) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        if($scope.search.status != ""){
+        //↑選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.status) != -1;
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
         }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            return -1;
+            //↑filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
     };
 
@@ -409,26 +440,24 @@ angular.module('concierAdminApp',[])
     };
 
      $scope.getUserMessages = function(user){
-
         var url = LINE_API_URL+"/user/"+user.id+"/message";
         $http({
-          url: url,
-          method: "GET",
-          dataType: "json",
+            url: url,
+            method: "GET",
+            dataType: "json",
         }).
         success(function(data, status, headers, config) {
-          for(var i in data){
-            data[i]['datetime'] = timeConverter(data[i]['updated_date']);
-          }
-
-          $scope.userMessages = data;
-          $scope.currentUser = user;
-          $scope.showMessage = true;
-          $scope.messageSent = false;
+            for(var i in data){
+                data[i]['datetime'] = timeConverter(data[i]['updated_date']);
+            }
+            $scope.userMessages = data;
+            $scope.currentUser = user;
+            $scope.showMessage = true;
+            $scope.messageSent = false;
         }).
         error(function(data, status, headers, config) {
 
-        });  
+        });
     };
 
     $scope.closeMessageWindow = function(){
@@ -444,124 +473,112 @@ angular.module('concierAdminApp',[])
 
 
     $scope.submitMessage = function(userId){
+        var asignee = $scope.asignee;
+        if(!asignee){
+        //↑asigneeが空であれば，何もせずに戻る
+          return;
+        }
+         localStorage.setItem("asignee", $scope.asignee);
+        //↑localStrageにキーがasignee，要素が$scope.asigneeの配列を保存する．
+        var messageText = $("#text_area_wrapper > #text_area").val();
+        //↑text_area_wrapperというidを持つタグの中のtext_areaというidを持つタグのvalueを取ってくる．
+        if (!messageText || messageText=="") {
+        //↑messageTextがからであれば，何もせずに戻る．
+            return;
+        }
+        var url = LINE_API_URL+"/response_message";
+        $http({
+            url: url,
+            method: "POST",
+            dataType: "json",
+            data: {"user": userId, "asignee": asignee, "message": messageText, "productId": $scope.selectedProductId}
+        }).
+        success(function(data, status, headers, config) {
+            $scope.messageSent = true;
+            $("#text_area_wrapper > #text_area").val("");
+            //↑valueを空にしている．
 
-    var asignee = $scope.asignee;
-    if(!asignee){   //asigneeが空であれば，何もせずに戻る
-      return;
-    }
-
-    localStorage.setItem("asignee", $scope.asignee);    //localStrageにキーがasignee，要素が$scope.asigneeの配列を保存する．
-
-    var messageText = $("#text_area_wrapper > #text_area").val();   //text_area_wrapperというidを持つタグの中のtext_areaというidを持つタグのvalueを取ってくる．
-
-    if (!messageText || messageText=="") {   //messageTextがからであれば，何もせずに戻る．
-      return;
-    }
-
-    var url = LINE_API_URL+"/response_message";
-    $http({
-      url: url,
-      method: "POST",
-      dataType: "json",
-      data: {"user": userId, "asignee": asignee, "message": messageText, "productId": $scope.selectedProductId}
-    }).
-    success(function(data, status, headers, config) {
-      $scope.messageSent = true;
-      $("#text_area_wrapper > #text_area").val("");   //valueを空にしている．
-
-    }).
-    error(function(data, status, headers, config) {
-      
-    });
-
-    };
-
-    $scope.displayedResult = function(display, limit) {
-        return result = Math.floor(display/limit) + 1;
+        }).
+        error(function(data, status, headers, config) {
+        });
     };
 
      $scope.pager = function(page){ 
             $scope.start = $scope.len * page;
     };
+    //↑pageにlenmをかけることで、次の要素の始まりを決めている。
 
     $scope.$on('init_pagerCal', function(len) {
         if ($scope.numOfTry == 0) { 
-        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
-        $scope.numOfTry += 1;
+            $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
+            $scope.numOfTry += 1;
         }
     });
     //↑イベント監視を行う。指定のイベント（ここでは、pagerCal）が発生した際に実行されるリスナーを登録できる。
     //↑pageCalが呼び出されるたびに実行してしまうので、numOfTryを使って読み込みごとに一回だけ実行されるようにしている。
+    //↑ディレクティブと結びついている。
 
-    $scope.pagerCal = function(len){ 
-        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
-        $scope.numOfTry += 1;
-    };
-
-    $scope.$watch('searchedValue', function(newValue, oldValue) {
-        $scope.numOfPage = Math.ceil( newValue/$scope.len);
-        $scope.len;
+    $scope.$watchGroup(['searchedValue', 'len'], function(newValue, oldValue, scope) {
+        scope.numOfPage = Math.ceil( newValue/scope.len);
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
+    //↑1ページあたりの表示件数が変わると実行される。
     
     $scope.fastPage =function() {
         if($scope.numOfPage>10){
-            $scope.pager_len = 10;
-            $scope.pager_start = 0;
+           $scope.pager_start = 0;
         }
-        else{
-            $scope.pager_len = numOfPage;
-            $scope.pager_start = 0;
-        } 
+        //↑10ページ分ずつ表示したいので、総ページ数が10ページよりも多いときのみ、ページ番号の始まりを変える。
         $scope.start = 0;
     };
 
     $scope.lastPage =function() {
         if($scope.numOfPage>10){
-            $scope.pager_len = $scope.numOfPage;
             $scope.pager_start = $scope.numOfPage - 10;
         }
-        else{
-            $scope.pager_len = $scope.numOfPage;
-            $scope.pager_start = 0;
-        }
+        //↑10ページ分ずつ表示したいので、総ページ数が10ページよりも多いときのみ、ページ番号の始まりを変える。
         $scope.start =  $scope.len * ($scope.numOfPage - 1);
     };
     
     $scope.univSort = function(univ){
         var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };
+        //↑ソート順の重み付け。
         return univs[univ.name];
     };
 
     $scope.sort = function(exp, reverse){
         $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
+        //↑ソート条件を変更。
     };
 
     $scope.tag_sort = function(exp, reverse){
         //↑booleanの反転は変数の前に"!"をつけて代入する。
         $scope.sort(exp, reverse);
+        //↑$scope.sortを呼び出し、ソート条件を変えている。
         for(var icon in $scope.icons){
             if(icon != exp){
                 $scope.icons[icon] = "▼";
             }
         }
+        //↑選択したソート項目以外のアイコンを"▼"に変えている。
         if(reverse){
             $scope.icons[exp] = "▼";
         }
         else{
             $scope.icons[exp]  = "▲";
         }
+        //↑逆順かどうかでアイコンを変えている。
         $scope.re_tags[exp] = !reverse;
+        //↑reverseのtrueとfalseが変わることで、ソートの順番が変わる。
+        //↑アイコンはそれぞれ項目ごとにハッシュで管理している。
         return $scope.icons[exp];
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
         var showTag = "";
-        $scope.numOfTag = Object.keys($scope.userTag).length;
-        $scope.saveItem = 0;
         if(ic_cat != "name" && ic_cat != "loyalty" && ic_cat != "updated_date"){
             for(var i = 0; i < tag.length; i++){
-                for(var j = 0; j < $scope.numOfTag; j++){
+                for(var j = 0; j < Object.keys($scope.userTag).length; j++){
                     if($scope.userTag[j].id == tag[i] && $scope.userTag[j].category == ic_cat){
                     //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
                     //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じであれば返す。
@@ -580,13 +597,17 @@ angular.module('concierAdminApp',[])
                 //↑該当するタグがなければ、全角スペースを返す。
             }
         }
-        switch (ic_cat){
-            case "loyalty":
-                return item.loyalty;
-            break;
-            case "updated_date":
-                return item.updated_date;
-            break;
+        else{
+            switch (ic_cat){
+                case "loyalty":
+                    return item.loyalty;
+                break;
+                case "updated_date":
+                    return item.updated_date;
+                break;
+                default:
+                break;
+            }
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
