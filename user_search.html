@@ -176,7 +176,7 @@
 </form>
 
 <span>ページ当たり表示する件数：</span>
-                    <select  ng-model="len" name="pageValue" ng-change="pagerCal(len)">
+                    <select  ng-model="len" name="pageValue" ng-change="calPage(len)">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50" ng-selected = "true">50</option>
@@ -184,7 +184,7 @@
                         <option value="100">100</option>
                         <option value="200">200</option>
                         <option value="500">500</option>
-                        <option ng-value= "searchedValue">全件</option>
+                        <option ng-value= searchedValue>全件</option>
                     </select>
 
 <div>
@@ -206,27 +206,7 @@
 
 実行回数:{{numOfTry}}
 
-<div>
-    アイコン:{{test_counter}}
-</div>
-<div>
-    テスト6:{{test6}}
-</div>
-<div>
-    テスト7:{{test_exp}}
-</div>
-<div>
-    テスト8:{{tests}}
-</div>
-<div>
-    テスト9:{{re_tags["name"]}}
-</div>
-<div>
-    ソート:{{univSort}}
-</div>
-<div>
-    ネーム:{{univName}}
-</div>
+
 
 <table class="list-group">
     <tr>
@@ -242,10 +222,10 @@
         <th><a href ng-click="tag_sort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a></th>
         <th><a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></th>
         <th><a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a></th>
-        <th><a href ng-click="tag_sort('created_date', re_tags.created_date)">登録日 <span class = "sort_icon">{{icons.created_date}}</span></a></th>
+        <th><a href ng-click="tag_sort('updated_date', re_tags.updated_date)">登録日 <span class = "sort_icon">{{icons.updated_date}}</span></a></th>
     </tr>
     <div>
-    時間：{{re_created_date}} アイコン：{{icon.created_date}}
+    時間：{{re_updated_date}} アイコン：{{icon.updated_date}}
     </div>
     <div>
     大学：{{re_univ}} アイコン：{{icon.univ}}
@@ -253,6 +233,11 @@
     <div>
     要素数：{{numOfProperty}}
     </div>
+
+    <div>
+    現在のページ：{{cur_page}}
+    </div>
+    
 
     <!--
     <button ng-click="add()">
@@ -283,38 +268,31 @@
     タグ長さ：{{numOfUser_tag}}
     </div>
     -->
-    <div>
-    カウント：{{test_counter2}}
-    </div>
-    <div>
-    ユーザーリスト：{{lineUserList}}
-    </div>
-
+ 
     <tr class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUniv| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         <div class="row" >
             <td class="col-sm-3 col-md-3">
                 <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
             </td>
-            <td ng-if="currentUser.id!=item.id">
-                <td class="col-sm-6 col-md-6">
-                    <td ng-repeat="ic in icon" class="tag-wrapper">
+            <div ng-if="currentUser.id!=item.id">
+                <div class="col-sm-6 col-md-6">
+                    <td ng-repeat="ic in sortList" class="tag-wrapper">
                     <!--ソート項目ごとにループし、ソート項目の順番とユーザーのタグの順番が同じになるようにする。-->
                             <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
                     </td>
-                </td>
+                </div>
                 <td>
-                <div class="col-sm-1 col-md-1">
-                    <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
-                </div>
-                <div class="col-sm-1 col-md-1">
-                    <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
-                </div>
-                <div>
-                    <a ng-click="canselEditTag()" href="javascript:">キャンセル</a>
-                </div>
+                    <div class="col-sm-1 col-md-1">
+                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+                    </div>
+                    <div>
+                        <a ng-click="canselEditTag()" href="javascript:">キャンセル</a>
+                    </div>
                 </td>
-            </td>
-            <td class="col-sm-1 col-md-1">{{item.loyalty}}</td>
+            </div>
 
             <td ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
                 <div class="col-sm-4 col-md-4"><span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span></div>
@@ -393,15 +371,23 @@
             </div>
 
     <table>
+        
         <th class = "pagenation"><a href="#"  ng-click="firstPage()"><<最初へ</a><th>
-        <th class = "pagenation" ng-show="pager_start>=9"><a href="#"  ng-click="start = start - len;pager_start = pager_start-9"><前へ</a><th>
+        <th class = "pagenation" ng-show="pager_start>=9"><a href="#"  ng-click="pager_start = pager_start-9"><前へ</a><th>
         <span class="pagination">
             <th ng-repeat = "i in arrOfPage(numOfPage)| limitTo: pager_len: pager_start"><a href="#"  ng-click="pager(i)">{{i+1}}</a></th>
         </span>
-        <th class = "pagenation" ng-show="pager_start+9 < numOfPage"><a href="#"  ng-click="start = start + len;pager_start = pager_start+9">次へ></a><th>
+        <th class = "pagenation" ng-show="pager_start+9 < numOfPage"><a href="#"  ng-click="pager_start = pager_start+9">次へ></a><th>
         <th class = "pagenation"><a href="#"  ng-click="lastPage()">最後へ>></a><th>
+        <th>現在のページ：{{cur_page}}</th>
     </table>
-
+    
+    <div>
+    ページ番号始まり：{{pager_start}}
+    </div>
+    <div>
+    始まり：{{start}}
+    </div>
     <div>
     ページ数：{{numOfPage}}
     </div>

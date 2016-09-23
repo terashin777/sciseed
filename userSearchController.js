@@ -8,36 +8,20 @@ angular.module('concierAdminApp',[])
             link: function (scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function () {
-                        scope.$emit('init_pagerCal');
-                        //↑scope.$emit('pagerCal');は必ず必要
+                        scope.$emit('init_calPage');
+                        //↑scope.$emit('init_calPage');は必ず必要
                     });
                 }
             }
         }
     }])
     //↑ページの読み込み完了時に処理を実行するといったやり方ができないためカスタムのディレクティブを用いる。
-    //↑ng-repeatが終わった時にpagerCalを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
+    //↑ng-repeatが終わった時にinit_calPageを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
     //↑linkでディレクティブの具体的な挙動を決める。
     //↑要素（E）とは、<custom-directive></custom-directive>など。属性（A）とは、<div custom-directive>のcustom-directiveなど
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
     //↑$emitによって、HTML上での親となるスコープ（ng-controllerが設定されたタグで入れ子になっている時のng-controllerを含む親要素）に対して、イベントを通知する。
     //↑$emitによって通知されるイベントは$onメソッドで受け取る。
-    //
-    .directive('tagSort', ['$timeout', function ($timeout) {
-        return {
-            restrict: 'A',
-            link: function (scope, element, attr) {
-                if (scope.$last === true) {
-                    $timeout(function () {
-                        scope.$emit('sortTag');
-                        //↑scope.$emit('pagerCal');は必ず必要
-                    });
-                }
-            }
-        }
-    }])
-
-
 
     .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
     $scope.serchQuery = {
@@ -68,19 +52,21 @@ angular.module('concierAdminApp',[])
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.re_tags = {name:true, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, created_date:true };
+    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
 
     $scope.len = 50;
     $scope.start = 0;
     $scope.searchedValue = "";
     $scope.numOfPage = "";
 
+    $scope.cur_page = 1;
+
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
-    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "loyalty"}, {category: "updated_date"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
+    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
@@ -116,10 +102,10 @@ angular.module('concierAdminApp',[])
         success(function(data, status, headers, config) {
         $scope.lineUserList = data; //ここにユーザーリストが入る
         $scope.numOfUser = Object.keys($scope.lineUserList).length;
-        $scope.numOfSort = Object.keys($scope.sortList).length ;
+        $scope.numOfSort = Object.keys($scope.addList).length ;
         for(var p = 0; p< $scope.numOfUser; p++){
             for(var q = 0; q<$scope.numOfSort; q++){
-                $scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
+                $scope.lineUserList[p][$scope.addList[q]["category"]] = "";
             }
         }
         $scope.numOfTag = Object.keys($scope.userTag).length;
@@ -134,16 +120,18 @@ angular.module('concierAdminApp',[])
                         for(var k = 0; k < $scope.numOfSort; k++){
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                             if($scope.userTag[j].category == "major_art" || $scope.userTag[j].category == "major_sci"){
-                                $scope.test_counter2 ++;
-                                $scope.lineUserList[user_idx]["major"] = $scope.userTag[j].name;
+                                if($scope.userTag[j].name != ""){
+                                    $scope.test_counter2 ++;
+                                    $scope.lineUserList[user_idx]["major"] = $scope.userTag[j].name;
+                                }
                             }
-                            else if($scope.userTag[j].category == $scope.sortList[k].category ){
+                            else if($scope.userTag[j].category == $scope.addList[k].category ){
                                 if($scope.userTag[j].name != ""){
                                         $scope .test5 = $scope.userTag[j].name;
-                                        $scope .test4 = $scope.sortList[k].category;
-                                        $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
-                                        $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
-                                        //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                        $scope .test4 = $scope.addList[k].category;
+                                        $scope .test3 = $scope.lineUserList[user_idx][$scope.addList[k].category];
+                                        $scope.lineUserList[user_idx][$scope.addList[k].category] = $scope.userTag[j].name;
+                                        //↑インデックス番号からユーザーを指定し、条件と合致した$scope.addListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
                                 }
                             }
                         }
@@ -161,7 +149,7 @@ angular.module('concierAdminApp',[])
 
     //$scope.add = function(){
         //$scope.numOfUser = Object.keys($scope.lineUserList).length;
-        //$scope.numOfSort = Object.keys($scope.sortList).length ;
+        //$scope.numOfSort = Object.keys($scope.addList).length ;
         //↓配列の追加実験
         //for(var u = 0; u<$scope.testnum; u++){ 
             //for(var t = 0; t<$scope.numicon; t++){ 
@@ -186,7 +174,7 @@ angular.module('concierAdminApp',[])
         //}
         //for(var p = 0; p< $scope.numOfUser; p++){
             //for(var q = 0; q<$scope.numOfSort; q++){
-                //$scope.lineUserList[p][$scope.sortList[q]["category"]] = "";
+                //$scope.lineUserList[p][$scope.addList[q]["category"]] = "";
             //}
         //}
     //};
@@ -407,7 +395,7 @@ angular.module('concierAdminApp',[])
         }).
         success(function(data, status, headers, config) {
           for(var i in data){
-            data[i]['datetime'] = timeConverter(data[i]['created_date']);
+            data[i]['datetime'] = timeConverter(data[i]['updated_date']);
           }
 
           $scope.userMessages = data;
@@ -471,20 +459,24 @@ angular.module('concierAdminApp',[])
 
      $scope.pager = function(page){
         $scope.start = $scope.len * page;
+        $scope.cur_page = page+1;
     };
 
-    $scope.$on('init_pagerCal', function(len) {
+    $scope.$on('init_calPage', function(len) {
         if ($scope.numOfTry == 0) { 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
         $scope.numOfTry += 1;
         }
     });
-    //↑イベント監視を行う。指定のイベント（ここでは、pagerCal）が発生した際に実行されるリスナーを登録できる。
+    //↑イベント監視を行う。指定のイベント（ここでは、init_calPage）が発生した際に実行されるリスナーを登録できる。
     //↑pageCalが呼び出されるたびに実行してしまうので、numOfTryを使って読み込みごとに一回だけ実行されるようにしている。
 
-    $scope.pagerCal = function(len){ 
+    $scope.calPage = function(len){ 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
         $scope.numOfTry += 1;
+        $scope.start = 0;
+        $scope.pager_start = 0;
+        $scope.cur_page = 1;
     };
 
     $scope.$watch('searchedValue', function(newValue, oldValue) {
@@ -533,24 +525,32 @@ angular.module('concierAdminApp',[])
                 $scope.icons[icon] = "▼";
             }
         }
-       if(reverse){
+        if(exp == "name"){
+            if(reverse){
+                $scope.icons[exp] = "▲";
+            }
+            else{
+                $scope.icons[exp]  = "▼";
+            }
+        }
+        else{
+            if(reverse){
                 $scope.icons[exp] = "▼";
             }
             else{
                 $scope.icons[exp]  = "▲";
             }
+        }
         $scope.re_tags[exp] = !reverse;
         return $scope.icons[exp];
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
-        if(ic_cat != "name"){
-            if(item[ic_cat] != ""){
-                return item[ic_cat];
-            }
-            else{
-                return "　";
-            }
+        if(item[ic_cat] != ""){
+            return item[ic_cat];
+        }
+        else{
+            return "　";
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
