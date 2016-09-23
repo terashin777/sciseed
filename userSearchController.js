@@ -518,11 +518,16 @@ angular.module('concierAdminApp',[])
     //↑pageCalが呼び出されるたびに実行してしまうので、numOfTryを使って読み込みごとに一回だけ実行されるようにしている。
     //↑ディレクティブと結びついている。
 
-    $scope.$watchGroup(['searchedValue', 'len'], function(newValue, oldValue, scope) {
-        scope.numOfPage = Math.ceil( newValue/scope.len);
+    $scope.pagerCal = function(len){ 
+        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
+        $scope.numOfTry += 1;
+    };
+
+    $scope.$watch('searchedValue', function(newValue, oldValue) {
+        $scope.numOfPage = Math.ceil( newValue/$scope.len);
+        $scope.len;
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
-    //↑1ページあたりの表示件数が変わると実行される。
     
     $scope.fastPage =function() {
         if($scope.numOfPage>10){
