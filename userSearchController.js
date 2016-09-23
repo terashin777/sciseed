@@ -564,18 +564,23 @@ angular.module('concierAdminApp',[])
         $scope.numOfTag = Object.keys($scope.userTag).length;
         $scope.saveItem = 0;
         if(ic_cat != "name"){
-        if(item.id != $scope.saveItem){
-            for(var i = 0; i < tag.length; i++){
-                for(var j = 0; j < $scope.numOfTag; j++){
-                    if($scope.userTag[j].id == tag[i]){
-                    //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
-                        if($scope.userTag[j].category == ic_cat){
-                        //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
-                            if($scope.userTag[j].name != ""){
-                                return $scope.userTag[j].name;
-                            }
-                            else{
-                                return "　";
+        if(ic_cat == "loyalty" || ic_cat == "created_date"){
+             return item[ic_cat];
+        }
+        else{
+            if(item.id != $scope.saveItem){
+                for(var i = 0; i < tag.length; i++){
+                    for(var j = 0; j < $scope.numOfTag; j++){
+                        if($scope.userTag[j].id == tag[i]){
+                        //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
+                            if($scope.userTag[j].category == ic_cat){
+                            //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
+                                if($scope.userTag[j].name != ""){
+                                    return $scope.userTag[j].name;
+                                }
+                                else{
+                                    return "　";
+                                }
                             }
                         }
                     }
