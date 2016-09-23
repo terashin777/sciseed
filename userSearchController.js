@@ -2,25 +2,6 @@ var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000
 
 angular.module('concierAdminApp',[])
 
-    .run(function($rootScope) {
-        $rootScope.arrOfPage = function(n) {
-            var arr = [];
-            for (var i=0; i<n; ++i) arr.push(i);
-            return arr;
-        };
-    })
-    //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
-    //↑$rootScopeはアプリケーション全体で共有される。
-    //↑ただの数をng-repeatで繰り返すために、配列を作っている。
-    
-    .run(function($rootScope) {
-        $rootScope.arrOfProperty = function(n) {
-            var arr = [];
-            for (var i=0; i<n; ++i) arr.push(i);
-            return arr;
-        };
-    })
-
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
@@ -488,8 +469,8 @@ angular.module('concierAdminApp',[])
         return result = Math.floor(display/limit) + 1;
     };
 
-     $scope.pager = function(page){ 
-            $scope.start = $scope.len * page;
+     $scope.pager = function(page){
+        $scope.start = $scope.len * page;
     };
 
     $scope.$on('init_pagerCal', function(len) {
@@ -508,34 +489,33 @@ angular.module('concierAdminApp',[])
 
     $scope.$watch('searchedValue', function(newValue, oldValue) {
         $scope.numOfPage = Math.ceil( newValue/$scope.len);
-        $scope.len
     });
     //↑searchedValueの値が変化するたびにページ数を計算しなおす。
     
-    $scope.fastPage =function() {
-        if($scope.numOfPage>10){
-            $scope.pager_len = 10;
-            $scope.pager_start = 0;
-        }
-        else{
-            $scope.pager_len = numOfPage;
-            $scope.pager_start = 0;
-        } 
+    $scope.firstPage =function() {
+        $scope.pager_start = 0;
         $scope.start = 0;
     };
 
     $scope.lastPage =function() {
         if($scope.numOfPage>10){
-            $scope.pager_len = $scope.numOfPage;
-            $scope.pager_start = $scope.numOfPage - 10;
+            $scope.pager_start = $scope.numOfPage - 11;
         }
         else{
-            $scope.pager_len = $scope.numOfPage;
             $scope.pager_start = 0;
         }
         $scope.start =  $scope.len * ($scope.numOfPage - 1);
     };
-    
+
+    $scope.arrOfPage = function(n) {
+        var arr = [];
+        for (var i=0; i<n; ++i) arr.push(i);
+        return arr;
+    };
+    //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
+    //↑$rootScopeはアプリケーション全体で共有される。
+    //↑ただの数をng-repeatで繰り返すために、配列を作っている。
+
     $scope.univSort = function(univ){
         var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };
         return univs[univ.name];
@@ -554,11 +534,11 @@ angular.module('concierAdminApp',[])
             }
         }
        if(reverse){
-            $scope.icons[exp] = "▼";
-        }
-        else{
-            $scope.icons[exp]  = "▲";
-        }
+                $scope.icons[exp] = "▼";
+            }
+            else{
+                $scope.icons[exp]  = "▲";
+            }
         $scope.re_tags[exp] = !reverse;
         return $scope.icons[exp];
     };
