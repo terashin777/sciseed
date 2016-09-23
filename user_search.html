@@ -176,7 +176,7 @@
 </form>
 
 <span>ページ当たり表示する件数：</span>
-                    <select  ng-model="len" name="pageValue">
+                    <select  ng-model="len" name="pageValue" ng-change="pagerCal(len)">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="50" ng-selected = "true">50</option>
