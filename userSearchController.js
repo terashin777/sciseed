@@ -2,6 +2,18 @@ var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000
 
 angular.module('concierAdminApp',[])
 
+    .run(function($rootScope) {
+        $rootScope.arrOfPage = function(n) {
+            var arr = [];
+            for (var i=0; i<n; ++i) arr.push(i);
+            return arr;
+        };
+    })
+    //↑ページ番号の繰り返し表示（ng-repeat）を"~in~"の形で行うために配列を用意する。
+    //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
+    //↑$rootScopeはアプリケーション全体で共有される。
+    //↑ただの数をng-repeatで繰り返すために、配列を作っている。
+
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
@@ -65,11 +77,16 @@ angular.module('concierAdminApp',[])
     $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major:true, industry:true, loyalty:true, updated_date:true};
     $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
-    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "updated_date"}];
+    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
+    
+    $scope.numOfSort = Object.keys($scope.addList).length ;
+    $scope.numOfTag = Object.keys($scope.userTag).length;
+    $scope.numOfUser = 0;
+
     $scope.sortTag = "";
     $scope.couter = 0;
 
@@ -105,8 +122,7 @@ angular.module('concierAdminApp',[])
         success(function(data, status, headers, config) {
         $scope.lineUserList = data;
         //↑ここにユーザーリストが入る
-        var numOfUser = Object.keys($scope.lineUserList).length;
-        var numOfSort = Object.keys($scope.addList).length ;
+        $scope.numOfUser = Object.keys($scope.lineUserList).length;
         //↑$scope.lineUserListの配列に追加するソート項目の数を取得している。
         for(var i = 0; i<$scope.numOfUser; i++){
             for(var j= 0; j<$scope.numOfSort; j++){
@@ -114,14 +130,12 @@ angular.module('concierAdminApp',[])
                 //↑$scope.lineUserListにソート項目を保存する空のハッシュデータを追加している。
             }
         }
-
-        var numOfTag = Object.keys($scope.userTag).length;
-        for(var a = 0;a< $scope.numOfUser; a++){
+        for(var a = 0;a<$scope.numOfUser; a++){
             //↑ユーザー1人1人にソート項目の要素を追加する。
             for(var i = 0; i <  $scope.lineUserList[a].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
                 $scope .test2 = "テスト２";
-                for(var j = 0; j < numOfTag; j++){
+                for(var j = 0; j < $scope.numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if($scope.lineUserList[a].user_tag[i] == $scope.userTag[j].id){
                     //↑$scope.userTagのidの中で、$scope.lineUserListのuser_tagに含まれるidを持つタグかどうかを判定。
@@ -569,7 +583,6 @@ angular.module('concierAdminApp',[])
                     //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
                     //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じであれば返す。
                     //↑ソート項目1つ1つ（ic_cat）に対して行う。
-                        $scope.tests.push($scope.userTag[j].name);
                         showTag = $scope.userTag[j].name;
                         //↑該当するタグが存在し、値があるかどうかの判定で用いる。
                     }
