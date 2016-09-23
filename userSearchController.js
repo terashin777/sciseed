@@ -87,8 +87,7 @@ angular.module('concierAdminApp',[])
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major_sci:true, 
-    major_art:true, industry:true, sex:true, operator:true, status:true, loyalty:true, keyword:true };
+    $scope.re_tags = {name:true, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, created_date:true };
 
     $scope.len = 50;
     $scope.start = 0;
@@ -98,9 +97,9 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major_art", major_art:"▼"}, {category: "major_sci", major_sci:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major_art:"▼",  major_sci:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
-    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
+    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "created_date", created_date:"▼"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", created_date:"▼"};
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
@@ -153,19 +152,23 @@ angular.module('concierAdminApp',[])
                     if($scope.lineUserList[user_idx].user_tag[i] == $scope.userTag[j].id){
                         for(var k = 0; k < $scope.numOfSort; k++){
                         //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
-                            if($scope.userTag[j].category == $scope.sortList[k].category ){
+                            if($scope.userTag[j].category == "major_art" || $scope.userTag[j].category == "major_sci"){
+                                $scope.test_counter2 ++;
+                                $scope.lineUserList[user_idx]["major"] = $scope.userTag[j].name;
+                            }
+                            else if($scope.userTag[j].category == $scope.sortList[k].category ){
                                 if($scope.userTag[j].name != ""){
-                                    $scope .test5 = $scope.userTag[j].name;
-                                    $scope .test4 = $scope.sortList[k].category;
-                                    $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
-                                    $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
-                                    //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                        $scope .test5 = $scope.userTag[j].name;
+                                        $scope .test4 = $scope.sortList[k].category;
+                                        $scope .test3 = $scope.lineUserList[user_idx][$scope.sortList[k].category];
+                                        $scope.lineUserList[user_idx][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                        //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
                                 }
                             }
+                        }
                     }
                 }
             }
-        }
         }
     }).
         error(function(data, status, headers, config) {
@@ -550,7 +553,7 @@ angular.module('concierAdminApp',[])
                 $scope.icons[icon] = "▼";
             }
         }
-        if(reverse){
+       if(reverse){
             $scope.icons[exp] = "▼";
         }
         else{
@@ -561,32 +564,13 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
-        $scope.numOfTag = Object.keys($scope.userTag).length;
-        $scope.saveItem = 0;
         if(ic_cat != "name"){
-        if(ic_cat == "loyalty" || ic_cat == "created_date"){
-             return item[ic_cat];
-        }
-        else{
-            if(item.id != $scope.saveItem){
-                for(var i = 0; i < tag.length; i++){
-                    for(var j = 0; j < $scope.numOfTag; j++){
-                        if($scope.userTag[j].id == tag[i]){
-                        //↑user_tag1つ1つについて、tag_listの中からidが同じものを探し、タグ名を得る。
-                            if($scope.userTag[j].category == ic_cat){
-                            //↑user_tagからタグ名を得、さらにソート項目（$scope.sortList）のcategoryと同じものを探す。
-                                if($scope.userTag[j].name != ""){
-                                    return $scope.userTag[j].name;
-                                }
-                                else{
-                                    return "　";
-                                }
-                            }
-                        }
-                    }
-                }
+            if(item[ic_cat] != ""){
+                return item[ic_cat];
             }
-        }
+            else{
+                return "　";
+            }
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
