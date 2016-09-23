@@ -2,25 +2,6 @@ var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000
 
 angular.module('concierAdminApp',[])
 
-    .run(function($rootScope) {
-        $rootScope.arrOfPage = function(n) {
-            var arr = [];
-            for (var i=0; i<n; ++i) arr.push(i);
-            return arr;
-        };
-    })
-    //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
-    //↑$rootScopeはアプリケーション全体で共有される。
-    //↑ただの数をng-repeatで繰り返すために、配列を作っている。
-    
-    .run(function($rootScope) {
-        $rootScope.arrOfProperty = function(n) {
-            var arr = [];
-            for (var i=0; i<n; ++i) arr.push(i);
-            return arr;
-        };
-    })
-
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
@@ -126,25 +107,27 @@ angular.module('concierAdminApp',[])
         //↑ここにユーザーリストが入る
         var numOfUser = Object.keys($scope.lineUserList).length;
         var numOfSort = Object.keys($scope.addList).length ;
-        for(var i = 0; i<$scope.numOfUser; i+){
+        //↑$scope.lineUserListの配列に追加するソート項目の数を取得している。
+        for(var i = 0; i<$scope.numOfUser; i++){
             for(var j= 0; j<$scope.numOfSort; j++){
-                $scope.lineUserList[i][$scope.addList[j]["category"]] = "";
+                $scope.lineUserList[i][$scope.addList[j].category] = "";
+                //↑$scope.lineUserListにソート項目を保存する空のハッシュデータを追加している。
             }
         }
-        //↑ユーザーの持つタグに、ソート項目のタグをキーとして追加している。
+
         var numOfTag = Object.keys($scope.userTag).length;
         for(var a = 0;a< $scope.numOfUser; a++){
             //↑ユーザー1人1人にソート項目の要素を追加する。
-            for(var i = 0; i <  $scope.lineUserList[].user_tag.length; i++){
+            for(var i = 0; i <  $scope.lineUserList[a].user_tag.length; i++){
             //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
                 $scope .test2 = "テスト２";
                 for(var j = 0; j < numOfTag; j++){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if($scope.lineUserList[a].user_tag[i] == $scope.userTag[j].id){
-
+                    //↑$scope.userTagのidの中で、$scope.lineUserListのuser_tagに含まれるidを持つタグかどうかを判定。
                         for(var k = 0; k < $scope.numOfSort; k++){
-                        //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                             if($scope.userTag[j].category == $scope.sortList[k].category ){
+                            //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                                 $scope.tests.push($scope.userTag[j].category);
                                 if($scope.userTag[j].name != ""){
                                     if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
@@ -158,6 +141,9 @@ angular.module('concierAdminApp',[])
                                     $scope .test5 = $scope.userTag[j].name;
                                     $scope .test4 = $scope.sortList[k].category;
                                     $scope .test3 = $scope.lineUserList[a][$scope.sortList[k].category];
+                                }
+                                else{
+                                    $scope.lineUserList[a][$scope.sortList[k].category] = "　";
                                 }
                             }
                         }
@@ -591,10 +577,6 @@ angular.module('concierAdminApp',[])
             }
             if(showTag != ""){
                 return showTag;
-            }
-            else{
-                return "　";
-                //↑該当するタグがなければ、全角スペースを返す。
             }
         }
         else{
