@@ -75,17 +75,18 @@ angular.module('concierAdminApp',[])
     $scope.pager_start = 0;
 
     $scope.re_tags = {name:true, univ:true, grade:true, preference:true, major:true, industry:true, loyalty:true, updated_date:true};
-    $scope.icon = [{category: "name", name:"▼"}, {category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
+    $scope.icon = [{category: "univ", univ:"▼"}, {category: "grade", grade:"▼"}, {category: "preference", preference:"▼"}, {category: "major", major:"▼"}, {category: "industry", industry:"▼"}, {category: "loyalty", loyalty:"▼"}, {category: "updated_date", updated_date:"▼"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major_art"}, {category: "major_sci"}, {category: "industry"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
-    
-    $scope.numOfSort = Object.keys($scope.addList).length ;
-    $scope.numOfTag = Object.keys($scope.userTag).length;
+
     $scope.numOfUser = 0;
+    //↑$scope.lineUserListの配列に追加するソート項目の数を取得している。
+    $scope.numOfSort = 0;
+    $scope.numOfTag = 0;
 
     $scope.sortTag = "";
     $scope.couter = 0;
@@ -120,50 +121,55 @@ angular.module('concierAdminApp',[])
         dataType: "json"
     }).
         success(function(data, status, headers, config) {
-        $scope.lineUserList = data;
-        //↑ここにユーザーリストが入る
-        $scope.numOfUser = Object.keys($scope.lineUserList).length;
-        //↑$scope.lineUserListの配列に追加するソート項目の数を取得している。
-        for(var i = 0; i<$scope.numOfUser; i++){
-            for(var j= 0; j<$scope.numOfSort; j++){
-                $scope.lineUserList[i][$scope.addList[j].category] = "";
-                //↑$scope.lineUserListにソート項目を保存する空のハッシュデータを追加している。
+            $scope.lineUserList = data;
+            //↑ここにユーザーリストが入る
+            $scope.numOfUser = Object.keys($scope.lineUserList).length;
+            //↑$scope.lineUserListの配列に追加するソート項目の数を取得している。
+            $scope.numOfSort = Object.keys($scope.addList).length ;
+            $scope.numOfTag = Object.keys($scope.userTag).length;
+
+            for(var i = 0; i<$scope.numOfUser; i++){
+                for(var j= 0; j<$scope.numOfSort; j++){
+                    $scope.lineUserList[i][$scope.addList[j].category] = "";
+                    $scope.test_counter ++;
+                    //↑$scope.lineUserListにソート項目を保存する空のハッシュデータを追加している。
+                }
             }
-        }
-        for(var a = 0;a<$scope.numOfUser; a++){
-            //↑ユーザー1人1人にソート項目の要素を追加する。
-            for(var i = 0; i <  $scope.lineUserList[a].user_tag.length; i++){
-            //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
-                $scope .test2 = "テスト２";
-                for(var j = 0; j < $scope.numOfTag; j++){
-                //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
-                    if($scope.lineUserList[a].user_tag[i] == $scope.userTag[j].id){
-                    //↑$scope.userTagのidの中で、$scope.lineUserListのuser_tagに含まれるidを持つタグかどうかを判定。
-                        for(var k = 0; k < $scope.numOfSort; k++){
-                            if($scope.userTag[j].category == $scope.sortList[k].category ){
-                            //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
-                                $scope.tests.push($scope.userTag[j].category);
-                                if($scope.userTag[j].name != ""){
-                                    if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
-                                        $scope.lineUserList[a].major = $scope.userTag[j].name;
+            for(var a = 0;a<$scope.numOfUser; a++){
+                //↑ユーザー1人1人にソート項目の要素を追加する。
+                for(var i = 0; i <  $scope.lineUserList[a].user_tag.length; i++){
+                //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
+                    $scope .test2 = "テスト２";
+                    for(var j = 0; j < $scope.numOfTag; j++){
+                    //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
+                        if($scope.lineUserList[a].user_tag[i] == $scope.userTag[j].id){
+                        //↑$scope.userTagのidの中で、$scope.lineUserListのuser_tagに含まれるidを持つタグかどうかを判定。
+                            for(var k = 0; k < $scope.numOfSort; k++){
+                                if($scope.userTag[j].category == $scope.sortList[k].category ){
+                                //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
+                                    $scope.tests.push($scope.userTag[j].category);
+                                    if($scope.userTag[j].name != ""){
+                                        if($scope.userTag[j].category == 'major_art' || $scope.userTag[j].category == 'major_sci'){
+                                            $scope.lineUserList[a].major = $scope.userTag[j].name;
+                                            $scope .test_counter2 ++;
+                                        }
+                                        else{
+                                            $scope.lineUserList[a][$scope.sortList[k].category] = $scope.userTag[j].name;
+                                            //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                        }
+
+                                        $scope .test5 = $scope.userTag[j].name;
+                                        $scope .test4 = $scope.sortList[k].category;
+                                        $scope .test3 = $scope.lineUserList[a][$scope.sortList[k].category];
                                     }
                                     else{
-                                        $scope.lineUserList[a][$scope.sortList[k].category] = $scope.userTag[j].name;
-                                        //↑インデックス番号からユーザーを指定し、条件と合致した$scope.sortListのcategoryと同じキーを持つところに、条件と合致したuserTagを代入している。
+                                        $scope.lineUserList[a][$scope.sortList[k].category] = "　";
                                     }
-
-                                    $scope .test5 = $scope.userTag[j].name;
-                                    $scope .test4 = $scope.sortList[k].category;
-                                    $scope .test3 = $scope.lineUserList[a][$scope.sortList[k].category];
-                                }
-                                else{
-                                    $scope.lineUserList[a][$scope.sortList[k].category] = "　";
                                 }
                             }
                         }
                     }
                 }
-            }
         }
         //↑ユーザーの持つタグに、ソート項目の値を代入している。
     }).
@@ -581,7 +587,7 @@ angular.module('concierAdminApp',[])
 
     $scope.getSortTag = function(ic_cat, tag, item){
         var showTag = "";
-        if(ic_cat != "name" && ic_cat != "loyalty" && ic_cat != "updated_date"){
+        if(ic_cat != "loyalty" && ic_cat != "updated_date"){
             for(var i = 0; i < tag.length; i++){
                 for(var j = 0; j < Object.keys($scope.userTag).length; j++){
                     if($scope.userTag[j].id == tag[i] && $scope.userTag[j].category == ic_cat){
@@ -598,16 +604,7 @@ angular.module('concierAdminApp',[])
             }
         }
         else{
-            switch (ic_cat){
-                case "loyalty":
-                    return item.loyalty;
-                break;
-                case "updated_date":
-                    return item.updated_date;
-                break;
-                default:
-                break;
-            }
+            return item[ic_cat];
         }
     };
     //↑ソートを行えるようにするために、idとなっているタグをlineUserListの要素として追加する。
