@@ -1,0 +1,60 @@
+.btn-ghost{
+    background: transparent;
+}
+
+.btn-ghost.btn-default{
+    color:#777;
+}
+
+.btn-ghost.btn-primary{
+    color:#337ab7;
+}
+
+.btn-ghost.btn-default:hover,
+.btn-ghost.btn-primary:hover{
+    color:#fff;
+}
+
+.btn-ghost.btn-white{
+    color:#fff;
+    border:1px solid #fff;
+}
+
+.btn-ghost.btn-white{
+    color:#333;
+    background:#fff;
+}
+
+.btn-border{
+    background:#fff;
+    border-color:#337ab7;
+}
+
+.search-btn-layout{
+    float: right;
+}
+
+.user-list-search-field{
+    margin: 10px;
+}
+
+.num-of-show-page{
+    margin: 5px;
+}
+
+.page-num{
+    margin: 0px 2px;
+}
+
+.cur-page-num{
+    margin: 5px;
+    padding: 0px 2px;
+}
+
+.page-num-table{
+    float: right;
+}
+
+.user-list-table{
+    margin-bottom: 0px;
+}
