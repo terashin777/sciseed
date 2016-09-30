@@ -47,9 +47,8 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
-    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
+    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", keyword:"" };
+    $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", keyword:"" };
 
     $scope.len = 50;
     $scope.start = 0;
@@ -67,6 +66,7 @@ angular.module('concierAdminApp',[])
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
+    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
     $scope.sortTag = "";
     $scope.couter = 0;
 
@@ -315,7 +315,6 @@ angular.module('concierAdminApp',[])
         $scope.search.operator   = $scope.getTagId($scope.selected.operator);
         $scope.search.status     = $scope.getTagId($scope.selected.status);
         $scope.search.univ_level        = $scope.selected.univ_level;
-        $scope.search.loyalty    = $scope.selected.loyalty;
         $scope.search.keyword        = $scope.selected.keyword;
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
@@ -331,7 +330,6 @@ angular.module('concierAdminApp',[])
         $scope.search.sex        = "";
         $scope.search.operator   = "";
         $scope.search.status     = "";
-        $scope.search.loyalty    = "";
         $scope.search.keyword        = "";
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
@@ -345,80 +343,26 @@ angular.module('concierAdminApp',[])
         $scope.selected.sex        = "";
         $scope.selected.operator   = "";
         $scope.selected.status     = "";
-        $scope.selected.loyalty    = "";
         $scope.selected.keyword        = "";
         //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
 
         document.frm.reset();
     };
 
-    $scope.filterByUnivLevel = function(user) {
-       return user.univ_level == $scope.search.univ_level;
-    };
-
-    $scope.filterByGrade = function(user) {
-        if($scope.search.grade != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.grade) != -1; 
-            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByPreference = function(user) {
-        if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByMajorArt = function(user) {
-        if($scope.search.major_art != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_art) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByMajorSci = function(user) {
-        if($scope.search.major_sci != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_sci) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByIndustry = function(user) {
-        if($scope.search.industry != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.industry) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterBySex = function(user) {
-        if($scope.search.sex != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.sex) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByOperator = function(user) {
-        if($scope.search.operator != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.operator) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-    };
-
-    $scope.filterByStatus = function(user) {
-        if($scope.search.status != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.status) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+    $scope.filterByTag = function(user) {
+        for(tagKey in $scope.search){
+            if($scope.search[tagKey] != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
+                if(tagKey == "keyword"){
+                    return $user == $scope.search.keyword;
+                }
+                else{
+                    return user.user_tag.indexOf($scope.search[tagKey]) != -1; 
+                    //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                    //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                }
+            }else{
+                return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+            }
         }
     };
 
@@ -426,14 +370,6 @@ angular.module('concierAdminApp',[])
             //return user.loyalty >= $scope.search.loyalty;
     //};
     //$scope.filterUserで、変更をすぐに反映するなら必要ない。
-    
-    $scope.filterByKeyword = function(user) {
-         if($scope.search.keyword != ""){
-              return $user == $scope.search.keyword; 
-        }else{
-            return -1;
-        }
-    };
 
      $scope.getUserMessages = function(user){
 
