@@ -47,8 +47,8 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
-    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
 
     $scope.len = 50;
@@ -353,7 +353,7 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByUnivLevel = function(user) {
-       return user.univ_level == $scope.search.univ_level;
+        return user.univ_level == $scope.search.univ_level;
     };
 
     $scope.filterByGrade = function(user) {
