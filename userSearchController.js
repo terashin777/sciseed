@@ -46,12 +46,10 @@ angular.module('concierAdminApp',[])
     $scope.selectedProductId = 1;
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
-    $scope.user_univ = {name:""};
-    //$scope.user_univ = "";
-    $scope.search = { univ:"", grade:"", preference:"", major_sci:"", 
+
+    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", 
     major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.selected = { univ:"", grade:"", preference:"", major_sci:"", 
-    major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
+    $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
 
     $scope.len = 50;
@@ -72,6 +70,8 @@ angular.module('concierAdminApp',[])
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
     $scope.sortTag = "";
     $scope.couter = 0;
+
+    $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}];
 
     $scope.selectedProductId = 1;
 
@@ -307,23 +307,23 @@ angular.module('concierAdminApp',[])
             $scope.search.user_univ = $scope.user_univ.name;
             //$scope.search.user_univ = $scope.user_univ;
         }*/
-        $scope.search.univ        = $scope.getTagId($scope.selected.univ);
-        $scope.search.grade      = $scope.getTagId($scope.selected.grade);
-        $scope.search.preference = $scope.getTagId($scope.selected.preference);
-        $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
-        $scope.search.major_sci  = $scope.getTagId($scope.selected.major_sci);
-        $scope.search.industry   = $scope.getTagId($scope.selected.industry);
-        $scope.search.sex        = $scope.getTagId($scope.selected.sex);
-        $scope.search.operator   = $scope.getTagId($scope.selected.operator);
-        $scope.search.status     = $scope.getTagId($scope.selected.status);
-        $scope.search.loyalty    = $scope.selected.loyalty;
-        $scope.search.keyword        = $scope.selected.keyword;
+            $scope.search[tag]        = $scope.getTagId($scope.selected[tag]);
+            $scope.search.grade      = $scope.getTagId($scope.selected.grade);
+            $scope.search.preference = $scope.getTagId($scope.selected.preference);
+            $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
+            $scope.search.major_sci  = $scope.getTagId($scope.selected.major_sci);
+            $scope.search.industry   = $scope.getTagId($scope.selected.industry);
+            $scope.search.sex        = $scope.getTagId($scope.selected.sex);
+            $scope.search.operator   = $scope.getTagId($scope.selected.operator);
+            $scope.search.status     = $scope.getTagId($scope.selected.status);
+            $scope.search.loyalty    = $scope.selected.loyalty;
+            $scope.search.keyword        = $scope.selected.keyword;
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
     };
 
     $scope.canselSearch = function() {
-        $scope.search.univ        = "";
+        $scope.search.univ_level        = 0;
         $scope.search.grade      = "";
         $scope.search.preference = "";
         $scope.search.major_art  = "";
@@ -337,7 +337,7 @@ angular.module('concierAdminApp',[])
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
 
-        $scope.selected.univ        = "";
+        $scope.selected.univ_level        = 0;
         $scope.selected.grade      = "";
         $scope.selected.preference = "";
         $scope.selected.major_art  = "";
@@ -353,17 +353,15 @@ angular.module('concierAdminApp',[])
         document.frm.reset();
     };
 
-    $scope.filterByUniv = function(user) {
-        if($scope.search.univ != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.univ) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
+    $scope.filterByUnivLevel = function(user) {
+       return user.univ_level >= $scope.search.univ_level;
     };
 
     $scope.filterByGrade = function(user) {
         if($scope.search.grade != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.grade) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+            return user.user_tag.indexOf($scope.search.grade) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
         }else{
             return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
         }
@@ -560,11 +558,6 @@ angular.module('concierAdminApp',[])
     //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
     //↑$rootScopeはアプリケーション全体で共有される。
     //↑ただの数をng-repeatで繰り返すために、配列を作っている。
-
-    $scope.univSort = function(univ){
-        var univs = { '東大':6 , '京大':5 , '阪大':4 , '東工大':3 , '一橋大':3 , '東北大':2 , '名大':2 , '早稲田大':1, '慶応大':1 };
-        return univs[univ.name];
-    };
 
     $scope.sort = function(exp, reverse){
         $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
