@@ -47,8 +47,7 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
-    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", 
-    major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
+    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
 
@@ -307,17 +306,17 @@ angular.module('concierAdminApp',[])
             $scope.search.user_univ = $scope.user_univ.name;
             //$scope.search.user_univ = $scope.user_univ;
         }*/
-            $scope.search[tag]        = $scope.getTagId($scope.selected[tag]);
-            $scope.search.grade      = $scope.getTagId($scope.selected.grade);
-            $scope.search.preference = $scope.getTagId($scope.selected.preference);
-            $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
-            $scope.search.major_sci  = $scope.getTagId($scope.selected.major_sci);
-            $scope.search.industry   = $scope.getTagId($scope.selected.industry);
-            $scope.search.sex        = $scope.getTagId($scope.selected.sex);
-            $scope.search.operator   = $scope.getTagId($scope.selected.operator);
-            $scope.search.status     = $scope.getTagId($scope.selected.status);
-            $scope.search.loyalty    = $scope.selected.loyalty;
-            $scope.search.keyword        = $scope.selected.keyword;
+        $scope.search.grade      = $scope.getTagId($scope.selected.grade);
+        $scope.search.preference = $scope.getTagId($scope.selected.preference);
+        $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
+        $scope.search.major_sci  = $scope.getTagId($scope.selected.major_sci);
+        $scope.search.industry   = $scope.getTagId($scope.selected.industry);
+        $scope.search.sex        = $scope.getTagId($scope.selected.sex);
+        $scope.search.operator   = $scope.getTagId($scope.selected.operator);
+        $scope.search.status     = $scope.getTagId($scope.selected.status);
+        $scope.search.univ_level        = $scope.selected.univ_level;
+        $scope.search.loyalty    = $scope.selected.loyalty;
+        $scope.search.keyword        = $scope.selected.keyword;
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
     };
@@ -354,7 +353,7 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByUnivLevel = function(user) {
-       return user.univ_level >= $scope.search.univ_level;
+       return user.univ_level == $scope.search.univ_level;
     };
 
     $scope.filterByGrade = function(user) {
