@@ -47,8 +47,8 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
-    $scope.search = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
-    $scope.selected = { univ_level:0, grade:"", preference:"", major_sci:"", major_art:"", industry:"", sex:"", operator:"", status:"", loyalty:"", keyword:"" };
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
 
     $scope.len = 50;
@@ -306,6 +306,24 @@ angular.module('concierAdminApp',[])
             $scope.search.user_univ = $scope.user_univ.name;
             //$scope.search.user_univ = $scope.user_univ;
         }*/
+        for(user in $scope.lineUserList){
+            for(tagGroup in $scope.search){
+                for(tagKey in $scope.search[tagGroup]){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
+                    if(tagGroup == "keyword" && user == $scope.search.keyword){
+                        $scope.filteredList.push(user);
+                    }
+                    else if(user.user_tag.indexOf($scope.search[tagKey]) != -1){
+                        $scope.filteredList.push(user);
+                        //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                        //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    }
+                    else{
+                    return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+                    }
+                }
+            }
+        }
+
         $scope.search.grade      = $scope.getTagId($scope.selected.grade);
         $scope.search.preference = $scope.getTagId($scope.selected.preference);
         $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
