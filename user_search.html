@@ -33,7 +33,7 @@
                                     全て表示
                             </label>
                             <label ng-repeat="tag in univGroupList">
-                                <input type="checkbox" ng-model="selected.univ_level[univGroupList.univ_level]" name="univ_level_search">
+                                <input type="checkbox" ng-model="selected.univ_level[tag.univ_level]" name="univ_level_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                                     {{tag.group}}
                             </label>
@@ -52,14 +52,13 @@
                                     すべてチェック
                             </label>
                             <label ng-repeat="tag in userTag|filter: { category:'grade' }">
-                                <input type="checkbox" ng-model="selected.grade" value="{{tag.name}}" name="grade_search">
+                                <input type="checkbox" ng-model="selected.grade[tag.name]" name="grade_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                                     {{tag.name}}
                             </label>
                         </div>
                     </div>
                     </div>
-
                     <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-1">
@@ -184,7 +183,7 @@
                     <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-4">
-                        全表示件数：{{searchedValue = (lineUserList | filter:filterUser | filter: filterByUnivLevel| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword).length}}
+                        全表示件数：{{searchedValue = (lineUserList | filter:filterUser | filter: filterByTag | filter: selected.keyword ).length}}
                         </div>
                         <div  class="col-sm-6">
                         </div>
@@ -192,7 +191,7 @@
                             <button ng-click="doSearch()" class="btn btn-primary">
                                 検索
                             </button>
-                            <button ng-click="canselSearch()" class="btn btn-border">
+                            <button ng-click="cancelSearch()" class="btn btn-border">
                                 <span class="text-primary">絞込み解除</span>
                             </button>
                         </div>
@@ -204,13 +203,18 @@
             </div>
     </div>
     
-    <!--
     <div>
-        <div>
-        ユーザーリスト：{{lineUserList}}
-        </div>
+        テスト選択：{{selected}}
     </div>
-    -->
+    <div>
+        テストサーチ：{{search}}
+    </div>
+    <div>
+        テストタグ：{{testTags}}
+    </div>
+    <div >
+        テストアイテム：{{testItems}}
+    </div>
 
     <table class="table table-bordered user-list-table">
         <div class="num-of-show-page">ページ当たり表示する件数
@@ -243,7 +247,7 @@
             <th>編集</th>
         </tr> 
      
-        <tr ng-repeat="item in filteredList = (lineUserList | filter:filterUser | filter: filterByUnivLevel| filter: filterByGrade| filter: filterByPreference| filter: filterByMajorArt| filter: filterByMajorSci| filter: filterByIndustry| filter: filterBySex| filter: filterByOperator| filter: filterByStatus| filter: filterByLoyalty| filter: search.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
+        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByTag | filter: selected.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
             <div>
                 <td>
                     <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
@@ -263,7 +267,7 @@
                             <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
                         </div>
                         <div>
-                            <a ng-click="canselEditTag()" href="javascript:">キャンセル</a>
+                            <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
                         </div>
                     </td>
                 </div>

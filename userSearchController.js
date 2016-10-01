@@ -49,8 +49,7 @@ angular.module('concierAdminApp',[])
 
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
     $scope.selected = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
-    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
-
+    
     $scope.len = 50;
     $scope.start = 0;
     $scope.searchedValue = "";
@@ -61,12 +60,16 @@ angular.module('concierAdminApp',[])
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
+    $scope.testTags=[];
+    $scope.testItems=[];
+
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "loyalty"}, {category: "updated_date"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
+    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
     $scope.sortTag = "";
     $scope.couter = 0;
 
@@ -243,7 +246,7 @@ angular.module('concierAdminApp',[])
         $scope.tag_add = false;
     };
 
-    $scope.canselEditTag = function(){
+    $scope.cancelEditTag = function(){
         $scope.show_edit_tag = false;
         $scope.show_edit_tag = true;
         $scope.currentUser = "";
@@ -306,14 +309,14 @@ angular.module('concierAdminApp',[])
             $scope.search.user_univ = $scope.user_univ.name;
             //$scope.search.user_univ = $scope.user_univ;
         }*/
-        $scope.search.grade      = $scope.getTagId($scope.selected.grade);
-        $scope.search.preference = $scope.getTagId($scope.selected.preference);
-        $scope.search.major_art  = $scope.getTagId($scope.selected.major_art);
-        $scope.search.major_sci  = $scope.getTagId($scope.selected.major_sci);
-        $scope.search.industry   = $scope.getTagId($scope.selected.industry);
-        $scope.search.sex        = $scope.getTagId($scope.selected.sex);
-        $scope.search.operator   = $scope.getTagId($scope.selected.operator);
-        $scope.search.status     = $scope.getTagId($scope.selected.status);
+        $scope.search.grade      = $scope.selected.grade;
+        $scope.search.preference = $scope.selected.preference;
+        $scope.search.major_art  = $scope.selected.major_art;
+        $scope.search.major_sci  = $scope.selected.major_sci;
+        $scope.search.industry   = $scope.selected.industry;
+        $scope.search.sex        = $scope.selected.sex;
+        $scope.search.operator   = $scope.selected.operator;
+        $scope.search.status     = $scope.selected.status;
         $scope.search.univ_level        = $scope.selected.univ_level;
         $scope.search.loyalty    = $scope.selected.loyalty;
         $scope.search.keyword        = $scope.selected.keyword;
@@ -321,7 +324,7 @@ angular.module('concierAdminApp',[])
         $scope.serchQuery.queryText = "";
     };
 
-    $scope.canselSearch = function() {
+    $scope.cancelSearch = function() {
         $scope.search.univ_level        = 0;
         $scope.search.grade      = "";
         $scope.search.preference = "";
@@ -351,6 +354,34 @@ angular.module('concierAdminApp',[])
 
         document.frm.reset();
     };
+
+
+
+    $scope.filterByTag = function(user){
+        for(tagGroup in $scope.search){
+            $scope.testTags.push(tagGroup);
+            if(tagGroup == "univ_level"){
+                for(item in tagGroup){
+                    if($scope.search[tagGroup][item]){
+                        return user[tagGroup] == item;
+                        //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                        //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    }
+                }
+            }
+            else{
+                for(item in tagGroup){
+                    $scope.testItems.push(item);
+                    if($scope.search[tagGroup][item]){
+                         return user.user_tag.indexOf(getTagId(item)) != -1; 
+                        //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                        //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    }
+                }
+            }
+        }
+    };
+
 
     $scope.filterByUnivLevel = function(user) {
         return user.univ_level == $scope.search.univ_level;
@@ -436,7 +467,6 @@ angular.module('concierAdminApp',[])
     };
 
      $scope.getUserMessages = function(user){
-
         var url = LINE_API_URL+"/user/"+user.id+"/message";
         $http({
           url: url,
