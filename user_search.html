@@ -33,7 +33,7 @@
                                     全て表示
                             </label>
                             <label ng-repeat="tag in univGroupList">
-                                <input type="checkbox" ng-model="selected.univ_level[univGroupList.group]" name="univ_level_search">
+                                <input type="checkbox" ng-model="selected.univ_level[univGroupList.univ_level]" name="univ_level_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                                     {{tag.group}}
                             </label>
