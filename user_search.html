@@ -29,12 +29,12 @@
                         </div>
                         <div class="col-sm-11">
                             <label>
-                                <input type="checkbox" ng-model="selected.univ_level" value="0" name="univ_level_search" checked="checked">
+                                <input type="radio" ng-model="selected.univ_level" value="0" name="univ_level_search" checked="checked">
                                     全て表示
                             </label>
                             <label ng-repeat="tag in univGroupList">
-                                <input type="checkbox" ng-model="selected.univ_level" value="{{tag.univ_level}}" name="univ_level_search">
-                                <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                                <input type="radio" ng-model="selected.univ_level" value="{{tag.univ_level}}" name="univ_level_search">
+                                <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                                     {{tag.group}}
                             </label>
                         </div>
@@ -47,12 +47,12 @@
                         </div>
                         <div class="col-sm-11">
                             <label>
-                                <input type="checkbox" ng-model="all" value="" name="all" ng-change="onchange()">
+                                <input type="radio" ng-model="all" value="" name="all" ng-change="onchange()">
                                     すべてチェック
                             </label>
                             <label ng-repeat="tag in userTag|filter: { category:'grade' }">
-                                <input type="checkbox" ng-model="selected.grade" value="{{tag.name}}" name="grade_search">
-                                <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                                <input type="radio" ng-model="selected.grade" value="{{tag.name}}" name="grade_search">
+                                <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                                     {{tag.name}}
                             </label>
                         </div>
@@ -66,12 +66,12 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.major_art" value="" name="major_art_search" checked="checked">
+                          <input type="radio" ng-model="selected.major_art" value="" name="major_art_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'major_art' }">
-                            <input type="checkbox" ng-model="selected.major_art" value="{{tag.name}}" name="major_art_search">
-                          <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                            <input type="radio" ng-model="selected.major_art" value="{{tag.name}}" name="major_art_search">
+                          <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
                         </div>
@@ -85,12 +85,12 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.major_sci" value="" name="major_sci_search" checked="checked">
+                          <input type="radio" ng-model="selected.major_sci" value="" name="major_sci_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'major_sci' }">
-                          <input type="checkbox" ng-model="selected.major_sci" value="{{tag.name}}" name="major_sci_search">
-                          <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                          <input type="radio" ng-model="selected.major_sci" value="{{tag.name}}" name="major_sci_search">
+                          <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
                         </div>
@@ -104,12 +104,12 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.preference" value="" name="preference_search" checked="checked">
+                          <input type="radio" ng-model="selected.preference" value="" name="preference_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'preference' }">
-                          <input type="checkbox" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
-                          <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                          <input type="radio" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
+                          <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
                         </div>
@@ -123,12 +123,12 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.industry" value="" name="industry_search" checked="checked">
+                          <input type="radio" ng-model="selected.industry" value="" name="industry_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'industry' }">
-                          <input type="checkbox" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
-                          <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                          <input type="radio" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
+                          <!-- <input type="radio" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
                         </div>
@@ -142,15 +142,15 @@
                         </div>
                         <div class="col-sm-11">
                           <label>
-                            <input type="checkbox" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
+                            <input type="radio" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
                               全て表示
                           </label>
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="男" name="sex_search">
+                            <input type="radio" ng-model="selected.sex" value="男" name="sex_search">
                               男
                           </label>
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="女" name="sex_search">
+                            <input type="radio" ng-model="selected.sex" value="女" name="sex_search">
                               女
                           </label>
                         </div>
