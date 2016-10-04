@@ -358,19 +358,26 @@ angular.module('concierAdminApp',[])
 
 
     $scope.filterByTag = function(user){
-        for(tagGroup in $scope.search){
+        if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        }else{
+            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        }
+/*        for(tagGroup in $scope.search){
+        //↑検索項目を取り出してループする。
+        //↑連想配列のfor・・・in～では、inの左側には、各キーが入る。
             $scope.testTags.push(tagGroup);
             if(tagGroup == "univ_level"){
-                for(item in tagGroup){
+            //↑"univ_level"はlineUserListのuser_tagにIDとしては含まれないので、別処理をする。
+                for(item in $scope.search[tagGroup]){
                     if($scope.search[tagGroup][item]){
                         return user[tagGroup] == item;
-                        //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-                        //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                        //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     }
                 }
             }
             else{
-                for(item in tagGroup){
+                for(item in $scope.search[tagGroup]){
                     $scope.testItems.push(item);
                     if($scope.search[tagGroup][item]){
                          return user.user_tag.indexOf(getTagId(item)) != -1; 
@@ -380,6 +387,7 @@ angular.module('concierAdminApp',[])
                 }
             }
         }
+*/
     };
 
 

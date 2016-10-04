@@ -40,7 +40,24 @@
                         </div>
                     </div>
                     </div>
-                    チェックボックス：{{selected.univ_level}}
+                    <div>
+                        selected.univ_level：{{selected.univ_level}}
+                    </div>
+                    <div>
+                        selected[univ_level]：{{selected["univ_level"]}}
+                    </div>
+                    <div>
+                        selected[univ_level]：{{tagGroup="univ_level";selected[tagGroup]}}
+                    </div>
+                    <div>
+                        $scope.selected：{{selected}}
+                    </div>
+                    <div>
+                        $scope.search：{{search}}
+                    </div>
+                    <div>
+                        テストタグ：{{testTags}}
+                    </div>
                     <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-1">
@@ -104,11 +121,11 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.preference" value="" name="preference_search" checked="checked">
+                          <input type="radio" ng-model="selected.preference" value="" name="preference_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'preference' }">
-                          <input type="checkbox" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
+                          <input type="radio" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
@@ -123,11 +140,11 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.industry" value="" name="industry_search" checked="checked">
+                          <input type="radio" ng-model="selected.industry" value="" name="industry_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'industry' }">
-                          <input type="checkbox" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
+                          <input type="radio" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
