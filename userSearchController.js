@@ -309,7 +309,13 @@ angular.module('concierAdminApp',[])
             $scope.search.user_univ = $scope.user_univ.name;
             //$scope.search.user_univ = $scope.user_univ;
         }*/
-        $scope.search.grade      = $scope.selected.grade;
+        for(var tagGroup in $scope.selected){
+            for(var item in $scope.selected[tagGroup]){
+                $scope.search[tagGroup][item]      = $scope.selected[tagGroup][item];
+            }
+        }
+        //↑下のようにすると参照渡しになり、searchとselectedが同じものとなってしまうため、上のようにして値渡しにしている。
+/*        $scope.search.grade      = $scope.selected.grade;
         $scope.search.preference = $scope.selected.preference;
         $scope.search.major_art  = $scope.selected.major_art;
         $scope.search.major_sci  = $scope.selected.major_sci;
@@ -318,6 +324,7 @@ angular.module('concierAdminApp',[])
         $scope.search.operator   = $scope.selected.operator;
         $scope.search.status     = $scope.selected.status;
         $scope.search.univ_level        = $scope.selected.univ_level;
+*/
         $scope.search.loyalty    = $scope.selected.loyalty;
         $scope.search.keyword        = $scope.selected.keyword;
         $scope.serchQuery.queryTag = "";
@@ -403,9 +410,9 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByUnivLevel = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[univ_level]){
-            if($scope.search[univ_level][item]){
-                if(user[univ_level] == item){
+        for(item in $scope.search["univ_level"]){
+            if($scope.search["univ_level"][item]){
+                if(user["univ_level"] == item){
                     tagCheck = true;
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
@@ -421,10 +428,9 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByGrade = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[grade]){
-            $scope.testItems.push(item);
-            if($scope.search[grade][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+        for(item in $scope.search["grade"]){
+            if($scope.search["grade"][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -439,10 +445,10 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByPreference = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[preference]){
+        for(item in $scope.search["preference"]){
             $scope.testItems.push(item);
-            if($scope.search[preference][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+            if($scope.search["preference"][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -457,10 +463,10 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByMajorArt = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[major_art]){
+        for(item in $scope.search["major_art"]){
             $scope.testItems.push(item);
-            if($scope.search[major_art][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+            if($scope.search["major_art"][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -475,10 +481,10 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByMajorSci = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[major_sci]){
+        for(item in $scope.search["major_sci"]){
             $scope.testItems.push(item);
-            if($scope.search[major_sci][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+            if($scope.search["major_sci"][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -493,10 +499,10 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByIndustry = function(user) {
         var tagCheck = false;
-        for(item in $scope.search[industry]){
+        for(item in $scope.search["industry"]){
             $scope.testItems.push(item);
-            if($scope.search[industry][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+            if($scope.search["industry"][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -514,7 +520,7 @@ angular.module('concierAdminApp',[])
         for(item in $scope.search[sex]){
             $scope.testItems.push(item);
             if($scope.search[sex][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -532,7 +538,7 @@ angular.module('concierAdminApp',[])
         for(item in $scope.search[tagGroup]){
             $scope.testItems.push(item);
             if($scope.search[tagGroup][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
@@ -550,7 +556,7 @@ angular.module('concierAdminApp',[])
         for(item in $scope.search[tagGroup]){
             $scope.testItems.push(item);
             if($scope.search[tagGroup][item]){
-                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     tagCheck = true;
