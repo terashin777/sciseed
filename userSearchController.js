@@ -47,22 +47,28 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major_sci:{}, major_art:{}, industry:{}, sex:{}, operator:{}, status:{} };
-    
+    //↓絞込み用の変数など
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:"", };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:"", loyalty:0 };
+    $scope.searchSex = "";
+    $scope.selectedSex = "";
+    $scope.searchLoyalty = 0;
+    $scope.searchKeyword = "";
+
+    //↓ページャー機能用の変数など
     $scope.len = 50;
     $scope.start = 0;
     $scope.searchedValue = "";
     $scope.numOfPage = "";
-
     $scope.cur_page = 1;
-
     $scope.pager_len = 10;
     $scope.pager_start = 0;
 
+    //↓テスト用の変数など
     $scope.testTags=[];
     $scope.testItems=[];
 
+    //↓ソート用の変数など
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "loyalty"}, {category: "updated_date"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}];
@@ -72,8 +78,8 @@ angular.module('concierAdminApp',[])
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
     $scope.sortTag = "";
     $scope.couter = 0;
-
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}];
+
 
     $scope.selectedProductId = 1;
 
@@ -363,7 +369,7 @@ angular.module('concierAdminApp',[])
     };
 
 
-
+/*
     $scope.filterByTag = function(user){
         var tagCheck = false;
         for(tagGroup in $scope.search){
@@ -406,167 +412,129 @@ angular.module('concierAdminApp',[])
         }
         return true;
     };
+*/
 
 
     $scope.filterByUnivLevel = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["univ_level"]){
-            if($scope.search["univ_level"][item]){
-                if(user["univ_level"] == item){
-                    tagCheck = true;
+        var tagGroup = "univ_level";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                if(user[tagGroup] == item){
+                    return true;
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-            //↑tagCheckがfalse、つまり選択されたどのuniv_levelとも一致しないユーザーははじくようにしている。
-        }
-        return true;
+        return false;
     };
 
     $scope.filterByGrade = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["grade"]){
-            if($scope.search["grade"][item]){
+        var tagGroup = "grade";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     $scope.filterByPreference = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["preference"]){
-            $scope.testItems.push(item);
-            if($scope.search["preference"][item]){
+        var tagGroup = "preference";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
-    $scope.filterByMajorArt = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["major_art"]){
-            $scope.testItems.push(item);
-            if($scope.search["major_art"][item]){
+    $scope.filterByMajor = function(user) {
+        var tagGroup = "major_art";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
-    };
-
-    $scope.filterByMajorSci = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["major_sci"]){
-            $scope.testItems.push(item);
-            if($scope.search["major_sci"][item]){
+        var tagGroup = "major_sci";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     $scope.filterByIndustry = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search["industry"]){
-            $scope.testItems.push(item);
-            if($scope.search["industry"][item]){
+        var tagGroup = "industry";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     $scope.filterBySex = function(user) {
-        var tagCheck = false;
-        for(item in $scope.search[sex]){
-            $scope.testItems.push(item);
-            if($scope.search[sex][item]){
+        var tagGroup = "sex";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     $scope.filterByOperator = function(user) {
-        var tagCheck = false;
+        var tagGroup = "operator";
         for(item in $scope.search[tagGroup]){
-            $scope.testItems.push(item);
             if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     $scope.filterByStatus = function(user) {
-        var tagCheck = false;
+        var tagGroup = "status";
         for(item in $scope.search[tagGroup]){
-            $scope.testItems.push(item);
             if($scope.search[tagGroup][item]){
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                    tagCheck = true;
+                return true;
                 }
             }
         }
-        if(!tagCheck){
-            return false;
-        }
-        return true;
+        return false;
     };
 
     //$scope.filterByLoyalty = function(user) {

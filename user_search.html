@@ -79,17 +79,17 @@
                     <div class="list-group-item">
                     <div class="row">
                         <div class="col-sm-1">
-                        専攻(文系)
+                            専攻(文系)
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.major_art" value="" name="major_art_search" checked="checked">
-                            全て表示
+                            <input type="checkbox" ng-model="selected.major_art" value="" name="major_art_search" checked="checked">
+                                全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'major_art' }">
-                            <input type="checkbox" ng-model="selected.major_art" value="{{tag.name}}" name="major_art_search">
+                            <input type="checkbox" ng-model="selected.major_art[tag.name]" name="major_art_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
-                            {{tag.name}}
+                                {{tag.name}}
                         </label>
                         </div>
                     </div>
@@ -102,13 +102,18 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="checkbox" ng-model="selected.major_sci" value="" name="major_sci_search" checked="checked">
+                          <input type="checkbox" ng-model="selected.major_sci" value="" name="major_search" checked="checked">
                             全て表示
                         </label>
+                        <label>
+                            <input type="checkbox" ng-model="selected.major['文系']" name="major_search">
+                            <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
+                                文系
+                        </label>
                         <label ng-repeat="tag in userTag|filter: { category:'major_sci' }">
-                          <input type="checkbox" ng-model="selected.major_sci" value="{{tag.name}}" name="major_sci_search">
+                            <input type="checkbox" ng-model="selected.major[tag.name]" name="major_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
-                            {{tag.name}}
+                                {{tag.name}}
                         </label>
                         </div>
                     </div>
@@ -121,11 +126,11 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="radio" ng-model="selected.preference" value="" name="preference_search" checked="checked">
+                          <input type="checkbox" ng-model="selected.preference" value="" name="preference_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'preference' }">
-                          <input type="radio" ng-model="selected.preference" value="{{tag.name}}" name="preference_search">
+                          <input type="checkbox" ng-model="selected.preference[tag.name]" name="preference_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
@@ -140,11 +145,11 @@
                         </div>
                         <div class="col-sm-11">
                         <label>
-                          <input type="radio" ng-model="selected.industry" value="" name="industry_search" checked="checked">
+                          <input type="checkbox" ng-model="selected.industry" value="" name="industry_search" checked="checked">
                             全て表示
                         </label>
                         <label ng-repeat="tag in userTag|filter: { category:'industry' }">
-                          <input type="radio" ng-model="selected.industry" value="{{tag.name}}" name="industry_search">
+                          <input type="checkbox" ng-model="selected.industry[tag.name]" name="industry_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
@@ -159,15 +164,15 @@
                         </div>
                         <div class="col-sm-11">
                           <label>
-                            <input type="checkbox" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
+                            <input type="radio" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
                               全て表示
                           </label>
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="男" name="sex_search">
+                            <input type="radio" ng-model="selected.sex" value="男" name="sex_search">
                               男
                           </label>
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="女" name="sex_search">
+                            <input type="radio" ng-model="selected.sex" value="女" name="sex_search">
                               女
                           </label>
                         </div>
@@ -264,7 +269,7 @@
             <th>編集</th>
         </tr> 
      
-        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByUnivLevel| filter: filterByGrade| filter: selected.keyword | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
+        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByUnivLevel| filter: filterByGrade| filter: filterByPreference| filter: filterByIndustry| filter: selected.keyword| limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
             <div>
                 <td>
                     <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
