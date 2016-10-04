@@ -358,107 +358,209 @@ angular.module('concierAdminApp',[])
 
 
     $scope.filterByTag = function(user){
-        if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
-        }
-/*        for(tagGroup in $scope.search){
+        var tagCheck = false;
+        for(tagGroup in $scope.search){
         //↑検索項目を取り出してループする。
         //↑連想配列のfor・・・in～では、inの左側には、各キーが入る。
             $scope.testTags.push(tagGroup);
             if(tagGroup == "univ_level"){
             //↑"univ_level"はlineUserListのuser_tagにIDとしては含まれないので、別処理をする。
+                tagCheck = false;
                 for(item in $scope.search[tagGroup]){
                     if($scope.search[tagGroup][item]){
-                        return user[tagGroup] == item;
-                        //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                        if(user[tagGroup] == item){
+                            tagCheck = true;
+                            //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                            //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
+                        }
                     }
+                }
+                if(!tagCheck){
+                    return false;
+                    //↑tagCheckがfalse、つまり選択されたどのuniv_levelとも一致しないユーザーははじくようにしている。
                 }
             }
             else{
+                tagCheck = false;
                 for(item in $scope.search[tagGroup]){
                     $scope.testItems.push(item);
                     if($scope.search[tagGroup][item]){
-                         return user.user_tag.indexOf(getTagId(item)) != -1; 
+                         if(user.user_tag.indexOf(getTagId(item)) != -1){ 
                         //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                         //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                            tagCheck = true;
+                        }
                     }
+                }
+                if(!tagCheck){
+                    return false;
                 }
             }
         }
-*/
+        return true;
     };
 
 
     $scope.filterByUnivLevel = function(user) {
-        return user.univ_level == $scope.search.univ_level;
+        var tagCheck = false;
+        for(item in $scope.search[univ_level]){
+            if($scope.search[univ_level][item]){
+                if(user[univ_level] == item){
+                    tagCheck = true;
+                    //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                    //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
+                }
+            }
+        }
+        if(!tagCheck){
+            return false;
+            //↑tagCheckがfalse、つまり選択されたどのuniv_levelとも一致しないユーザーははじくようにしている。
+        }
+        return true;
     };
 
     $scope.filterByGrade = function(user) {
-        if($scope.search.grade != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.grade) != -1; 
-            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[grade]){
+            $scope.testItems.push(item);
+            if($scope.search[grade][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByPreference = function(user) {
-        if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[preference]){
+            $scope.testItems.push(item);
+            if($scope.search[preference][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByMajorArt = function(user) {
-        if($scope.search.major_art != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_art) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[major_art]){
+            $scope.testItems.push(item);
+            if($scope.search[major_art][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByMajorSci = function(user) {
-        if($scope.search.major_sci != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.major_sci) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[major_sci]){
+            $scope.testItems.push(item);
+            if($scope.search[major_sci][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByIndustry = function(user) {
-        if($scope.search.industry != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.industry) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[industry]){
+            $scope.testItems.push(item);
+            if($scope.search[industry][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterBySex = function(user) {
-        if($scope.search.sex != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.sex) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[sex]){
+            $scope.testItems.push(item);
+            if($scope.search[sex][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByOperator = function(user) {
-        if($scope.search.operator != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.operator) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[tagGroup]){
+            $scope.testItems.push(item);
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     $scope.filterByStatus = function(user) {
-        if($scope.search.status != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
-            return user.user_tag.indexOf($scope.search.status) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-        }else{
-            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        var tagCheck = false;
+        for(item in $scope.search[tagGroup]){
+            $scope.testItems.push(item);
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    tagCheck = true;
+                }
+            }
         }
+        if(!tagCheck){
+            return false;
+        }
+        return true;
     };
 
     //$scope.filterByLoyalty = function(user) {
