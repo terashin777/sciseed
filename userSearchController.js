@@ -352,6 +352,22 @@ angular.module('concierAdminApp',[])
         document.frm.reset();
     };
 
+    $scope.filterByTag = function(user) {
+       return user.univ_level == $scope.search.univ_level;
+       if($scope.search.grade != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.grade) != -1; 
+            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+        }else{
+            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        }
+         if($scope.search.preference != ""){ //選択されたタグが""（全て表示）でなければ絞り込みを行う．
+            return user.user_tag.indexOf($scope.search.preference) != -1; //array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+        }else{
+            return -1; //filterを無効にしたいときは，戻り値に-1を指定すればよい。全て表示で用いる．
+        }
+    };
+
     $scope.filterByUnivLevel = function(user) {
        return user.univ_level == $scope.search.univ_level;
     };
