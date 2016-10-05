@@ -458,23 +458,32 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByMajor = function(user) {
-        var tagGroup = "major_art";
+        var tagGroup = "major";
         for(item in $scope.search[tagGroup]){
             if($scope.search[tagGroup][item]){
-                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
-                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                return true;
+            //↑個別のタグがtrue（チェックされている）なら判定を行う。
+                //↓文系タグのフィルター
+                if(item == "文系"){
+                //↑文系にチェックが入れられているときは別処理を行う。
+                    for(tag in $scope.userTag){
+                        if($scope.userTag[tag].category == "major_art"){
+                        //↑タグリストのなかの文系タグだけを全て取り出してフィルターをかける。
+                            if(user.user_tag.indexOf($scope.userTag[tag].id) != -1){ 
+                            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                            return true;
+                            //↑選択されたタグの一つでも一致する時は、そのユーザーを残す。
+                            }
+                        }
+                    }
                 }
-            }
-        }
-        var tagGroup = "major_sci";
-        for(item in $scope.search[tagGroup]){
-            if($scope.search[tagGroup][item]){
-                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
-                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
-                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                return true;
+                //↓理系タグのフィルター
+                else{
+                    if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                    //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                    //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                        return true;
+                    }
                 }
             }
         }
