@@ -48,12 +48,8 @@ angular.module('concierAdminApp',[])
     $scope.loyaltyStr = "3";
 
     //↓絞込み用の変数など
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:"", };
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:"", loyalty:0 };
-    $scope.searchSex = "";
-    $scope.selectedSex = "";
-    $scope.searchLoyalty = 0;
-    $scope.searchKeyword = "";
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"" };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"" };
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -278,7 +274,7 @@ angular.module('concierAdminApp',[])
       };
 
     $scope.filterUser = function(item) {
-        if(item.loyalty>=$scope.selected.loyalty){
+        if(item.loyalty>=$scope.search.loyalty){
             if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
                 var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
                 if(tagId){
@@ -286,7 +282,6 @@ angular.module('concierAdminApp',[])
                 }else{
                   return -1;
                 }
-                return true;
             }else{
                 return -1;
             }
@@ -331,7 +326,6 @@ angular.module('concierAdminApp',[])
         $scope.search.status     = $scope.selected.status;
         $scope.search.univ_level        = $scope.selected.univ_level;
 */
-        $scope.search.loyalty    = $scope.selected.loyalty;
         $scope.search.keyword        = $scope.selected.keyword;
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
@@ -546,9 +540,9 @@ angular.module('concierAdminApp',[])
         return false;
     };
 
-    //$scope.filterByLoyalty = function(user) {
-            //return user.loyalty >= $scope.search.loyalty;
-    //};
+    $scope.filterByLoyalty = function(user) {
+            return user.loyalty >= $scope.search.loyalty;
+    };
     //$scope.filterUserで、変更をすぐに反映するなら必要ない。
     
     $scope.filterByKeyword = function(user) {
