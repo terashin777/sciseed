@@ -27,15 +27,17 @@
                         <div class="col-sm-1">
                         大学
                         </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-1">
                             <label>
                                 <div>
-                                    <input type="button" value="すべてチェック" ng-model="allUnivLevel" ng-click = "allUnivLevel=true;onchange('univ_level',allUnivLevel)" name="allUnivLevel" class="btn btn-secondary btn-xs">
+                                    <input type="button" value="すべてチェック" ng-model="allUnivLevel" ng-click = "allUnivLevel=true;onChange('univ_level',allUnivLevel)" name="allUnivLevel" class="btn btn-secondary btn-xs">
                                 </div>
                                 <div>
-                                    <input type="button" value="解除" ng-model="allUnivLevel" ng-click = "allUnivLevel=false;onchange('univ_level',allUnivLevel)" name="allUnivLevel" class="btn btn-default btn-xs">
+                                    <input type="button" value="解除" ng-model="allUnivLevel" ng-click = "allUnivLevel=false;onChange('univ_level',allUnivLevel)" name="allUnivLevel" class="btn btn-default btn-xs">
                                 </div>
                             </label>
+                        </div>
+                        <div class="col-sm-10">
                             <label ng-repeat="tag in univGroupList">
                                 <input type="checkbox" ng-model="selected.univ_level[tag.univ_level]" ng-checked="allUnivLevel" name="univ_level_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -67,15 +69,17 @@
                         <div class="col-sm-1">
                         卒業年度
                         </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-1">
                             <label>
                                 <div>
-                                    <input type="button" value="すべてチェック" ng-model="allGrade" ng-click = "allGrade=true;onchange('grade',allGrade)" name="allGrade" class="btn btn-secondary btn-sm">
+                                    <input type="button" value="すべてチェック" ng-model="allGrade" ng-click = "allGrade=true;onChange('grade',allGrade)" name="allGrade" class="btn btn-secondary btn-xs">
                                 </div>
                                 <div>
-                                    <input type="button" value="解除" ng-model="allGrade" ng-click = "allGrade=false;onchange('grade',allGrade)" name="allGrade" class="btn btn-default btn-xs">
+                                    <input type="button" value="解除" ng-model="allGrade" ng-click = "allGrade=false;onChange('grade',allGrade)" name="allGrade" class="btn btn-default btn-xs">
                                 </div>
                             </label>
+                        </div>
+                        <div class="col-sm-10">
                             <label ng-repeat="tag in userTag|filter: { category:'grade' }">
                                 <input type="checkbox" ng-model="selected.grade[tag.name]" ng-checked="allGrade" name="grade_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -94,13 +98,13 @@
                             <div>
                             <label>
                                 <div>
-                                    <input type="button" value="すべてチェック" ng-model="allMajor" ng-click = "allMajor=true;onchange('major',allMajor)" name="allMajor" class="btn btn-secondary btn-sm">
+                                    <input type="button" value="すべてチェック" ng-model="allMajor" ng-click = "allMajor=true;onChange('major',allMajor)" name="allMajor" class="btn btn-secondary btn-xs">
                                 </div>
                                 </label>
                                 </br>
                                 <label>
                                 <div>
-                                    <input type="button" value="解除" ng-model="allMajor" ng-click = "allMajor=false;onchange('major',allMajor)" name="allMajor" class="btn btn-default btn-xs">
+                                    <input type="button" value="解除" ng-model="allMajor" ng-click = "allMajor=false;onChange('major',allMajor)" name="allMajor" class="btn btn-default btn-xs">
                                 </div>
                             </label>
                             </div>
@@ -125,13 +129,19 @@
                         <div class="col-sm-1">
                         志向
                         </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-1">
                         <label>
-                          <input type="checkbox" ng-model="selected.preference" value="" name="preference_search" checked="checked">
-                            すべてチェック
+                            <div>
+                                <input type="button" value="すべてチェック" ng-model="allPreference" ng-click = "allPreference=true;onChange('preference',allPreference)" name="allPreference" class="btn btn-secondary btn-xs">
+                            </div>
+                            <div>
+                                <input type="button" value="解除" ng-model="allPreference" ng-click = "allPreference=false;onChange('preference',allPreference)" name="allPreference" class="btn btn-default btn-xs">
+                            </div>
                         </label>
+                        </div>
+                        <div class="col-sm-10">
                         <label ng-repeat="tag in userTag|filter: { category:'preference' }">
-                          <input type="checkbox" ng-model="selected.preference[tag.name]" name="preference_search">
+                          <input type="checkbox" ng-model="selected.preference[tag.name]" ng-checked="allPreference" name="preference_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
@@ -144,13 +154,19 @@
                         <div class="col-sm-1">
                         志望業界
                         </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-1">
                         <label>
-                          <input type="checkbox" ng-model="selected.industry" value="" name="industry_search" checked="checked">
-                            すべてチェック                        
+                            <div>
+                                <input type="button" value="すべてチェック" ng-model="allIndustry" ng-click = "allIndustry=true;onChange('industry',allIndustry)" name="allIndustry" class="btn btn-secondary btn-xs">
+                            </div>
+                            <div>
+                                <input type="button" value="解除" ng-model="allIndustry" ng-click = "allIndustry=false;onChange('industry',allIndustry)" name="allIndustry" class="btn btn-default btn-xs">
+                            </div>
                         </label>
+                        </div>
+                        <div class="col-sm-10">
                         <label ng-repeat="tag in userTag|filter: { category:'industry' }">
-                          <input type="checkbox" ng-model="selected.industry[tag.name]" name="industry_search">
+                          <input type="checkbox" ng-model="selected.industry[tag.name]" ng-checked="allIndustry" name="industry_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
                             {{tag.name}}
                         </label>
@@ -163,16 +179,23 @@
                         <div class="col-sm-1">
                         性別
                         </div>
-                        <div class="col-sm-11">
+                        <div class="col-sm-1">
                           <label>
-                            <input type="checkbox" selected="selected" ng-model="selected.sex" value="" name="sex_search" checked="checked">
-                              すべてチェック                          </label>
+                            <div>
+                                <input type="button" value="すべてチェック" ng-model="allSex" ng-click = "allSex=true;onChange('sex',allSex)" name="allSex" class="btn btn-secondary btn-xs">
+                            </div>
+                            <div>
+                                <input type="button" value="解除" ng-model="allSex" ng-click = "allSex=false;onChange('sex',allSex)" name="allSex" class="btn btn-default btn-xs">
+                            </div>
+                          </label>
+                        </div>
+                        <div class="col-sm-10">
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="男" name="sex_search">
+                            <input type="checkbox" ng-model="selected.sex['男']" ng-checked="allSex" value="男" name="sex_search">
                               男
                           </label>
                           <label>
-                            <input type="checkbox" ng-model="selected.sex" value="女" name="sex_search">
+                            <input type="checkbox" ng-model="selected.sex['女']" ng-checked="allSex" value="女" name="sex_search">
                               女
                           </label>
                         </div>

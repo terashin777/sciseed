@@ -557,14 +557,14 @@ angular.module('concierAdminApp',[])
         return user.updated_date >= $scope.search.updated_date;
     };
 
-    $scope.onchange = function(category, allFrag){
+    $scope.onChange = function(category, allFrag){
         if(category == "univ_level"){
             for(idx in $scope.univGroupList){
                 if(allFrag){
-                    $scope.selected[category][$scope.univGroupList[idx]] = true;
+                    $scope.selected[category][$scope.univGroupList[idx].univ_level] = true;
                 }
                 else{
-                    $scope.selected[category][$scope.univGroupList[idx]] = false;
+                    $scope.selected[category][$scope.univGroupList[idx].univ_level] = false;
                 }
             }
         }
