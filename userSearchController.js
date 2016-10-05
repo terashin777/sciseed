@@ -48,8 +48,8 @@ angular.module('concierAdminApp',[])
     $scope.loyaltyStr = "3";
 
     //↓絞込み用の変数など
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"" };
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"" };
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -65,7 +65,7 @@ angular.module('concierAdminApp',[])
     $scope.testItems=[];
 
     //↓ソート用の変数など
-    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category: "loyalty"}, {category: "updated_date"}];
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
     $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
     $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
@@ -75,7 +75,6 @@ angular.module('concierAdminApp',[])
     $scope.sortTag = "";
     $scope.couter = 0;
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}];
-
 
     $scope.selectedProductId = 1;
 
@@ -274,7 +273,7 @@ angular.module('concierAdminApp',[])
       };
 
     $scope.filterUser = function(item) {
-        if(item.loyalty>=$scope.search.loyalty){
+        if(item.loyalty>=$scope.selected.loyalty){
             if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
                 var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
                 if(tagId){
@@ -282,6 +281,7 @@ angular.module('concierAdminApp',[])
                 }else{
                   return -1;
                 }
+                return true;
             }else{
                 return -1;
             }
@@ -541,7 +541,7 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByLoyalty = function(user) {
-            return user.loyalty >= $scope.search.loyalty;
+        return user.loyalty >= $scope.search.loyalty;
     };
     //$scope.filterUserで、変更をすぐに反映するなら必要ない。
     
@@ -551,6 +551,10 @@ angular.module('concierAdminApp',[])
         }else{
             return -1;
         }
+    };
+
+    $scope.filterByDate = function(user) {
+        return user.updated_date >= $scope.search.updated_date;
     };
 
      $scope.getUserMessages = function(user){
