@@ -74,7 +74,7 @@ angular.module('concierAdminApp',[])
     $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
     $scope.sortTag = "";
     $scope.couter = 0;
-    $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}];
+    $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}, {group:"その他", univ_level:0}];
 
     $scope.selectedProductId = 1;
 
@@ -555,6 +555,46 @@ angular.module('concierAdminApp',[])
 
     $scope.filterByDate = function(user) {
         return user.updated_date >= $scope.search.updated_date;
+    };
+
+    $scope.onchange = function(category, allFrag){
+        if(category == "univ_level"){
+            for(idx in $scope.univGroupList){
+                if(allFrag){
+                    $scope.selected[category][$scope.univGroupList[idx]] = true;
+                }
+                else{
+                    $scope.selected[category][$scope.univGroupList[idx]] = false;
+                }
+            }
+        }
+        else if(category == "major"){
+            for(idx in $scope.userTag){
+                str = $scope.userTag[idx]["category"];
+                if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
+                //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
+                //↑nullのまま処理を行うと、indexOfでエラーが出る。
+                    if(allFrag){
+                        $scope.selected[category][$scope.userTag[idx].name] = true;
+                    }
+                    else{
+                        $scope.selected[category][$scope.userTag[idx].name] = false;
+                    }
+                }
+            }
+        }
+        else{
+            for(idx in $scope.userTag){
+                if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"] == category){
+                    if(allFrag){
+                        $scope.selected[category][$scope.userTag[idx].name] = true;
+                    }
+                    else{
+                        $scope.selected[category][$scope.userTag[idx].name] = false;
+                    }
+                }
+            }
+        }
     };
 
      $scope.getUserMessages = function(user){
