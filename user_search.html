@@ -227,7 +227,7 @@
                     <div class="list-group-item" on-Init-Check>
                     <div class="row">
                         <div class="col-sm-4">
-                        全表示件数：{{searchedValue = (lineUserList | filter:filterUser | filter: filterByTag | filter: selected.keyword ).length}}
+                        全表示件数：{{searchedValue = (lineUserList | filter: filterByMajor | filter: filterByLoyalty | filter: filterUser ).length}}
                         </div>
                         <div  class="col-sm-7">
                         </div>
@@ -306,7 +306,7 @@
         <!--
         <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByUnivLevel| filter: filterByGrade| filter: filterByMajor| filter: filterByPreference| filter: filterByIndustry| filter: selected.keyword| limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         -->
-        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByMajor | filter: filterByLoyalty  | filter: filterUser | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
+        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByMajor | filter: filterByLoyalty | filter: filterUser | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
             <div>
                 <td>
                     <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>

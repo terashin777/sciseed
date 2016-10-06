@@ -462,7 +462,7 @@ angular.module('concierAdminApp',[])
                 //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
                     for(tagId in user.user_tag){
                         for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && userTag[Idx].category != tagGroup){
+                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
                                 return true;
                             }
                         }
@@ -480,7 +480,17 @@ angular.module('concierAdminApp',[])
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                return true;
+                    return true;
+                }
+                else if($scope.nullTagUserFrags[tagGroup]){
+                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                    for(tagId in user.user_tag){
+                        for(Idx in $scope.userTag){
+                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -501,8 +511,18 @@ angular.module('concierAdminApp',[])
                             if(user.user_tag.indexOf($scope.userTag[tag].id) != -1){ 
                             //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                             //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                            return true;
+                                return true;
                             //↑選択されたタグの一つでも一致する時は、そのユーザーを残す。
+                            }
+                            else if($scope.nullTagUserFrags[tagGroup]){
+                            //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                                for(tagId in user.user_tag){
+                                    for(Idx in $scope.userTag){
+                                        if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != "major_art"){
+                                            return true;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -513,6 +533,16 @@ angular.module('concierAdminApp',[])
                     //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                     //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                         return true;
+                    }
+                    else if($scope.nullTagUserFrags[tagGroup]){
+                    //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                        for(tagId in user.user_tag){
+                            for(Idx in $scope.userTag){
+                                if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != "major_sci"){
+                                    return true;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -529,6 +559,16 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                 return true;
                 }
+                else if($scope.nullTagUserFrags[tagGroup]){
+                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                    for(tagId in user.user_tag){
+                        for(Idx in $scope.userTag){
+                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -541,7 +581,17 @@ angular.module('concierAdminApp',[])
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                return true;
+                    return true;
+                }
+                else if($scope.nullTagUserFrags[tagGroup]){
+                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                    for(tagId in user.user_tag){
+                        for(Idx in $scope.userTag){
+                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }
