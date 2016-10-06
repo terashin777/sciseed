@@ -63,8 +63,8 @@ angular.module('concierAdminApp',[])
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
 
@@ -514,40 +514,26 @@ angular.module('concierAdminApp',[])
                                 return true;
                             //↑選択されたタグの一つでも一致する時は、そのユーザーを残す。
                             }
-                            else if($scope.nullTagUserFrags[tagGroup]){
-                            //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                                for(tagId in user.user_tag){
-                                    for(Idx in $scope.userTag){
-                                        if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != "major_art"){
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                 }
                 //↓理系タグのフィルター
                 else{
-                    if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                    if(user[tagGroup] == item){ 
                     //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                     //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                         return true;
                     }
-                    else if($scope.nullTagUserFrags[tagGroup]){
-                    //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                        for(tagId in user.user_tag){
-                            for(Idx in $scope.userTag){
-                                if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != "major_sci"){
-                                    return true;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
-        return false;
+        if($scope.nullTagUserFrags[tagGroup]){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            if(user[tagGroup] == ""){
+                return true;
+            }
+        }
+            return false;
     };
 
     $scope.filterByIndustry = function(user) {
@@ -731,6 +717,12 @@ angular.module('concierAdminApp',[])
             }
         }
         else if(category == "major"){
+            if(allFrag){
+                $scope.selected[category]["文系"] = true;
+            }
+            else{
+                $scope.selected[category]["文系"] = false;
+            }
             for(idx in $scope.userTag){
                 if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
                 //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
