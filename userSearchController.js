@@ -440,11 +440,11 @@ angular.module('concierAdminApp',[])
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
                 }
-                else if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    return true;
-                }
             }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -458,17 +458,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -482,17 +476,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -545,17 +533,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                 return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -569,17 +551,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
