@@ -1,6 +1,18 @@
 var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000/api';
 
 angular.module('concierAdminApp',[])
+/*
+    .directive('onInitCheck', ['$timeout', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                $timeout(function () {
+                    scope.$emit('InitChange');
+                });
+            }
+        }
+    }])
+*/
 
     .directive('onFinishRender', ['$timeout', function ($timeout) {
         return {
@@ -8,15 +20,15 @@ angular.module('concierAdminApp',[])
             link: function (scope, element, attr) {
                 if (scope.$last === true) {
                     $timeout(function () {
-                        scope.$emit('init_calPage');
-                        //↑scope.$emit('init_calPage');は必ず必要
+                        scope.$emit('initCalPage');
+                        //↑scope.$emit('initCalPage');は必ず必要
                     });
                 }
             }
         }
     }])
     //↑ページの読み込み完了時に処理を実行するといったやり方ができないためカスタムのディレクティブを用いる。
-    //↑ng-repeatが終わった時にinit_calPageを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
+    //↑ng-repeatが終わった時にinitCalPageを実行する。このディレクティブは属性（restrict: 'A'）として用いる。
     //↑linkでディレクティブの具体的な挙動を決める。
     //↑要素（E）とは、<custom-directive></custom-directive>など。属性（A）とは、<div custom-directive>のcustom-directiveなど
     //↑”$timeout(fn[, delay][, invokeApply]);”delayを設定しなければ、即時関数となる。”$emit”自分を含む上方向（親方向）へのイベント通知イベントと一緒にデータも渡すことができる
@@ -48,8 +60,12 @@ angular.module('concierAdminApp',[])
     $scope.loyaltyStr = "3";
 
     //↓絞込み用の変数など
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true }
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -195,6 +211,10 @@ angular.module('concierAdminApp',[])
                 }
             }
         }
+        for(category in $scope.search){
+            $scope.onChange(category, true);
+        }
+        $scope.doSearch();
     }).
         error(function(data, status, headers, config) {
     });
@@ -331,35 +351,36 @@ angular.module('concierAdminApp',[])
         $scope.serchQuery.queryText = "";
     };
 
-    $scope.cancelSearch = function() {
-        $scope.search.univ_level        = 0;
-        $scope.search.grade      = "";
-        $scope.search.preference = "";
-        $scope.search.major_art  = "";
-        $scope.search.major_sci  = "";
-        $scope.search.industry   = "";
-        $scope.search.sex        = "";
-        $scope.search.operator   = "";
-        $scope.search.status     = "";
+    $scope.allCheck = function() {
+        for(allFrag in $scope.allFrags){
+            allFrag = true;
+            for(category in $scope.search){
+                $scope.onChange(category, allFrag);
+            }
+        }
+        $scope.doSearch();
+    };
+
+    $scope.clearCheck = function() {
+        for(allFrag in $scope.allFrags){
+            allFrag = false;
+            for(category in $scope.search){
+                $scope.onChange(category, allFrag);
+            }
+        }
+
+        $scope.selected.loyalty    = "";
+        $scope.selected.keyword        = "";
+        //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
+
         $scope.search.loyalty    = "";
         $scope.search.keyword        = "";
         $scope.serchQuery.queryTag = "";
         $scope.serchQuery.queryText = "";
 
-        $scope.selected.univ_level        = 0;
-        $scope.selected.grade      = "";
-        $scope.selected.preference = "";
-        $scope.selected.major_art  = "";
-        $scope.selected.major_sci  = "";
-        $scope.selected.industry   = "";
-        $scope.selected.sex        = "";
-        $scope.selected.operator   = "";
-        $scope.selected.status     = "";
-        $scope.selected.loyalty    = "";
-        $scope.selected.keyword        = "";
-        //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
+        //document.frm.reset();
 
-        document.frm.reset();
+        $scope.doSearch();
     };
 
 
@@ -557,6 +578,82 @@ angular.module('concierAdminApp',[])
         return user.updated_date >= $scope.search.updated_date;
     };
 
+/*
+    $scope.$on('InitChange', function() {
+        for(category in $scope.search){
+            if(category == "univ_level"){
+                for(idx in $scope.univGroupList){
+                    $scope.selected[category][$scope.univGroupList[idx].univ_level] = true;
+                }
+            }
+            else if(category == "major"){
+                for(idx in $scope.userTag){
+                    str = $scope.userTag[idx]["category"];
+                    if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
+                    //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
+                    //↑nullのまま処理を行うと、indexOfでエラーが出る。
+                        $scope.selected[category][$scope.userTag[idx].name] = true;
+                    }
+                }
+            }
+            else{
+                for(idx in $scope.userTag){
+                    if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"] == category){
+                        $scope.selected[category][$scope.userTag[idx].name] = true;
+                    }
+                }
+            }
+        }
+    });
+*/
+
+/*
+    $scope.$watch('allFrags', function(newValue, oldValue, scope) {
+        $scope.onChangeCount ++;
+        for(allFrag in newValue){
+            for(category in $scope.search){
+                if(category == "univ_level"){
+                    for(idx in $scope.univGroupList){
+                        if(newValue[allFrag]){
+                            $scope.selected[category][$scope.univGroupList[idx].univ_level] = true;
+                        }
+                        else{
+                            $scope.selected[category][$scope.univGroupList[idx].univ_level] = false;
+                        }
+                    }
+                }
+                else if(category == "major"){
+                    for(idx in $scope.userTag){
+                        str = $scope.userTag[idx]["category"];
+                        if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
+                        //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
+                        //↑nullのまま処理を行うと、indexOfでエラーが出る。
+                            if(newValue[allFrag]){
+                                $scope.selected[category][$scope.userTag[idx].name] = true;
+                            }
+                            else{
+                                $scope.selected[category][$scope.userTag[idx].name] = false;
+                            }
+                        }
+                    }
+                }
+                else{
+                    for(idx in $scope.userTag){
+                        if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"] == category){
+                            if(newValue[allFrag]){
+                                $scope.selected[category][$scope.userTag[idx].name] = true;
+                            }
+                            else{
+                                $scope.selected[category][$scope.userTag[idx].name] = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }, true);
+*/
+
     $scope.onChange = function(category, allFrag){
         if(category == "univ_level"){
             for(idx in $scope.univGroupList){
@@ -570,7 +667,6 @@ angular.module('concierAdminApp',[])
         }
         else if(category == "major"){
             for(idx in $scope.userTag){
-                str = $scope.userTag[idx]["category"];
                 if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
                 //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
                 //↑nullのまま処理を行うと、indexOfでエラーが出る。
@@ -596,6 +692,7 @@ angular.module('concierAdminApp',[])
             }
         }
     };
+
 
      $scope.getUserMessages = function(user){
         var url = LINE_API_URL+"/user/"+user.id+"/message";
@@ -673,13 +770,13 @@ angular.module('concierAdminApp',[])
         $scope.cur_page = page+1;
     };
 
-    $scope.$on('init_calPage', function(len) {
+    $scope.$on('initCalPage', function(len) {
         if ($scope.numOfTry == 0) { 
         $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
         $scope.numOfTry += 1;
         }
     });
-    //↑イベント監視を行う。指定のイベント（ここでは、init_calPage）が発生した際に実行されるリスナーを登録できる。
+    //↑イベント監視を行う。指定のイベント（ここでは、initCalPage）が発生した際に実行されるリスナーを登録できる。
     //↑pageCalが呼び出されるたびに実行してしまうので、numOfTryを使って読み込みごとに一回だけ実行されるようにしている。
 
     $scope.calPage = function(len){ 
