@@ -67,6 +67,7 @@ angular.module('concierAdminApp',[])
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
+    $scope.nullTagUserFrag = true;
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -440,11 +441,11 @@ angular.module('concierAdminApp',[])
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
                 }
-                else if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    return true;
-                }
             }
+        }
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -458,17 +459,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -482,17 +477,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -527,11 +516,9 @@ angular.module('concierAdminApp',[])
                 }
             }
         }
-        if($scope.nullTagUserFrags[tagGroup]){
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
         //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-            if(user[tagGroup] == ""){
-                return true;
-            }
+            return true;
         }
             return false;
     };
@@ -545,17 +532,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                 return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };
@@ -569,17 +550,11 @@ angular.module('concierAdminApp',[])
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
                     return true;
                 }
-                else if($scope.nullTagUserFrags[tagGroup]){
-                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
-                    for(tagId in user.user_tag){
-                        for(Idx in $scope.userTag){
-                            if(tagId == $scope.userTag[Idx].id && $scope.userTag[Idx].category != tagGroup){
-                                return true;
-                            }
-                        }
-                    }
-                }
             }
+        }
+        if($scope.nullTagUserFrag && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
         }
         return false;
     };

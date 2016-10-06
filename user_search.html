@@ -28,7 +28,7 @@
                         <div class="col-sm-1">
                         大学
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <label>
                                 <input type="button" value="すべてチェック" ng-model="allFrags.allUnivLevel" ng-click = "allFrags.allUnivLevel=true;onChange('univ_level',allFrags.allUnivLevel)" name="allFrags.allUnivLevel" class="btn btn-secondary btn-xs">
                             </label>
@@ -36,12 +36,8 @@
                             <label>
                                 <input type="button" value="解除" ng-model="allFrags.allUnivLevel" ng-click = "allFrags.allUnivLevel=false;onChange('univ_level',allFrags.allUnivLevel)" name="allFrags.allUnivLevel" class="btn btn-default btn-xs">
                             </label>
-                            <label>
-                                <font size="1">タグなし：</font>
-                                <input type="checkbox" ng-model="nullTagUserFrags['univ_level']" name="null_tag_user_include" checked="checked">
-                            </label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                             <label ng-repeat="tag in univGroupList">
                                 <input type="checkbox" ng-model="selected.univ_level[tag.univ_level]" ng-checked="allFrags.allUnivLevel" name="univ_level_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -56,7 +52,7 @@
                         <div class="col-sm-1">
                         卒業年度
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <label>
                                 <input type="button" value="すべてチェック" ng-model="allFrags.allGrade" ng-click = "allFrags.allGrade=true;onChange('grade',allFrags.allGrade)" name="allFrags.allGrade" class="btn btn-secondary btn-xs">
                             </label>
@@ -64,12 +60,8 @@
                             <label>
                                 <input type="button" value="解除" ng-model="allFrags.allGrade" ng-click = "allFrags.allGrade=false;onChange('grade',allFrags.allGrade)" name="allFrags.allGrade" class="btn btn-default btn-xs">
                             </label>
-                            <label>
-                                <font size="1">タグなし：</font>
-                                <input type="checkbox" ng-model="nullTagUserFrags['grade']" name="null_tag_user_include" checked="checked">
-                            </label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                             <label ng-repeat="tag in userTag|filter: { category:'grade' }">
                                 <input type="checkbox" ng-model="selected.grade[tag.name]" ng-checked="allFrags.allGrade" name="grade_search">
                                 <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -84,7 +76,7 @@
                         <div class="col-sm-1">
                         専攻
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <div>
                             <label>
                                 <input type="button" value="すべてチェック" ng-model="allFrags.allMajor" ng-click = "allFrags.allMajor=true;onChange('major',allFrags.allMajor)" name="allFrags.allMajor" class="btn btn-secondary btn-xs">
@@ -93,13 +85,9 @@
                             <label>
                                 <input type="button" value="解除" ng-model="allFrags.allMajor" ng-click = "allFrags.allMajor=false;onChange('major',allFrags.allMajor)" name="allFrags.allMajor" class="btn btn-default btn-xs">
                             </label>
-                            <label>
-                                <font size="1">タグなし：</font>
-                                <input type="checkbox" ng-model="nullTagUserFrags['major']" name="null_tag_user_include" checked="checked">
-                            </label>
                             </div>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                         <label>
                             <input type="checkbox" ng-model="selected.major['文系']" ng-checked="allFrags.allMajor" name="major_search">
                             <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -119,7 +107,7 @@
                         <div class="col-sm-1">
                         志向
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                         <label>
                             <input type="button" value="すべてチェック" ng-model="allFrags.allPreference" ng-click = "allFrags.allPreference=true;onChange('preference',allFrags.allPreference)" name="allFrags.allPreference" class="btn btn-secondary btn-xs">
                         </label>
@@ -127,12 +115,8 @@
                         <label>
                             <input type="button" value="解除" ng-model="allFrags.allPreference" ng-click = "allFrags.allPreference=false;onChange('preference',allFrags.allPreference)" name="allFrags.allPreference" class="btn btn-default btn-xs">
                         </label>
-                        <label>
-                            <font size="1">タグなし：</font>
-                            <input type="checkbox" ng-model="nullTagUserFrags['preference']" name="null_tag_user_include" checked="checked">
-                        </label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                         <label ng-repeat="tag in userTag|filter: { category:'preference' }">
                           <input type="checkbox" ng-model="selected.preference[tag.name]" ng-checked="allFrags.allPreference" name="preference_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -147,7 +131,7 @@
                         <div class="col-sm-1">
                         志望業界
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                         <label>
                             <input type="button" value="すべてチェック" ng-model="allFrags.allIndustry" ng-click = "allFrags.allIndustry=true;onChange('industry',allFrags.allIndustry)" name="allFrags.allIndustry" class="btn btn-secondary btn-xs">
                         </label>
@@ -155,12 +139,8 @@
                         <label>
                             <input type="button" value="解除" ng-model="allFrags.allIndustry" ng-click = "allFrags.allIndustry=false;onChange('industry',allFrags.allIndustry)" name="allFrags.allIndustry" class="btn btn-default btn-xs">
                         </label>
-                        <label>
-                            <font size="1">タグなし：</font>
-                            <input type="checkbox" ng-model="nullTagUserFrags['industry']" name="null_tag_user_include" checked="checked">
-                        </label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                         <label ng-repeat="tag in userTag|filter: { category:'industry' }">
                           <input type="checkbox" ng-model="selected.industry[tag.name]" ng-checked="allFrags.allIndustry" name="industry_search">
                           <!-- <input type="checkbox" ng-model="user_univ" value="{{tag.name}}" name="univ_search"> -->
@@ -175,7 +155,7 @@
                         <div class="col-sm-1">
                         性別
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-1">
                             <label>
                                 <input type="button" value="すべてチェック" ng-model="allFrags.allSex" ng-click = "allFrags.allSex=true;onChange('sex',allFrags.allSex)" name="allFrags.allSex" class="btn btn-secondary btn-xs">
                             </label>
@@ -183,12 +163,8 @@
                             <label>
                                 <input type="button" value="解除" ng-model="allFrags.allSex" ng-click = "allFrags.allSex=false;onChange('sex',allFrags.allSex)" name="allFrags.allSex" class="btn btn-default btn-xs">
                             </label>
-                            <label>
-                                <font size="1">タグなし：</font>
-                                <input type="checkbox" ng-model="nullTagUserFrags['sex']" name="null_tag_user_include" checked="checked">
-                            </label>
                         </div>
-                        <div class="col-sm-9">
+                        <div class="col-sm-10">
                           <label>
                             <input type="checkbox" ng-model="selected.sex['男']" ng-checked="allFrags.allSex" name="sex_search">
                               男
@@ -227,7 +203,7 @@
                     <div class="list-group-item" on-Init-Check>
                     <div class="row">
                         <div class="col-sm-4">
-                        全表示件数：{{searchedValue = (lineUserList | filter: filterByMajor | filter: filterByLoyalty | filter: filterUser ).length}}
+                        全表示件数：{{searchedValue = (lineUserList | filter: filterByLoyalty | filter: filterUser ).length}}
                         </div>
                         <div  class="col-sm-7">
                         </div>
@@ -245,6 +221,7 @@
             </div>
     </div>
 
+<!--
     <div>
         テストtestTags：{{testTags}}
     </div>
@@ -263,6 +240,7 @@
     <div>
         テストsearch：{{search}}
     </div>
+-->
 
     <table class="table table-bordered user-list-table">
         <div>
@@ -272,6 +250,10 @@
             <button ng-click="clearCheck()" class="btn btn-border btn-xs">
                 <span class="text-primary">全解除</span>
             </button>
+            <label>
+                <font size="1">タグなし含む：</font>
+                <input type="checkbox" ng-model="nullTagUserFrag" name="null_tag_user_include" checked="checked">
+            </label>
             <span class="num-of-show-page">ページ当たり表示する件数
                 <select  ng-model="len" name="pageValue" ng-change="calPage(len)">
                     <option value="10">10</option>
@@ -306,7 +288,7 @@
         <!--
         <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByUnivLevel| filter: filterByGrade| filter: filterByMajor| filter: filterByPreference| filter: filterByIndustry| filter: selected.keyword| limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
         -->
-        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByMajor | filter: filterByLoyalty | filter: filterUser | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
+        <tr ng-repeat="item in filteredList = (lineUserList | filter: filterByUnivLevel | filter: filterByGrade | filter: filterByLoyalty | filter: filterUser | limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
             <div>
                 <td>
                     <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
