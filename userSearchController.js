@@ -65,7 +65,8 @@ angular.module('concierAdminApp',[])
     //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
-    $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true }
+    $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true };
+    $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -439,6 +440,10 @@ angular.module('concierAdminApp',[])
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
                 }
+                else if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                    return true;
+                }
             }
         }
         return false;
@@ -451,7 +456,17 @@ angular.module('concierAdminApp',[])
                  if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
                 //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
                 //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
-                return true;
+                    return true;
+                }
+                else if($scope.nullTagUserFrags[tagGroup]){
+                //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+                    for(tagId in user.user_tag){
+                        for(Idx in $scope.userTag){
+                            if(tagId == $scope.userTag[Idx].id && userTag[Idx].category != tagGroup){
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
         }
