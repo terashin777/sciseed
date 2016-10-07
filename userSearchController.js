@@ -63,9 +63,9 @@ angular.module('concierAdminApp',[])
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
-    $scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    $scope.selected = { univ_level:{10:true, 9:true, 8:true, 7:true, 6:true,0:true}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
-    $scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allSex:true };
+    $scope.allFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
 
     //↓ページャー機能用の変数など
@@ -145,6 +145,9 @@ angular.module('concierAdminApp',[])
             //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                 for(tagIdx in $scope.userTag){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
+                    if(!$scope.userTag[tagIdx]["category"]){
+                        continue;
+                    }
                     if($scope.userTag[tagIdx]["category"] && $scope.userTag[tagIdx]["category"].indexOf($scope.addList[addIdx]["category"]) == -1){
                     //↑indexOfを用いる時は必ず、文字列があることを確認してから行う。
                     //↑ここでは、$scope.userTag[tagIdx]["category"] && がそれにあたる。
@@ -152,6 +155,9 @@ angular.module('concierAdminApp',[])
                          //↑タグのcategoryが現在回しているaddlistのcategoryと異なる場合は、以下の処理を実行しない。
                          //↑indexOfを用いているのは、categoryがmajor_artまたはmajor_sciであるものを同じものとみなすため。
                          //↑indexOfを用いれば他のcategoryと区別しなくてよくなるため、majorのときだけ分岐するif文がいらなくなる。
+                    }
+                    if($scope.addList[addIdx]["category"] != "" && $scope.addList[addIdx]["category"].indexOf("univ")==-1){
+                        $scope.selected[$scope.addList[addIdx]['category']][$scope.userTag[tagIdx]['name']]=true;
                     }
                     for(userTagIdx in $scope.lineUserList[userIdx].user_tag){
                     //↑ユーザーのタグの数だけループを回し、ユーザーの持つ1つ1つのタグIDがどんなタグであるかを判定する。
@@ -220,7 +226,7 @@ angular.module('concierAdminApp',[])
                 }
             }
         }
-        for(category in $scope.search){
+        for(category in $scope.selected){
             $scope.onChange(category, true);
         }
         $scope.doSearch();
@@ -361,36 +367,30 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.allCheck = function() {
-        for(allFrag in $scope.allFrags){
-            $scope.allFrags[allFrag] = true;
-            for(category in $scope.search){
-                $scope.onChange(category, allFrag);
+        for(category in $scope.search){
+            if($scope.allCrear){
+                $scope.allFrags[category] = false;
+                $scope.selected.loyalty    = "";
+                $scope.selected.keyword        = "";
+                //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
+
+                $scope.search.loyalty    = "";
+                $scope.search.keyword        = "";
+                $scope.serchQuery.queryTag = "";
+                $scope.serchQuery.queryText = "";
+
+                //document.frm.reset();
             }
+            else{
+                $scope.allFrags[category] = true;
+            }
+            if(category == "sex" || category == "loyalty" || category == "keyword" || category == "updated_date"){
+                continue;
+            }
+                $scope.onChange(category, $scope.allFrags[category]);
         }
         $scope.doSearch();
-    };
-
-    $scope.clearCheck = function() {
-        for(allFrag in $scope.allFrags){
-            $scope.allFrags[allFrag] = false;
-            for(category in $scope.search){
-                $scope.onChange(category, allFrag);
-            }
-        }
-
-        $scope.selected.loyalty    = "";
-        $scope.selected.keyword        = "";
-        //絞込みを解除した後、検索を押すと選択されていないのに絞込みが行われるので、selectedも初期化する必要がある。
-
-        $scope.search.loyalty    = "";
-        $scope.search.keyword        = "";
-        $scope.serchQuery.queryTag = "";
-        $scope.serchQuery.queryText = "";
-
-        //document.frm.reset();
-
-        $scope.doSearch();
-    };
+    }
 
     $scope.onChange = function(category, allFrag){
          for(idx in $scope.selected[category]){
