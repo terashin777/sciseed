@@ -67,6 +67,7 @@ angular.module('concierAdminApp',[])
     $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     $scope.allFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
+    $scope.all = true;
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
@@ -366,9 +367,12 @@ angular.module('concierAdminApp',[])
         $scope.serchQuery.queryText = "";
     };
 
-    $scope.allCheck = function() {
+    $scope.allCheck = function(all) {
         for(category in $scope.search){
-            if($scope.allCrear){
+            if(all){
+                $scope.allFrags[category] = true;
+            }
+            else{
                 $scope.allFrags[category] = false;
                 $scope.selected.loyalty    = "";
                 $scope.selected.keyword        = "";
@@ -380,9 +384,6 @@ angular.module('concierAdminApp',[])
                 $scope.serchQuery.queryText = "";
 
                 //document.frm.reset();
-            }
-            else{
-                $scope.allFrags[category] = true;
             }
             if(category == "sex" || category == "loyalty" || category == "keyword" || category == "updated_date"){
                 continue;
@@ -456,24 +457,32 @@ angular.module('concierAdminApp',[])
             if(tagGroup == "sex" || tagGroup == "loyalty" || tagGroup == "keyword" || tagGroup == "updated_date"){
                 continue;
             }
-            for(tag in $scope.search[tagGroup]){
-                if($scope.search[tagGroup][tag]){
-                    //↓majorだけは別処理
-                    if(tagGroup == "major"){
-                        if(tag == "文系"){
-                            if(!user["isArt"]){
-                                return false;
+            if(tagGroup == "major"){
+                for(tag in $scope.search[tagGroup]){
+                    if($scope.search[tagGroup][tag]){
+                        //↓majorだけは別処理
+                            if(tag == "文系"){
+                                if(!user["isArt"]){
+                                    return false;
+                                }
+                            }
+                            else{
+                                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+                                }
+                                else if(user[tagGroup] != tag){
+                                    return false;
+                                }
                             }
                         }
-                        else{
-                            if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != tag){
-                                return false;
-                            }
+                }
+            }
+            //↓major以外の処理
+            else{
+                for(tag in $scope.search[tagGroup]){
+                    if($scope.search[tagGroup][tag]){
+                        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
                         }
-                    }
-                    //↓major以外の処理
-                    else{
-                        if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != tag){
+                        else if(user[tagGroup] != tag){
                             return false;
                                 //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                                 //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。

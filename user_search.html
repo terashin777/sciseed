@@ -284,10 +284,10 @@
 
     <table class="table table-bordered user-list-table">
         <div>
-            <button ng-click="allCrear=false;allCheck()" class="btn btn-primary btn-xs">
+            <button ng-click="all=true;allCheck(all)" class="btn btn-primary btn-xs">
                 すべてチェック
             </button>
-            <button ng-click="allCrear=true;allCheck()" class="btn btn-border btn-xs">
+            <button ng-click="all=false;allCheck(all)" class="btn btn-border btn-xs">
                 <span class="text-primary">全解除</span>
             </button>
             <span class="num-of-show-page">ページ当たり表示する件数
