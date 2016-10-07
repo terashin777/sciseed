@@ -458,32 +458,45 @@ angular.module('concierAdminApp',[])
                 continue;
             }
             if(tagGroup == "major"){
+                var falseFrag = true;
                 for(tag in $scope.search[tagGroup]){
+                //↑タグ名がtagに入る。
                     if($scope.search[tagGroup][tag]){
                         //↓majorだけは別処理
                             if(tag == "文系"){
-                                if(!user["isArt"]){
-                                    return false;
+                                if(user["isArt"]){
+                                    falseFrag = false;
+                                    break;
                                 }
                             }
                             else{
                                 if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+                                    falseFrag = false;
+                                    break;
                                 }
-                                else if(user[tagGroup] != tag){
-                                    return false;
+                                else if(user[tagGroup] == tag){
+                                    falseFrag = false;
+                                    break;
                                 }
                             }
                         }
                 }
+                if(falseFrag){
+                    return false;
+                }
             }
             //↓major以外の処理
             else{
+                var falseFrag = true;
                 for(tag in $scope.search[tagGroup]){
                     if($scope.search[tagGroup][tag]){
                         if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+                            trueFrag = false;
+                            break;
                         }
-                        else if(user[tagGroup] != tag){
-                            return false;
+                        else if(user[tagGroup] == tag){
+                            trueFrag = false;
+                            break;
                                 //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                                 //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
                                 //↑タグの分類ごとにreturn false;が設定されているので、AND検索。
@@ -491,6 +504,9 @@ angular.module('concierAdminApp',[])
                                 //↑どの分類でもfalseを返されずに最後まで残ったユーザーに対してのみtrueが返されて、表示される。
                         }
                     }
+                }
+                if(falseFrag){
+                    return false;
                 }
             }
         }
