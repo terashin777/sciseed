@@ -341,7 +341,7 @@ angular.module('concierAdminApp',[])
         }*/
         for(var tagGroup in $scope.selected){
             for(var item in $scope.selected[tagGroup]){
-                $scope.search[tagGroup][item]      = $scope.selected[tagGroup][item];
+                $scope.search[tagGroup][item] = $scope.selected[tagGroup][item];
             }
         }
         //↑下のようにすると参照渡しになり、searchとselectedが同じものとなってしまうため、上のようにして値渡しにしている。
@@ -362,7 +362,7 @@ angular.module('concierAdminApp',[])
 
     $scope.allCheck = function() {
         for(allFrag in $scope.allFrags){
-            allFrag = true;
+            $scope.allFrags[allFrag] = true;
             for(category in $scope.search){
                 $scope.onChange(category, allFrag);
             }
@@ -372,7 +372,7 @@ angular.module('concierAdminApp',[])
 
     $scope.clearCheck = function() {
         for(allFrag in $scope.allFrags){
-            allFrag = false;
+            $scope.allFrags[allFrag] = false;
             for(category in $scope.search){
                 $scope.onChange(category, allFrag);
             }
@@ -390,6 +390,17 @@ angular.module('concierAdminApp',[])
         //document.frm.reset();
 
         $scope.doSearch();
+    };
+
+    $scope.onChange = function(category, allFrag){
+         for(idx in $scope.selected[category]){
+            if(allFrag){
+                $scope.selected[category][idx] = true;
+            }
+            else{
+                $scope.selected[category][idx] = false;
+            }
+        }
     };
 
 
@@ -442,24 +453,27 @@ angular.module('concierAdminApp',[])
     //↓フィルターごとではなく、ユーザーごとにフィルターの処理を実行しなくては、動作が遅くなる。
     //↓フィルターごとにタグリストを参照するループ関数が含むことになるため。
         for(tagGroup in $scope.search){
-            for(item in $scope.search[tagGroup]){
-                if($scope.search[tagGroup][item]){
+            if(tagGroup == "sex" || tagGroup == "loyalty" || tagGroup == "keyword" || tagGroup == "updated_date"){
+                continue;
+            }
+            for(tag in $scope.search[tagGroup]){
+                if($scope.search[tagGroup][tag]){
                     //↓majorだけは別処理
-                    if(tagGroup = "major"){
-                        if(item == "文系"){
+                    if(tagGroup == "major"){
+                        if(tag == "文系"){
                             if(!user["isArt"]){
                                 return false;
                             }
                         }
                         else{
-                            if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != $scope.search[tagGroup][item]){
+                            if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != tag){
                                 return false;
                             }
                         }
                     }
                     //↓major以外の処理
                     else{
-                        if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != $scope.search[tagGroup][item]){
+                        if(!$scope.nullTagUserFrags[tagGroup] && user[tagGroup] != tag){
                             return false;
                                 //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                                 //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
@@ -723,52 +737,6 @@ angular.module('concierAdminApp',[])
         }
     }, true);
 */
-
-    $scope.onChange = function(category, allFrag){
-        if(category == "univ_level"){
-            for(idx in $scope.univGroupList){
-                if(allFrag){
-                    $scope.selected[category][$scope.univGroupList[idx].univ_level] = true;
-                }
-                else{
-                    $scope.selected[category][$scope.univGroupList[idx].univ_level] = false;
-                }
-            }
-        }
-        else if(category == "major"){
-            if(allFrag){
-                $scope.selected[category]["文系"] = true;
-            }
-            else{
-                $scope.selected[category]["文系"] = false;
-            }
-            for(idx in $scope.userTag){
-                if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"].indexOf("major") != -1){
-                //↑$scope.userTag[idx]["category"]がnullのこともあるので、$scope.userTag[idx]["category"]がnullでないときに処理を実行するようにする。
-                //↑nullのまま処理を行うと、indexOfでエラーが出る。
-                    if(allFrag){
-                        $scope.selected[category][$scope.userTag[idx].name] = true;
-                    }
-                    else{
-                        $scope.selected[category][$scope.userTag[idx].name] = false;
-                    }
-                }
-            }
-        }
-        else{
-            for(idx in $scope.userTag){
-                if($scope.userTag[idx]["category"] && $scope.userTag[idx]["category"] == category){
-                    if(allFrag){
-                        $scope.selected[category][$scope.userTag[idx].name] = true;
-                    }
-                    else{
-                        $scope.selected[category][$scope.userTag[idx].name] = false;
-                    }
-                }
-            }
-        }
-    };
-
 
      $scope.getUserMessages = function(user){
         var url = LINE_API_URL+"/user/"+user.id+"/message";
