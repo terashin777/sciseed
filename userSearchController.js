@@ -120,6 +120,23 @@ angular.module('concierAdminApp',[])
         dataType: "json"
     }).
         success(function(data, status, headers, config) {
+
+        var testStrs = [{category:"huksudfaw"},{category:"ahfiasifjoa"}];
+        var tests = [{category:"gh"},{category:"33454"}];
+        var copy_testStrs = $.extend(true, {}, testStrs);
+        var copy_tests = $.extend(true, {}, tests);
+        //$scope.testStr = copy_testStrs[0]["category"] + '';
+        //$scope.test = copy_tests[0]["category"] + '';
+        $scope.testStr = testStrs[0]["category"];
+        $scope.test = tests[0]["category"];
+        var testStr = copy_testStrs[0]["category"] + '';
+        var test = copy_tests[0]["category"] + '';
+        //$scope.testIndexOf = testStr.match("/" + test + "/");
+        //$scope.testIndexOf = testStr.indexOf(test);
+        //$scope.testIndexOf = $scope.testStr.indexOf($scope.test);
+        //$scope.testIndexOf = $scope.testStr.indexOf($scope.test);
+        $scope.testIndexOf = testStrs[0]["category"].indexOf(tests[0]["category"]);
+
         $scope.lineUserList = data; //ここにユーザーリストが入る
         $scope.numOfUser = Object.keys($scope.lineUserList).length;
         $scope.numOfAdd = Object.keys($scope.addList).length ;
@@ -144,7 +161,7 @@ angular.module('concierAdminApp',[])
             //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                 for(tagIdx in $scope.userTag){
                 //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
-                    if($scope.userTag[tagIdx]["category"].indexOf($scope.addList[addIdx]["category"] + '') == -1){
+                    if($scope.userTag[tagIdx]["category"] && $scope.userTag[tagIdx]["category"].indexOf($scope.addList[addIdx]["category"]) == -1){
                     //↑addIdx + ''でaddIdxを文字列（String型）に変換。
                         continue;
                          //↑タグのcategoryが現在回しているaddlistのcategoryと異なる場合は、以下の処理を実行しない。
