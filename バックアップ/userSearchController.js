@@ -127,7 +127,7 @@ angular.module('concierAdminApp',[])
         for(var userIdx=0 ; userIdx<$scope.numOfUser ; userIdx++){
             for(var addIdx=0; addIdx<$scope.numOfAdd ; addIdx++){
                 if($scope.addList[addIdx]["category"] === "univ_level"){
-                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
+                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = 0;
                 }
                 else{
                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
@@ -406,6 +406,52 @@ angular.module('concierAdminApp',[])
         }
     };
 
+
+/*
+    $scope.filterByTag = function(user){
+        var tagCheck = false;
+        for(tagGroup in $scope.search){
+        //↑検索項目を取り出してループする。
+        //↑連想配列のfor・・・in～では、inの左側には、各キーが入る。
+            $scope.testTags.push(tagGroup);
+            if(tagGroup == "univ_level"){
+            //↑"univ_level"はlineUserListのuser_tagにIDとしては含まれないので、別処理をする。
+                tagCheck = false;
+                for(item in $scope.search[tagGroup]){
+                    if($scope.search[tagGroup][item]){
+                        if(user[tagGroup] == item){
+                            tagCheck = true;
+                            //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                            //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
+                        }
+                    }
+                }
+                if(!tagCheck){
+                    return false;
+                    //↑tagCheckがfalse、つまり選択されたどのuniv_levelとも一致しないユーザーははじくようにしている。
+                }
+            }
+            else{
+                tagCheck = false;
+                for(item in $scope.search[tagGroup]){
+                    $scope.testItems.push(item);
+                    if($scope.search[tagGroup][item]){
+                         if(user.user_tag.indexOf(getTagId(item)) != -1){ 
+                        //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                        //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                            tagCheck = true;
+                        }
+                    }
+                }
+                if(!tagCheck){
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+*/
+
     $scope.filterByTag = function(user){
     //↓フィルターごとではなく、ユーザーごとにフィルターの処理を実行しなくては、動作が遅くなる。
     //↓フィルターごとにタグリストを参照するループ関数が含むことになるため。
@@ -469,6 +515,163 @@ angular.module('concierAdminApp',[])
         }
         return true;
     }
+
+    $scope.filterByUnivLevel = function(user) {
+        var tagGroup = "univ_level";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                if(user[tagGroup] === item){
+                    return true;
+                    //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                    //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
+        }
+        return false;
+    }
+
+    $scope.filterByGrade = function(user) {
+        var tagGroup = "grade";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    return true;
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
+        }
+        return false;
+    };
+
+    $scope.filterByPreference = function(user) {
+        var tagGroup = "preference";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    return true;
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
+        }
+        return false;
+    };
+
+    $scope.filterByMajor = function(user) {
+        var tagGroup = "major";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+            //↑個別のタグがtrue（チェックされている）なら判定を行う。
+                //↓文系タグのフィルター
+                if(item == "文系"){
+                //↑文系にチェックが入れられているときは別処理を行う。
+                    for(tag in $scope.userTag){
+                        if($scope.userTag[tag].category == "major_art"){
+                        //↑タグリストのなかの文系タグだけを全て取り出してフィルターをかける。
+                            if(user.user_tag.indexOf($scope.userTag[tag].id) != -1){ 
+                            //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                            //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                                return true;
+                            //↑選択されたタグの一つでも一致する時は、そのユーザーを残す。
+                            }
+                        }
+                    }
+                }
+                //↓理系タグのフィルター
+                else{
+                    if(user[tagGroup] == item){ 
+                    //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                    //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                        return true;
+                    }
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup]){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            if(user[tagGroup] == ""){
+                return true;
+            }
+        }
+            return false;
+    };
+
+    $scope.filterByIndustry = function(user) {
+        var tagGroup = "industry";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                return true;
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
+        }
+        return false;
+    };
+
+    $scope.filterBySex = function(user) {
+        var tagGroup = "sex";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                    return true;
+                }
+            }
+        }
+        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
+        //↑タグなしユーザーを含むにチェックが入れられていて、かつタグを持っていない時はそのユーザーを残す。
+            return true;
+        }
+        return false;
+    };
+
+    $scope.filterByOperator = function(user) {
+        var tagGroup = "operator";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                return true;
+                }
+            }
+        }
+        return false;
+    };
+
+    $scope.filterByStatus = function(user) {
+        var tagGroup = "status";
+        for(item in $scope.search[tagGroup]){
+            if($scope.search[tagGroup][item]){
+                 if(user.user_tag.indexOf($scope.getTagId(item)) != -1){ 
+                //↑array.indexOf(引数)はarrayに引数を含んでいればそのindex番号を返す．なければ-1を返す．
+                //↑-1を返さない。つまり、arrayに引数を含んでいるという条件でfilterをかけている。
+                return true;
+                }
+            }
+        }
+        return false;
+    };
 
     $scope.filterByLoyalty = function(user) {
         return user.loyalty >= $scope.search.loyalty;
@@ -640,9 +843,9 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.$on('initCalPage', function(len) {
-        if ($scope.numOfTry === 0) { 
-            $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
-            $scope.numOfTry += 1;
+        if ($scope.numOfTry == 0) { 
+        $scope.numOfPage = Math.ceil( $scope.searchedValue/$scope.len);
+        $scope.numOfTry += 1;
         }
     });
     //↑イベント監視を行う。指定のイベント（ここでは、initCalPage）が発生した際に実行されるリスナーを登録できる。
@@ -664,26 +867,21 @@ angular.module('concierAdminApp',[])
     $scope.firstPage =function() {
         $scope.pager_start = 0;
         $scope.start = 0;
-        $scope.cur_page = 1;
     };
 
     $scope.lastPage =function() {
-        //var pageVol = Math.ceil( numOfPage/10 );
         if($scope.numOfPage>10){
-            $scope.pager_start = $scope.numOfPage - 9;
+            $scope.pager_start = $scope.numOfPage - 11;
         }
         else{
             $scope.pager_start = 0;
         }
         $scope.start =  $scope.len * ($scope.numOfPage - 1);
-        $scope.cur_page = $scope.numOfPage;
     };
 
     $scope.arrOfPage = function(n) {
         var arr = [];
-        for (var i=0; i<n; i++) {
-            arr.push(i);
-        }
+        for (var i=0; i<n; ++i) arr.push(i);
         return arr;
     };
     //↑injectorがすべてのモジュールをロード完了時に実行すべき内容を登録。アプリケーションの初期化に使用する。
