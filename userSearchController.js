@@ -453,50 +453,51 @@ angular.module('concierAdminApp',[])
     $scope.filterByTag = function(user){
     //↓フィルターごとではなく、ユーザーごとにフィルターの処理を実行しなくては、動作が遅くなる。
     //↓フィルターごとにタグリストを参照するループ関数が含むことになるため。
+        var trueFrag = false;
         for(tagGroup in $scope.search){
-            if(tagGroup == "sex" || tagGroup == "loyalty" || tagGroup == "keyword" || tagGroup == "updated_date"){
+            if(tagGroup === "sex" || tagGroup === "loyalty" || tagGroup === "keyword" || tagGroup === "updated_date"){
                 continue;
             }
-            if(tagGroup == "major"){
-                var falseFrag = true;
+            else if(tagGroup === "major"){
+                trueFrag = false;
                 for(tag in $scope.search[tagGroup]){
                 //↑タグ名がtagに入る。
                     if($scope.search[tagGroup][tag]){
                         //↓majorだけは別処理
-                            if(tag == "文系"){
+                            if(tag === "文系"){
                                 if(user["isArt"]){
-                                    falseFrag = false;
-                                    break;
+                                    trueFrag = true;
+                                    continue;
                                 }
                             }
                             else{
-                                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
-                                    falseFrag = false;
-                                    break;
+                                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                                    trueFrag = true;
+                                    continue;
                                 }
                                 else if(user[tagGroup] == tag){
-                                    falseFrag = false;
-                                    break;
+                                    trueFrag = true;
+                                    continue;
                                 }
                             }
                         }
                 }
-                if(falseFrag){
+                if(!trueFrag){
                     return false;
                 }
             }
             //↓major以外の処理
             else{
-                var falseFrag = true;
+                trueFrag = false;
                 for(tag in $scope.search[tagGroup]){
                     if($scope.search[tagGroup][tag]){
-                        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == ""){
-                            trueFrag = false;
-                            break;
+                        if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                            trueFrag = true;
+                            continue;
                         }
                         else if(user[tagGroup] == tag){
-                            trueFrag = false;
-                            break;
+                            trueFrag = true;
+                            continue;
                                 //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                                 //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
                                 //↑タグの分類ごとにreturn false;が設定されているので、AND検索。
@@ -505,7 +506,7 @@ angular.module('concierAdminApp',[])
                         }
                     }
                 }
-                if(falseFrag){
+                if(!trueFrag){
                     return false;
                 }
             }
@@ -517,7 +518,7 @@ angular.module('concierAdminApp',[])
         var tagGroup = "univ_level";
         for(item in $scope.search[tagGroup]){
             if($scope.search[tagGroup][item]){
-                if(user[tagGroup] == item){
+                if(user[tagGroup] === item){
                     return true;
                     //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
                     //↑選択されたuniv_levelのどれかと一致するユーザーは残す。
