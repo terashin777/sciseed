@@ -13,8 +13,10 @@
     <div class="container-fluid">
         <div class="row user-list-search-field">
             <div class="col-lg-12 col-xs-12">
+
                 <form name="frm">
                     <div class="list-group">
+
                         <div class="list-group-item">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -275,66 +277,103 @@
     </div>
 -->
 
-                <div class="table-responsive">
-                    <table class="table table-bordered user-list-table">
-                        <div>
+                    <div class="row show-head">
+
+                        <div class="col-sm-2">
                             <button ng-click="all=true;allCheck(all)" class="btn btn-primary btn-xs">
                                 すべてチェック
                             </button>
                             <button ng-click="all=false;allCheck(all)" class="btn btn-border btn-xs">
                                 <span class="text-primary">全解除</span>
                             </button>
-                            <span class="num-of-show-page">ページ当たり表示する件数
-                                <select  ng-model="len" name="pageValue" ng-change="calPage(len)">
-                                    <option value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="50" ng-selected = "true">50</option>
-                                    <!--ng-selectedをtrueにしないと選択されない-->
-                                    <option value="100">100</option>
-                                    <option value="200">200</option>
-                                    <option value="500">500</option>
-                                    <option ng-value= searchedValue>全件</option>
-                                </select>
-                                &nbsp;&nbsp;&nbsp;&nbsp;現在のページ：{{cur_page}}
+                        </div>
+                        <div class="col-sm-4">
+                        </div>
+                        <div class="col-sm-4">
+                            <span class="col-right">
+                                ページ当たり表示する件数
+                                    <select  ng-model="len" name="pageValue" ng-change="calPage(len)">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="50" ng-selected = "true">50</option>
+                                        <!--ng-selectedをtrueにしないと選択されない-->
+                                        <option value="100">100</option>
+                                        <option value="200">200</option>
+                                        <option value="500">500</option>
+                                        <option ng-value= searchedValue>全件</option>
+                                    </select>
                             </span>
                         </div>
-                        <tr>
-                            <th><a href ng-click="tag_sort('name', re_tags.name)">名前 <span class = "sort_icon">{{icons.name}}</span></a></th>
-                            <!--↑
-                                name=!name;
-                                sort('name',name);
-                                という関数を埋め込んでいる。
-                            -->
-                            <th><a href ng-click="tag_sort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a></th>
-                            <th><a href ng-click="tag_sort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a></th>
-                            <th><a href ng-click="tag_sort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a></th>
-                            <th><a href ng-click="tag_sort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a></th>
-                            <th><a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></th>
-                            <th><a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a></th>
-                            <th><a href ng-click="tag_sort('updated_date', re_tags.updated_date)">更新日 <span class = "sort_icon">{{icons.updated_date}}</span></a></th>
-                            <th>編集</th>
-                        </tr> 
-                        
-                        <tr ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterUser| limitTo: len: start | orderBy : sort) track by $index" on-finish-render >
+                        <div class="col-sm-2 ">
+                            <span class="col-right">
+                                現在のページ：{{cur_page}}
+                            </span>
+                        </div>
+                    </div>
+
+             <div class="list-group">
+
+                <div class="list-group-item">
+                    <div class="row">
+
+                        <div class="col-sm-2">
+                            <a href ng-click="tag_sort('name', re_tags.name)">名前 <span class = "sort_icon">{{icons.name}}</span></a>
+                        </div>
+                        <!--↑
+                            name=!name;
+                            sort('name',name);
+                            という関数を埋め込んでいる。
+                        -->
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a>
+                        </div>
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></div>
+                        <div class="col-sm-1">
+                            <a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a>
+                        </div>
+                        <div class="col-sm-2">
+                            <a href ng-click="tag_sort('updated_date', re_tags.updated_date)">更新日 <span class = "sort_icon">{{icons.updated_date}}</span></a>
+                        </div>
+                        <div class="col-sm-1">
+                            編集
+                        </div>
+
+                    </div>
+                </div>
+
+                <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterUser| limitTo: len: start | orderBy : sort) track by $index" on-finish-render, class="list-group-item">
+
+                        <div class="row">
+
                             <div>
-                                <td>
+                                <div  class="tag-wrapper col-sm-2">
                                     <a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
                                 </td>
                             </div>
                             <div ng-if="currentUser.id!=item.id">
                                 <div>
-                                    <td ng-repeat="ic in sortList" class="tag-wrapper">
+                                    <div ng-repeat="ic in sortList" class="tag-wrapper col-sm-1">
                                     <!--ソート項目ごとにループし、ソート項目の順番とユーザーのタグの順番が同じになるようにする。-->
                                             <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
-                                    </td>
-                                    <td class="tag-wrapper">
+                                    </div>
+                                    <div class="tag-wrapper col-sm-1">
                                         <a href="javascript:" ng-click="search.loyalty = item.loyalty">{{item.loyalty}}</a>
-                                    </td>
-                                    <td class="tag-wrapper">
+                                    </div>
+                                    <div class="tag-wrapper col-sm-2">
                                         <a href="javascript:" ng-click="search.updated_date = item.updated_date">{{item.updated_date}}</a>
-                                    </td>
+                                    </div>
                                 </div>
-                                <td>
+                                <div class="col-sm-1">
                                     <div>
                                         <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
                                     </div>
@@ -344,10 +383,10 @@
                                     <div>
                                         <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
                                     </div>
-                                </td>
+                                </div>
                             </div>
 
-                            <td ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
+                            <div ng-show="show_edit_tag" ng-if="currentUser.id==item.id && tag_add">
                                 <div class="col-sm-4 col-md-4">
                                     <span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span>
                                 </div>
@@ -362,7 +401,7 @@
                                 <div class="col-sm-1 col-md-1">
                                     <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
                                 </div>
-                            </td>
+                            </div>
 
                             <div ng-show="show_edit_tag" ng-if="currentUser.id==item.id && !tag_add">
                                 <div class="col-sm-4 col-md-4">
@@ -379,9 +418,10 @@
                                     <input type="submit" ng-click="removeTag()" value="削除" />
                                 </div>
                             </div>
-                        </tr>
-                    </table>
-                </div>
+                        </div>
+
+                    </div>
+
             </div>
         </div>
     </div>

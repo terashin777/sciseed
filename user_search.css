@@ -38,11 +38,6 @@
     margin: 10px;
 }
 
-.num-of-show-page{
-    margin: 5px;
-    float: right;
-}
-
 .page-num{
     margin: 0px 2px;
 }
@@ -66,4 +61,12 @@ label{
 
 .font-size-xs{
     font-size: x-small;
+}
+
+.show-head{
+    margin: 5px;
+}
+
+.col-right{
+    float: right;
 }
