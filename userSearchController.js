@@ -59,6 +59,10 @@ angular.module('concierAdminApp',[])
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
+    //↓志望業界全表示／非表示判定用
+    $scope.industryShow = false;
+    $scope.industryShowIcon = "▼"
+
     //↓絞込み用の変数など
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
@@ -143,6 +147,7 @@ angular.module('concierAdminApp',[])
         for(userIdx in $scope.lineUserList){
             //↑ユーザー1人1人にソート項目の要素を追加する。
             $scope.lineUserList[userIdx]['updated_at'] = new Date($scope.lineUserList[userIdx]['updated_date']);
+            //↑new Dateしたobjectを用いないとソートできない。
             for(addIdx in $scope.addList){
             //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                 for(tagIdx in $scope.userTag){
@@ -168,6 +173,7 @@ angular.module('concierAdminApp',[])
                         if($scope.lineUserList[userIdx].user_tag[userTagIdx] == $scope.userTag[tagIdx].id){
                         //↑ユーザーの持つタグとタグリストのタグのidが一致するか判定し、一致すればユーザーのそれに応じたカテゴリーのプロパティに値を代入する。
                             if($scope.userTag[tagIdx].name !== ""){
+                                //↑tagの名前に”(旧)”を含まなければ、以下を実行する。
                                 $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = $scope.userTag[tagIdx].name;
                                 //↑userTagのnameが空でなければ、lineUserListのそれぞれのカテゴリーのプロパティに値を代入する。
                                 if($scope.userTag[tagIdx].category === "major_art"){
@@ -273,6 +279,15 @@ angular.module('concierAdminApp',[])
             //}
         //}
     //};
+    $scope.showIndustryTag = function(){
+        $scope.industryShow = !$scope.industryShow;
+        if($scope.industryShow){
+            $scope.industryShowIcon='▲';
+        }
+        else{
+            $scope.industryShowIcon='▼';
+        }
+    };
 
     $scope.openTagAddField = function(user){
         $scope.show_edit_tag = true;
