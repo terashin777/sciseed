@@ -63,8 +63,8 @@ angular.module('concierAdminApp',[])
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
-    $scope.selected = { univ_level:{10:true, 9:true, 8:true, 7:true, 6:true,0:true}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
+    $scope.selected = { univ_level:{10:true, 9:true, 8:true, 7:true, 6:true,0:true}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_at:"" };
+    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_at:"" };
     $scope.allFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
     $scope.all = true;
@@ -388,7 +388,7 @@ angular.module('concierAdminApp',[])
 
                 //document.frm.reset();
             }
-            if(category == "sex" || category == "loyalty" || category == "keyword" || category == "updated_date"){
+            if(category == "sex" || category == "loyalty" || category == "keyword" || category == "updated_at"){
                 continue;
             }
                 $scope.onChange(category, $scope.allFrags[category]);
@@ -412,7 +412,7 @@ angular.module('concierAdminApp',[])
     //↓フィルターごとにタグリストを参照するループ関数が含むことになるため。
         var trueFrag = false;
         for(tagGroup in $scope.search){
-            if(tagGroup === "sex" || tagGroup === "loyalty" || tagGroup === "keyword" || tagGroup === "updated_date"){
+            if(tagGroup === "sex" || tagGroup === "loyalty" || tagGroup === "keyword" || tagGroup === "updated_at"){
                 continue;
             }
             else if(tagGroup === "major"){
@@ -485,10 +485,10 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.filterByDate = function(user) {
-        return user.updated_date >= $scope.search.updated_date;
+        return user.updated_at >= $scope.search.updated_at;
     };
 
-     $scope.getUserMessages = function(user){
+    $scope.getUserMessages = function(user){
         var url = LINE_API_URL+"/user/"+user.id+"/message";
         $http({
           url: url,
