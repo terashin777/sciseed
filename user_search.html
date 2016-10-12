@@ -317,7 +317,7 @@
                     <div class="row">
 
                         <div class="col-sm-2">
-                            <a href ng-click="tag_sort('name', re_tags.name)">名前 <span class = "sort_icon">{{icons.name}}</span></a>
+                            <a href ng-click="tagSort('name', re_tags.name)">名前 <span class = "sort_icon">{{icons.name}}</span></a>
                         </div>
                         <!--↑
                             name=!name;
@@ -325,24 +325,24 @@
                             という関数を埋め込んでいる。
                         -->
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a>
+                            <a href ng-click="tagSort('univ', re_tags.univ)">大学 <span class = "sort_icon">{{icons.univ}}</span></a>
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a>
+                            <a href ng-click="tagSort('grade', re_tags.grade)">卒年 <span class = "sort_icon">{{icons.grade}}</span></a>
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a>
+                            <a href ng-click="tagSort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a>
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a>
+                            <a href ng-click="tagSort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a>
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></div>
+                            <a href ng-click="tagSort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></div>
                         <div class="col-sm-1">
-                            <a href ng-click="tag_sort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a>
+                            <a href ng-click="tagSort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a>
                         </div>
                         <div class="col-sm-2">
-                            <a href ng-click="tag_sort('updated_date', re_tags.updated_date)">更新日 <span class = "sort_icon">{{icons.updated_date}}</span></a>
+                            <a href ng-click="tagSort('updated_at', re_tags.updated_at)">更新日 <span class = "sort_icon">{{icons.updated_at}}</span></a>
                         </div>
                         <div class="col-sm-1">
                             編集
@@ -351,7 +351,7 @@
                     </div>
                 </div>
 
-                <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterUser| limitTo: len: start | orderBy : sort) track by $index" on-finish-render, class="list-group-item">
+                <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterUser| limitTo: len: start | orderBy : runSort) track by $index" on-finish-render, class="list-group-item">
 
                         <div class="row">
 
@@ -370,7 +370,7 @@
                                         <a href="javascript:" ng-click="search.loyalty = item.loyalty">{{item.loyalty}}</a>
                                     </div>
                                     <div class="tag-wrapper col-sm-2">
-                                        <a href="javascript:" ng-click="search.updated_date = item.updated_date">{{item.updated_date}}</a>
+                                        <a href="javascript:" ng-click="search.updated_date = item.updated_date">{{item.updated_at | date : 'yyyy/M/d H:m'}}</a>
                                     </div>
                                 </div>
                                 <div class="col-sm-1">

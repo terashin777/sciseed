@@ -84,12 +84,12 @@ angular.module('concierAdminApp',[])
 
     //↓ソート用の変数など
     $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_date:"▼"};
-    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_at:"▼"};
+    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}, {category:"updated_at"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
-    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_date:true };
+    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_at:true };
     $scope.sortTag = "";
     $scope.couter = 0;
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}, {group:"その他", univ_level:0}];
@@ -142,6 +142,7 @@ angular.module('concierAdminApp',[])
         $scope.numOfTag = Object.keys($scope.userTag).length;
         for(userIdx in $scope.lineUserList){
             //↑ユーザー1人1人にソート項目の要素を追加する。
+            $scope.lineUserList[userIdx]['updated_at'] = new Date($scope.lineUserList[userIdx]['updated_date']);
             for(addIdx in $scope.addList){
             //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                 for(tagIdx in $scope.userTag){
@@ -614,19 +615,19 @@ angular.module('concierAdminApp',[])
     //↑$rootScopeはアプリケーション全体で共有される。
     //↑ただの数をng-repeatで繰り返すために、配列を作っている。
 
-    $scope.sort = function(exp, reverse){
+    $scope.runSort = function(exp, reverse){
         $scope.lineUserList = $filter('orderBy')($scope.lineUserList, exp, reverse);
     };
 
-    $scope.tag_sort = function(exp, reverse){
+    $scope.tagSort = function(exp, reverse){
         //↑booleanの反転は変数の前に"!"をつけて代入する。
-        $scope.sort(exp, reverse);
+        $scope.runSort(exp, reverse);
         for(var icon in $scope.icons){
             if(icon != exp){
                 $scope.icons[icon] = "▼";
             }
         }
-        if(exp == "name"){
+        if(exp === "name"){
             if(reverse){
                 $scope.icons[exp] = "▲";
             }
@@ -647,7 +648,7 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.getSortTag = function(ic_cat, tag, item){
-        if(item[ic_cat] != ""){
+        if(item[ic_cat] !== ""){
             return item[ic_cat];
         }
         else{
@@ -659,17 +660,16 @@ angular.module('concierAdminApp',[])
 }]);
 
     function timeConverter(UNIX_timestamp){
-
-      var a = new Date(UNIX_timestamp);
-      var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-      var year = a.getFullYear();
-      var month = months[a.getMonth()];
-      var date = a.getDate();
-      var hour = a.getHours();
-      var min = a.getMinutes();
-      var sec = a.getSeconds();
-      var time = month + '/' + date + ' ' + hour + ':' + min  ;
-      return time;
+        var a = new Date(UNIX_timestamp);
+        var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = year + '/' + month + '/' + date + ' ' + hour + ':' + min  ;
+        return time;
     };
 
     function categoryMapper(cat){
