@@ -1,0 +1,150 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="row user-list-search-field" >
+				<div style="margin: 10px 0 10px 0">
+					<div class="col-sm-12">
+						<select name="messageSearch" ng-model="selectedProductId" ng-change="updateProduct()">
+				            <option selected="selected" value="1">旧アカウント</option>
+				            <option selected="selected" value="2">新アカウント</option>
+				        </select>
+			        </div>
+			    </div>
+			    <div style="margin: 10px 0 10px 0">
+			        <div class="col-sm-2">
+			        	<span>ユーザー数：{{filteredList.length}}</span>
+			        </div>
+					<div class="col-sm-3">
+						タグ：<select name="tagSearch" ng-model="serchQuery.queryTag" style="width:80%">
+			   	  			<option selected="selected" value="">全て</option>
+							<option ng-repeat="tag in userTag" value="{{tag.name}}">{{tag.name}} / {{tag.categoryText}}</option>
+						</select>
+						
+						<!--
+			      		<input type="text" class="tag-text" ng-model="serchQuery.query" placeholder="タグ検索">
+			  			<select name="searchType" ng-model="serchQuery.type">
+							<option selected="selected"  value="tag">タグ検索</option>
+						</select>
+						-->
+			      	</div>
+			      	<div class="col-sm-4">
+			      		<input id="userNameFilter" ng-model="userNameText" type="text" name="userNameFilter"  />
+			      		<input id="userNameFilterButton" ng-click="searchByText()" type="submit" value="検索" />
+			      	</div>
+			      	<div class="col-sm-3">
+			      		<span>最小やりとり数：</span>
+			   	  		<select name="minLoyalty" ng-model="loyaltyStr" ng-change="minLoyaltyUpdate()">
+			   	  			<option value="0">0</option>
+			   	  			<option value="1">1</option>
+			   	  			<option value="2">2</option>
+							<option selected="selected" value="3">3</option>
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="50">50</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		
+	        <ul class="list-group">
+	            <li class="list-group-item" ng-repeat="item in filteredList = (lineUserList | filter:filterUser) track by $index"> 
+		            <div class="row" >
+		        		<div class="col-sm-3 col-md-3">
+		        			<a href="javascript:" ng-click="getUserMessages(item)">{{item.name}}</a>
+		        		</div>
+		        		<div class="col-sm-1 col-md-1">{{item.loyalty}}</div>
+		        		<div ng-if="currentUser.id!=item.id">
+		           		<div class="col-sm-6 col-md-6">
+			           		<span ng-repeat="tag in item.user_tag" class="tag-wrapper">
+			           			<a href="javascript:" ng-click="searchByTag(tag)">{{getTagName(tag)}}</a>
+			           		</span>
+		           		</div>
+		           		<a>
+		           		<div class="col-sm-1 col-md-1">
+	           				<a ng-click="openTagAddField(item)" href="javascript:">追加</a>
+	           			</div>
+	           			<div class="col-sm-1 col-md-1">
+	           				<a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+	           			</div>
+	           		</div>
+
+		           		<div ng-if="currentUser.id==item.id && tag_add">
+			           		<div class="col-sm-4 col-md-4"><span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span></div>
+		           			<div class="col-sm-3 col-md-3 tag-edit-field">
+					        	<select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
+					        	  <option selected="selected" value="" disabled>---タグを選択---</option>
+							      <option ng-repeat="tag in userTag" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
+							    </select>
+							    <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
+	            				<input type="submit" ng-click="addNewTag()"  value="追加" />
+						    </div>
+						    <div class="col-sm-1 col-md-1">
+		           				<a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+		           			</div>
+			           	</div>
+		           		<div ng-if="currentUser.id==item.id && !tag_add">
+			           		<div class="col-sm-4 col-md-4">
+			           			<span ng-repeat="tag in item.user_tag" class="tag-wrapper">{{getTagName(tag)}}</span></div>
+			           		<div class="col-sm-1 col-md-1">
+		           				<a ng-click="openTagAddField(item)" href="javascript:">追加</a>
+		           			</div>
+		           			<div class="col-sm-3 col-md-3 tag-edit-field">
+					        	<select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
+					        	  <option selected="selected" value="" disabled>---タグを選択---</option>
+							      <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
+							    </select>
+	            				<input type="submit" ng-click="removeTag()" value="削除" />
+						    </div>
+			           	</div>
+		           	</div>
+
+	            </li>
+	        </ul>
+		
+		    <div id="user_message_wrapper" class="ui-widget-content" ng-show="showMessage">
+	          <table class="table" id="user_message_table" style="background-color: #FFF">
+	            <thead>
+	              <tr>
+	                <th>ユーザー： {{ currentUser.name }}</th>
+	                <th><a href="javascript:" class="close-icon" ng-click="closeMessageWindow()"></a></th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr ng-repeat="item in userMessages" ng-class="item.is_admin ? 'admin':'user'">
+	                <td class="message_text"><div ng-class="item.is_admin ? 'admin': 'user'">{{ item.text }}</div></td>
+	                <td class="datetime"><div ng-class="item.is_admin ? 'admin': 'user'">{{ item.datetime }}</div></td>
+	              </tr>
+	            </tbody>
+	          </table>
+	          <div id="text_area_wrapper">
+	            <textarea id="text_area" name="reply_message" rows="5"></textarea>
+	            <div ng-show="!messageSent">
+	              <select name="studentSupporter" ng-model="asignee">
+	                <option value="荒木">荒木</option>
+	                <option value="新田目">新田目</option>
+	                <option value="小武内">小武内</option>
+	                <option value="金親">金親</option>
+	                <option value="叶">叶</option>
+	                <option value="菊池">菊池</option>
+	                <option value="田辺">田辺</option>
+	                <option value="西田">西田</option>
+	                <option value="藤松">藤松</option>
+	                <option value="渕野">渕野</option>
+	                <option value="牧野">牧野</option>
+	                <option value="宮">宮</option>
+	                <option value="渡辺">渡辺</option>
+	                <option value="藤田">藤田</option>
+	              </select>
+	              <input type="submit" value="送信" ng-click="submitMessage(currentUser.id)" />
+	            </div>
+	            <div ng-show="messageSent">
+	              <p>メッセージが送信されました。</p>
+	              <input type="submit" value="続けて送信" ng-click="submitMessage(currentUser.id)" />
+	            </div>
+	          </div>
+	        </div>
+	        </div>
+		</div>
+	</div>
+</div>

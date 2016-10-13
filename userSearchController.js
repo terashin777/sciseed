@@ -41,13 +41,23 @@ angular.module('concierAdminApp',[])
         "queryTag": "",
         "queryText": "" 
     };
-     $scope.numOfTry = 0;
 
+    //↓ページ数の初期化用
+     $scope.numOfTry = 0;
+     //↑一度しか実行したくないものに用いる
+
+     //↓データ取得場所指定
+     $scope.selectedProductId = 1;
+
+     //↓データ格納用
     $scope.lineUserList = [];
     $scope.userTag = [];
     $scope.currnentIndex = -1;
 
+    //↓タグ編集用
     $scope.tag_add = true;
+
+    //↓メッセージ操作用
     $scope.showMessage = false;
     $scope.messageSent = false;
 
@@ -55,7 +65,11 @@ angular.module('concierAdminApp',[])
     $scope.currentSelectedTag={};
     $scope.currentTagToRemove={};
 
-    $scope.selectedProductId = 1;
+    //↓現在選択中のユーザー
+    //↓メッセージ閲覧、タグ編集用
+    $scope.currentUser;
+
+    //↓最小やり取り数
     $scope.minLoyalty = 3;
     $scope.loyaltyStr = "3";
 
@@ -67,10 +81,10 @@ angular.module('concierAdminApp',[])
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.selected = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
     //full//$scope.allFrags = { allUnivLevel:true, allGrade:true, allPreference:true, allMajor:true, allIndustry:true, allOperator:true, allStatus:true, allSex:true }
-    $scope.selected = { univ_level:{10:true, 9:true, 8:true, 7:true, 6:true,0:true}, grade:{}, preference:{}, major:{"文系":true}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_at:"" };
-    $scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{}, sex:{}, loyalty:0 , keyword:"", updated_at:"" };
-    $scope.allFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
-    $scope.nullTagUserFrags = { univ_level:true, grade:true, preference:true, major:true, industry:true, sex:true };
+    $scope.selected = { univ_level:{10:true, 9:true, 8:true, 7:true, 6:true,0:true}, grade:{}, major:{"文系":true}, sex:{}, preference:{}, industry:{}, loyalty:0 , keyword:"", updated_at:"" };
+    $scope.search = { univ_level:{}, grade:{}, major:{}, sex:{}, preference:{}, industry:{}, loyalty:0 , keyword:"", updated_at:"" };
+    $scope.allFrags = { univ_level:true, grade:true, major:true, sex:true, preference:true, industry:true };
+    $scope.nullTagUserFrags = { univ_level:true, grade:true, major:true, sex:true, preference:true, industry:true };
     $scope.all = true;
 
     //↓ページャー機能用の変数など
@@ -87,21 +101,18 @@ angular.module('concierAdminApp',[])
     $scope.testItems=[];
 
     //↓ソート用の変数など
-    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}];
-    $scope.icons = {name:"▼", univ:"▼", grade:"▼", preference:"▼", major:"▼", industry:"▼", loyalty:"▼", updated_at:"▼"};
-    $scope.addList = [{category: "univ"}, {category: "grade"}, {category: "preference"}, {category: "major"}, {category: "industry"}, {category:"univ_level"}, {category:"updated_at"}];
+    $scope.sortList = [{category: "univ"}, {category: "grade"}, {category: "major"}, {category: "preference"}, {category: "industry"}];
+    $scope.icons = {name:"▼", univ:"▼", grade:"▼", major:"▼", preference:"▼", industry:"▼", loyalty:"▼", updated_at:"▼"};
+    $scope.addList = [{category: "univ"}, {category:"univ_level"}, {category: "grade"}, {category: "major"}, {category: "preference"}, {category: "industry"}, {category:"updated_at"}];
     //↑$scope.lineUserListへの要素の追加の際に、$scope.iconだけで済むかと思ったが、どうやってもうまくいかなかった。
     //↑しかし、コピーして改めて$scope.sortListとして定義したものを使うとなぜかうまくいった。
     //↑$scope.iconのほうが、ソート機能と結びついているのが原因か？
-    $scope.re_tags = {name:false, univ:true, grade:true, preference:true,major:true, industry:true, sex:true, operator:true, status:true, loyalty:true, updated_at:true };
+    $scope.re_tags = {name:false, univ:true, grade:true,major:true, sex:true, preference:true, industry:true, operator:true, status:true, loyalty:true, updated_at:true };
     $scope.sortTag = "";
     $scope.couter = 0;
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}, {group:"その他", univ_level:0}];
 
-    $scope.selectedProductId = 1;
-
-    $scope.currentUser;
-
+    //↓ページャー機能用の変数など
     $scope.show_edit_tag;
 
     $scope.asignee = localStorage.getItem("asignee");
@@ -130,8 +141,8 @@ angular.module('concierAdminApp',[])
         $scope.numOfAdd = Object.keys($scope.addList).length ;
         for(var userIdx=0 ; userIdx<$scope.numOfUser ; userIdx++){
             for(var addIdx=0; addIdx<$scope.numOfAdd ; addIdx++){
-                if($scope.addList[addIdx]["category"] === "univ_level"){
-                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
+                if($scope.addList[addIdx]["category"] === "preference" || $scope.addList[addIdx]["category"] === "industry"){
+                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [];
                 }
                 else{
                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
@@ -149,9 +160,9 @@ angular.module('concierAdminApp',[])
             $scope.lineUserList[userIdx]['updated_at'] = new Date($scope.lineUserList[userIdx]['updated_date']);
             //↑new Dateしたobjectを用いないとソートできない。
             for(addIdx in $scope.addList){
-            //↑ソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
+            //↑加えるソート項目の数だけループを回し、ソート項目の中にあるタグであるかどうか判定する。
                 for(tagIdx in $scope.userTag){
-                //↑タグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
+                //↑タグリストの中からタグの数だけループを回し、ユーザーの持つタグIDと一致するIDを持つタグを探す。
                     if(!$scope.userTag[tagIdx]["category"]){
                         continue;
                     }
@@ -159,13 +170,15 @@ angular.module('concierAdminApp',[])
                     else if($scope.userTag[tagIdx]["category"] && $scope.userTag[tagIdx]["category"].indexOf($scope.addList[addIdx]["category"]) === -1){
                     //↑indexOfを用いる時は必ず、文字列があることを確認してから行う。
                     //↑ここでは、$scope.userTag[tagIdx]["category"] && がそれにあたる。
+                    //↑addListに含まないcategoryのものは、ユーザーのプロパティに追加しない。
                         continue;
                          //↑タグのcategoryが現在回しているaddlistのcategoryと異なる場合は、以下の処理を実行しない。
                          //↑indexOfを用いているのは、categoryがmajor_artまたはmajor_sciであるものを同じものとみなすため。
                          //↑indexOfを用いれば他のcategoryと区別しなくてよくなるため、majorのときだけ分岐するif文がいらなくなる。
                     }
                     else if($scope.addList[addIdx]["category"] !== "" && $scope.addList[addIdx]["category"].indexOf("univ") === -1){
-                        $scope.selected[$scope.addList[addIdx]['category']][$scope.userTag[tagIdx]['name']]=true;
+                            //↓categoryがunivまたはuniv_levelでなければselectedをtrueにする。
+                            $scope.selected[$scope.addList[addIdx]['category']][$scope.userTag[tagIdx]['name']]=true;
                     }
                     //↑univ
                     for(userTagIdx in $scope.lineUserList[userIdx].user_tag){
@@ -173,9 +186,13 @@ angular.module('concierAdminApp',[])
                         if($scope.lineUserList[userIdx].user_tag[userTagIdx] == $scope.userTag[tagIdx].id){
                         //↑ユーザーの持つタグとタグリストのタグのidが一致するか判定し、一致すればユーザーのそれに応じたカテゴリーのプロパティに値を代入する。
                             if($scope.userTag[tagIdx].name !== ""){
-                                //↑tagの名前に”(旧)”を含まなければ、以下を実行する。
-                                $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = $scope.userTag[tagIdx].name;
-                                //↑userTagのnameが空でなければ、lineUserListのそれぞれのカテゴリーのプロパティに値を代入する。
+                                if($scope.addList[addIdx]["category"] === "preference" || $scope.addList[addIdx]["category"] === "industry"){
+                                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]].push($scope.userTag[tagIdx].name);
+                                }
+                                else{
+                                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = $scope.userTag[tagIdx].name;
+                                    //↑userTagのnameが空でなければ、lineUserListのそれぞれのカテゴリーのプロパティに値を代入する。
+                                }
                                 if($scope.userTag[tagIdx].category === "major_art"){
                                     $scope.lineUserList[userIdx]["isArt"] = true;
                                 }
@@ -327,18 +344,16 @@ angular.module('concierAdminApp',[])
       };
 
     $scope.filterUser = function(item) {
-        if(item.loyalty>=$scope.selected.loyalty){
-            if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
-                var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
-                if(tagId){
-                  return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する indexOfは検索したもの（ここではtagId）がなければ-1を返す
-                }else{
-                  return -1;
-                }
-                return true;
+        if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
+            var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
+            if(tagId){
+                return item.user_tag.indexOf(tagId) != -1; //タグIDが初めに現れたインデックス番号を取得する indexOfは検索したもの（ここではtagId）がなければ-1を返す
             }else{
                 return -1;
             }
+            return true;
+        }else{
+            return -1;
         }
     };
 
@@ -458,6 +473,28 @@ angular.module('concierAdminApp',[])
                     return false;
                 }
             }
+            else if(tagGroup === "preference" || tagGroup === "industry"){
+                trueFrag = false;
+                for(tag in $scope.search[tagGroup]){
+                    if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                            trueFrag = true;
+                            continue;
+                        }
+                    if($scope.search[tagGroup][tag]){
+                        for(idx in user[tagGroup]){
+                            if(user[tagGroup][idx] == tag){
+                                trueFrag = true;
+                                continue;
+                                    //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                                    //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
+                                    //↑タグの分類ごとにreturn false;が設定されているので、AND検索。
+                                    //↑どれか一つの分類でfalseが返されたら、そのユーザーをはじく。
+                                    //↑どの分類でもfalseを返されずに最後まで残ったユーザーに対してのみtrueが返されて、表示される。
+                            }
+                        }
+                    }
+                }
+            }
             //↓major以外の処理
             else{
                 trueFrag = false;
@@ -504,22 +541,28 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.getUserMessages = function(user){
+        //↓ユーザーのIDに応じたメッセージを取得
         var url = LINE_API_URL+"/user/"+user.id+"/message";
         $http({
-          url: url,
-          method: "GET",
-          dataType: "json",
+            url: url,
+            method: "GET",
+            dataType: "json",
         }).
+        //↓取得したメッセージがdataに格納される。
         success(function(data, status, headers, config) {
-          for(var i in data){
-            data[i]['datetime'] = timeConverter(data[i]['updated_date']);
-          }
-
-          $scope.userMessages = data;
-          $scope.currentUser = user;
-          $scope.showMessage = true;
-          $scope.messageSent = false;
+            for(var i in data){
+                data[i]['datetime'] = timeConverter(data[i]['updated_date']);
+            }
+            //↓取得したメッセージをインスタンス変数に格納する
+            $scope.userMessages = data;
+            //↓選択したユーザーをcurrentUserとする
+            $scope.currentUser = user;
+            //↓メッセージ閲覧画面を表示
+            $scope.showMessage = true;
+            //↓メッセージの送信はしない
+            $scope.messageSent = false;
         }).
+        //↓エラーの時は何もしない
         error(function(data, status, headers, config) {
 
         });  
