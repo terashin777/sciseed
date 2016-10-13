@@ -372,28 +372,31 @@
                             <div ng-if="currentUser.id!=item.id">
                                 <div ng-repeat="ic in sortList | filter: {category : '!preference'} | filter: {category : '!industry'} " class="tag-wrapper col-sm-1">
                                 <!--ソート項目ごとにループし、ソート項目の順番とユーザーのタグの順番が同じになるようにする。-->
-                                        <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
-                                        <div>
-                                            <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
-                                            <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
-                                        </div>
+                                    <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
+                                    <div>
+                                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a> 
+                                        <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
+                                    </div>
                                 </div>
-                                <div  class="tag-wrapper col-sm-1">
+                                <div  class="tag-wrapper col-sm-1 ng-scope">
                                     <div ng-repeat="preferenceTag in item['preference']">
                                         <a href="javascript:" ng-click="searchByTag(preferenceTag)">{{preferenceTag}}</a>
                                     </div>
-                                    <div>
-                                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
+                                   <div style="padding-top: 20px">
+                                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a> 
                                         <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
                                     </div>
                                 </div>
-                                <div  class="tag-wrapper col-sm-1">
+                                <div  class="tag-wrapper col-sm-1 ng-scope">
                                     <div ng-repeat="industryTag in item['industry']">
                                         <a href="javascript:" ng-click="searchByTag(industryTag)">{{industryTag}}</a>
                                     </div>
-                                    <div>
-                                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a>
+                                    <div style="padding-top: 20px">
+                                        <a ng-click="openTagAddField(item)" href="javascript:">追加</a> 
                                         <a ng-click="openTagRemoveField(item)" href="javascript:">削除</a>
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
                                     </div>
                                 </div>
                                 <div class="tag-wrapper col-sm-1">
