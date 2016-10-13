@@ -142,7 +142,7 @@ angular.module('concierAdminApp',[])
         for(var userIdx=0 ; userIdx<$scope.numOfUser ; userIdx++){
             for(var addIdx=0; addIdx<$scope.numOfAdd ; addIdx++){
                 if($scope.addList[addIdx]["category"] === "preference" || $scope.addList[addIdx]["category"] === "industry"){
-                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [];
+                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [""];
                 }
                 else{
                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
