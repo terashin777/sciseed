@@ -343,7 +343,7 @@ angular.module('concierAdminApp',[])
         両方ともnullにするという手も考えられるが、初期値が””なのでうまくいかない。初めの変数宣言で初期値をnullにすればnullでも問題ない。*/
       };
 
-    $scope.filterUser = function(item) {
+    $scope.filterUser = function(item) {//タグなし実行時
         if($scope.serchQuery.type == "tag" && $scope.serchQuery.queryTag != ""){
             var tagId = $scope.getTagId($scope.serchQuery.queryTag); //タグIDを取得する
             if(tagId){
@@ -437,7 +437,7 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.filterByTag = function(user){
+    $scope.filterByTag = function(user){//タグなし実行時
     //↓フィルターごとではなく、ユーザーごとにフィルターの処理を実行しなくては、動作が遅くなる。
     //↓フィルターごとにタグリストを参照するループ関数が含むことになるため。
         var trueFrag = false;
@@ -475,7 +475,9 @@ angular.module('concierAdminApp',[])
             }
             else if(tagGroup === "preference" || tagGroup === "industry"){
                 trueFrag = false;
-                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup][0] === ""){
+                //↓user[tagGroup]の配列の長さが1、つまり何もプロパティが追加されていないものは、該当するtagGroupに属するタグを持たない
+                //↓こうしたユーザーはタグなしにチェックが入れられていない限り、はじく
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup].length === 1){
                     trueFrag = true;
                     continue;
                 }
@@ -524,7 +526,7 @@ angular.module('concierAdminApp',[])
         return true;
     }
 
-    $scope.filterByLoyalty = function(user) {
+    $scope.filterByLoyalty = function(user) {//タグなし実行時
         return user.loyalty >= $scope.search.loyalty;
     };
     //$scope.filterUserで、変更をすぐに反映するなら必要ない。
@@ -537,7 +539,7 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.filterByDate = function(user) {
+    $scope.filterByDate = function(user) {//タグなし実行時
         return user.updated_at >= $scope.search.updated_at;
     };
 
@@ -663,7 +665,7 @@ angular.module('concierAdminApp',[])
         $scope.cur_page = $scope.numOfPage;
     };
 
-    $scope.arrOfPage = function(n) {
+    $scope.arrOfPage = function(n) {//タグなし実行時
         var arr = [];
         for (var i=0; i<n; i++) {
             arr.push(i);
