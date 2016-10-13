@@ -447,12 +447,12 @@ angular.module('concierAdminApp',[])
             }
             else if(tagGroup === "major"){
                 trueFrag = false;
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                    trueFrag = true;
+                    continue;
+                }
                 for(tag in $scope.search[tagGroup]){
                 //↑タグ名がtagに入る。
-                    if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
-                        trueFrag = true;
-                        continue;
-                    }
                     if($scope.search[tagGroup][tag]){
                         //↓majorだけは別処理
                             if(tag === "文系"){
@@ -475,34 +475,35 @@ angular.module('concierAdminApp',[])
             }
             else if(tagGroup === "preference" || tagGroup === "industry"){
                 trueFrag = false;
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup][0] === ""){
+                    trueFrag = true;
+                    continue;
+                }
                 for(tag in $scope.search[tagGroup]){
-                    if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                    if($scope.search[tagGroup][tag]){
+                        if(user[tagGroup].indexOf(tag) !== -1){
                             trueFrag = true;
                             continue;
-                        }
-                    if($scope.search[tagGroup][tag]){
-                        for(idx in user[tagGroup]){
-                            if(user[tagGroup][idx] == tag){
-                                trueFrag = true;
-                                continue;
-                                    //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
-                                    //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
-                                    //↑タグの分類ごとにreturn false;が設定されているので、AND検索。
-                                    //↑どれか一つの分類でfalseが返されたら、そのユーザーをはじく。
-                                    //↑どの分類でもfalseを返されずに最後まで残ったユーザーに対してのみtrueが返されて、表示される。
-                            }
+                                //↑lineUserListのなか"univ_level"が一致するものでフィルターをかけている。
+                                //↑選択されたuniv_levelのどれかと一致しない、かつタグなし含むにチェックが入れられていない時はfalseを返してそのユーザーをはじく。
+                                //↑タグの分類ごとにreturn false;が設定されているので、AND検索。
+                                //↑どれか一つの分類でfalseが返されたら、そのユーザーをはじく。
+                                //↑どの分類でもfalseを返されずに最後まで残ったユーザーに対してのみtrueが返されて、表示される。
                         }
                     }
+                }
+                if(!trueFrag){
+                    return false;
                 }
             }
             //↓major以外の処理
             else{
                 trueFrag = false;
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                    trueFrag = true;
+                    continue;
+                }
                 for(tag in $scope.search[tagGroup]){
-                    if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
-                            trueFrag = true;
-                            continue;
-                        }
                     if($scope.search[tagGroup][tag]){
                         if(user[tagGroup] == tag){
                             trueFrag = true;

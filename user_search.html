@@ -40,7 +40,7 @@
                                     </label>
                                     <label>
                                         <font size="1">タグなし：</font>
-                                        <input type="checkbox" ng-model="nullTagUserFrags['univ_level']" name="null_tag_user_include" checked="checked">
+                                        <input type="checkbox" ng-model="nullTagUserFrags['univ_level']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
@@ -68,7 +68,7 @@
                                     </label>
                                     <label>
                                         <font size="1">タグなし：</font>
-                                        <input type="checkbox" ng-model="nullTagUserFrags['grade']" name="null_tag_user_include" checked="checked">
+                                        <input type="checkbox" ng-model="nullTagUserFrags['grade']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
@@ -97,7 +97,7 @@
                                     </label>
                                     <label>
                                         <font size="1">タグなし：</font>
-                                        <input type="checkbox" ng-model="nullTagUserFrags['major']" name="null_tag_user_include" checked="checked">
+                                        <input type="checkbox" ng-model="nullTagUserFrags['major']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                     </label>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                                 </label>
                                 <label>
                                     <font size="1">タグなし：</font>
-                                    <input type="checkbox" ng-model="nullTagUserFrags['preference']" name="null_tag_user_include" checked="checked">
+                                    <input type="checkbox" ng-model="nullTagUserFrags['preference']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                 </label>
                                 </div>
                                 <div class="col-sm-9">
@@ -159,7 +159,7 @@
                                 </label>
                                 <label>
                                     <font size="1">タグなし：</font>
-                                    <input type="checkbox" ng-model="nullTagUserFrags['industry']" name="null_tag_user_include" checked="checked">
+                                    <input type="checkbox" ng-model="nullTagUserFrags['industry']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                 </label>
                                 </div>
                                 <div class="col-sm-9">
@@ -194,7 +194,7 @@
                                     </label>
                                     <label>
                                         <font size="1">タグなし：</font>
-                                        <input type="checkbox" ng-model="nullTagUserFrags['sex']" name="null_tag_user_include" checked="checked">
+                                        <input type="checkbox" ng-model="nullTagUserFrags['sex']" ng-click = "doSearch()" name="null_tag_user_include" checked="checked">
                                     </label>
                                 </div>
                                 <div class="col-sm-9">
@@ -283,6 +283,12 @@
         テストsearch：{{search}}
     </div>
 -->
+    <div>
+        テストselected：{{selected}}
+    </div>
+    <div>
+        テストsearch：{{search}}
+    </div>
 
                     <div class="row show-head">
 
@@ -341,10 +347,11 @@
                             <a href ng-click="tagSort('major', re_tags.major)">専攻 <span class = "sort_icon">{{icons.major}}</span></a>
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tagSort('preference', re_tags.preference)">志向 <span class = "sort_icon">{{icons.preference}}</span></a>
+                            志向
                         </div>
                         <div class="col-sm-1">
-                            <a href ng-click="tagSort('industry', re_tags.industry)">志望 <span class = "sort_icon">{{icons.industry}}</span></a></div>
+                            志望
+                        </div>
                         <div class="col-sm-1">
                             <a href ng-click="tagSort('loyalty', re_tags.loyalty)">やり取り <span class = "sort_icon">{{icons.loyalty}}</span></a>
                         </div>
@@ -373,7 +380,7 @@
                                 <!--ソート項目ごとにループし、ソート項目の順番とユーザーのタグの順番が同じになるようにする。-->
                                         <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
                                 </div>
-                                <div  class="tag-wrapper col-sm-2">
+                                <div  class="tag-wrapper col-sm-1">
                                     <div ng-repeat="preferenceTag in item['preference']">
                                         <a href="javascript:" ng-click="searchByTag(preferenceTag)">{{preferenceTag}}</a>
                                     </div>
@@ -386,7 +393,7 @@
                                 <div class="tag-wrapper col-sm-1">
                                     <a href="javascript:" ng-click="search.loyalty = item.loyalty">{{item.loyalty}}</a>
                                 </div>
-                                <div class="tag-wrapper col-sm-1">
+                                <div class="tag-wrapper col-sm-2">
                                     <a href="javascript:" ng-click="search.updated_at = item.updated_at">{{item.updated_at | date : 'yyyy/M/d H:m'}}</a>
                                     <!--dateフィルターを用いると、日付の表示を変えられる。-->
                                 </div>
