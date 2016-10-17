@@ -357,6 +357,17 @@
                     </div>
                 </div>
 
+                <div>
+                    {{$scope.lineUserList}}
+                </div>
+                <div>
+                    {{0 == null}}
+                    {{0 == ""}}
+                    {{a; a == null}}
+                    {{a = 0; a == null}}
+                    {{a = ""; a == null}}
+                </div>
+
                 <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterByDate| filter: filterUser| limitTo: len: start | orderBy : runSort) track by $index" on-finish-render, class="list-group-item">
 
                     <div class="row">

@@ -144,7 +144,7 @@ angular.module('concierAdminApp',[])
                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [];
                 }
                 else{
-                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
+                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]];
                 }
                 //↑if文のelseは忘れない。
             }
@@ -448,7 +448,7 @@ angular.module('concierAdminApp',[])
             }
             else if(tagGroup === "major"){
                 trueFrag = false;
-                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == null){
                     trueFrag = true;
                     continue;
                 }
@@ -502,7 +502,7 @@ angular.module('concierAdminApp',[])
             //↓major以外の処理
             else{
                 trueFrag = false;
-                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] === ""){
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup] == null){
                     trueFrag = true;
                     continue;
                 }
