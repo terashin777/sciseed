@@ -142,7 +142,7 @@ angular.module('concierAdminApp',[])
         for(var userIdx=0 ; userIdx<$scope.numOfUser ; userIdx++){
             for(var addIdx=0; addIdx<$scope.numOfAdd ; addIdx++){
                 if($scope.addList[addIdx]["category"] === "preference" || $scope.addList[addIdx]["category"] === "industry"){
-                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [""];
+                    $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = [];
                 }
                 else{
                     $scope.lineUserList[userIdx][$scope.addList[addIdx]["category"]] = "";
@@ -306,9 +306,10 @@ angular.module('concierAdminApp',[])
         }
     };
 
-    $scope.openTagAddField = function(user){
+    $scope.openTagAddField = function(user, tag){
         $scope.show_edit_tag = true;
         $scope.currentUser = user;
+        $scope.currentUserTag = tag;
         $scope.tag_add = true;
     };
 
@@ -477,7 +478,7 @@ angular.module('concierAdminApp',[])
                 trueFrag = false;
                 //↓user[tagGroup]の配列の長さが1、つまり何もプロパティが追加されていないものは、該当するtagGroupに属するタグを持たない
                 //↓こうしたユーザーはタグなしにチェックが入れられていない限り、はじく
-                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup].length === 1){
+                if($scope.nullTagUserFrags[tagGroup] && user[tagGroup].length === 0){
                     trueFrag = true;
                     continue;
                 }
