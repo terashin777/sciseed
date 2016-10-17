@@ -112,7 +112,6 @@ angular.module('concierAdminApp',[])
     $scope.couter = 0;
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}, {group:"その他", univ_level:0}];
 
-    //↓ページャー機能用の変数など
     $scope.show_edit_tag;
 
     $scope.asignee = localStorage.getItem("asignee");
@@ -313,9 +312,10 @@ angular.module('concierAdminApp',[])
         $scope.tag_add = true;
     };
 
-    $scope.openTagRemoveField = function(user){
+    $scope.openTagRemoveField = function(user, tag){
         $scope.show_edit_tag = true;
         $scope.currentUser = user;
+        $scope.currentUserTag = tag;
         $scope.tag_add = false;
     };
 
