@@ -356,10 +356,6 @@
                     </div>
                 </div>
 
-                <div>
-                    {{currentUser.id}}
-                </div>
-
                 <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterByDate| filter: filterUser| limitTo: len: start | orderBy : runSort) track by $index" on-finish-render, class="list-group-item">
 
                     <div class="row">
@@ -373,16 +369,13 @@
                         <div ng-repeat="ic in sortList | filter: {category : '!preference'} | filter: {category : '!industry'} ">
                             <!--ソート項目ごとにループし、ソート項目の順番とユーザーのタグの順番が同じになるようにする。-->
                             <div class="tag-wrapper col-sm-1">
-                                <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
-                                
-                                <div class="tag-wrapper" style="padding-top: 20px">
-                                    <div class="row">
 
-                                        <div class="col-sm-12">
+                                <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
+                                <div class="tag-wrapper" style="padding-top: 20px">
 
                                             <!--↓追加用-->
                                             <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category || !tag_add">
-                                                <a ng-click="openTagAddField(item, ic.category)" href="javascript:">追加</a>
+                                                <a ng-click="openTagAddField(item, ic.category)" href="javascript:" class="btn btn-primary btn-xs">＋</a>
                                             </span>
                                             <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && tag_add">
                                                 <div>
@@ -395,13 +388,14 @@
                                                     <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
                                                 </div>
                                                 <div>
-                                                    <input type="submit" ng-click="addNewTag()"  value="追加" />
+                                                    <input type="submit" ng-click="addNewTag()"  value="追加" class="btn btn-primary btn-xs"/>
+                                                    <a href="javascript:" class="btn btn-primary btn-circle btn-xs" ng-click="cancelEditTag()">×</a>
                                                 </div>
                                             </span>
 
                                             <!--↓削除用-->
                                             <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category || tag_add">
-                                                <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:">削除</a>
+                                                <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:" class="btn btn-border btn-xs"><span class="text-primary">－</span></a>
                                             </span>
                                             <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && !tag_add">
                                                 <div>
@@ -411,132 +405,108 @@
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <input type="submit" ng-click="removeTag()" value="削除" />
+                                                    <input type="submit" ng-click="removeTag()" value="削除" class="btn btn-border btn-xs text-primary"/>
+                                                    <a href="javascript:" class="btn btn-primary btn-circle btn-xs" ng-click="cancelEditTag()">×</a>
                                                 </div>
                                             </span>
 
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
-                                        </div>
-
-                                    </div>
                                 </div>
 
                             </div>
                         </div>
 
                         <div  class="tag-wrapper col-sm-2">
-                            <div ng-if="currentUser.id!=item.id || currentUserTag!=ic.category">
-                                <span ng-repeat="preferenceTag in item['preference']">
-                                    <a href="javascript:" ng-click="searchByTag(preferenceTag)">{{preferenceTag}}</a>
+                            
+                            <span ng-repeat="preferenceTag in item['preference']">
+                                <a href="javascript:" ng-click="searchByTag(preferenceTag)">{{preferenceTag}}</a>
+                            </span>
+                            <div class="tag-wrapper">
+
+                                <!--↓追加用-->
+                                <span ng-if="currentUser.id!=item.id || currentUserTag!='preference' || !tag_add">
+                                    <a ng-click="openTagAddField(item, 'preference')" href="javascript:">追加</a>
                                 </span>
-                                <div class="tag-wrapper" style="padding-top: 40px">
-                                    <div class="row">
-                                
-                                        <div class="col-sm-12">
-
-                                            <!--↓追加用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!='preference' || !tag_add">
-                                                <a ng-click="openTagAddField(item, 'preference')" href="javascript:">追加</a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && tag_add">
-                                                <div>
-                                                    <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in userTag|filter: { category:'preference' }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="addNewTag()"  value="追加" />
-                                                </div>
-                                            </span>
-
-                                            <!--↓削除用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!='preference' || tag_add">
-                                                <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:">削除</a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && !tag_add">
-                                                <div>
-                                                    <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="removeTag()" value="削除" />
-                                                </div>
-                                            </span>
-
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
-                                        </div>
-
+                                <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && tag_add">
+                                    <div>
+                                        <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
+                                            <option selected="selected" value="" disabled>---タグを選択---</option>
+                                            <option ng-repeat="tag in userTag|filter: { category:'preference' }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
+                                        </select>
                                     </div>
+                                    <div>
+                                        <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
+                                    </div>
+                                    <div>
+                                        <input type="submit" ng-click="addNewTag()"  value="追加" />
+                                        <a href="javascript:" class="close-icon" ng-click="cancelEditTag()"></a>
+                                    </div>
+                                </span>
 
-                                </div>
+                                <!--↓削除用-->
+                                <span ng-if="currentUser.id!=item.id || currentUserTag!='preference' || tag_add">
+                                    <a ng-click="openTagRemoveField(item, 'preference')" href="javascript:" class="btn btn-border">削除</a>
+                                </span>
+                                <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && !tag_add">
+                                    <div>
+                                        <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
+                                            <option selected="selected" value="" disabled>---タグを選択---</option>
+                                            <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <input type="submit" ng-click="removeTag()" value="削除" />
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
+                                    </div>
+                                </span>
+
                             </div>
+
                         </div>
 
                         <div  class="tag-wrapper col-sm-2">
-                            <div ng-if="currentUser.id!=item.id || currentUserTag!=ic.category">
-                                <span ng-repeat="industryTag in item['industry']">
-                                    <a href="javascript:" ng-click="searchByTag(industryTag)">{{industryTag}}</a>
+                            
+                            <span ng-repeat="industryTag in item['industry']">
+                                <a href="javascript:" ng-click="searchByTag(industryTag)">{{industryTag}}</a>
+                            </span>
+                            <div>
+                        
+                                <!--↓追加用-->
+                                <span ng-if="currentUser.id!=item.id || currentUserTag!='industry' || !tag_add">
+                                    <a ng-click="openTagAddField(item, 'industry')" href="javascript:">追加</a>
                                 </span>
-                                <div style="padding-top: 40px">
-                                    <div class="row">
-                                
-                                        <div class="col-sm-12">
-
-                                            <!--↓追加用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!='industry' || !tag_add">
-                                                <a ng-click="openTagAddField(item, 'industry')" href="javascript:">追加</a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && tag_add">
-                                                <div>
-                                                    <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in userTag|filter: { category:'industry' }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="addNewTag()"  value="追加" />
-                                                </div>
-                                            </span>
-
-                                            <!--↓削除用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category || tag_add">
-                                                <a ng-click="openTagRemoveField(item, 'industry')" href="javascript:">削除</a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && !tag_add">
-                                                <div>
-                                                    <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="removeTag()" value="削除" />
-                                                </div>
-                                            </span>
-
-                                        </div>
-
-                                        <div class="col-sm-12">
-                                            <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
-                                        </div>
-
+                                <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && tag_add">
+                                    <div>
+                                        <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
+                                            <option selected="selected" value="" disabled>---タグを選択---</option>
+                                            <option ng-repeat="tag in userTag|filter: { category:'industry' }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
+                                        </select>
                                     </div>
-                                </div>
+                                    <div>
+                                        <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
+                                    </div>
+                                    <div>
+                                        <input type="submit" ng-click="addNewTag()"  value="追加" />
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
+                                    </div>
+                                </span>
+
+                                <!--↓削除用-->
+                                <span ng-if="currentUser.id!=item.id || currentUserTag!='industry' || tag_add">
+                                    <a ng-click="openTagRemoveField(item, 'industry')" href="javascript:">削除</a>
+                                </span>
+                                <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && !tag_add">
+                                    <div>
+                                        <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
+                                            <option selected="selected" value="" disabled>---タグを選択---</option>
+                                            <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <input type="submit" ng-click="removeTag()" value="削除" />
+                                        <a ng-click="cancelEditTag()" href="javascript:">キャンセル</a>
+                                    </div>
+                                </span>
+
                             </div>
                         </div>
 

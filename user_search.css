@@ -70,3 +70,18 @@ label{
 .col-right{
     float: right;
 }
+
+.btn-circle {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+    text-decoration: none;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 0px;
+    padding-bottom: 3px;
+    border-top-width: 0px;
+}
