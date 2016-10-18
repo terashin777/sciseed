@@ -1,5 +1,28 @@
-.edit-warapper{
+.edit-wrapper{
     padding-top: 20px;
+}
+
+.edit-add-field{
+    position: absolute;z-index: 1;
+    background-color: white;
+}
+
+.edit-add-padding{
+    padding: 3px 0px;
+}
+
+.edit-remove-padding{
+    padding-bottom: 3px;
+}
+
+.edit-padding-bottom{
+    padding-bottom: 90px;
+}
+
+.edit-remove-field{
+    position: absolute;z-index: 1;
+    padding-right: 30px;
+    background-color: white;
 }
 
 .btn-ghost{
