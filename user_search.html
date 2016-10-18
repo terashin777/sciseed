@@ -382,7 +382,7 @@
                                     </span>
                                     <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && tag_add && !mes_show">
                                         <span class = "edit-add-field">
-                                            <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                            <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                             <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
                                             <div>
                                                 <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
@@ -407,7 +407,7 @@
                                     <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && tag_remove && !mes_show">
                                         <span class = "edit-remove-field">
                                             <a ng-click="openTagAddField(item, ic.category)" href="javascript:"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
-                                            <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                            <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                             <div class="edit-remove-padding">
                                                 <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
                                                     <option selected="selected" value="" disabled>---タグを選択---</option>
@@ -438,7 +438,7 @@
                                 </span>
                                 <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && tag_add && !mes_show">
                                     <span class = "edit-add-field">
-                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                         <a ng-click="openTagRemoveField(item, 'preference')" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
                                         <div>
                                             <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
@@ -463,7 +463,7 @@
                                 <span ng-if="currentUser.id==item.id && currentUserTag=='preference' && tag_remove && !mes_show">
                                     <span class = "edit-remove-field">
                                         <a ng-click="openTagAddField(item, 'preference')" href="javascript:"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
-                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                         <div class="edit-remove-padding">
                                             <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
                                                 <option selected="selected" value="" disabled>---タグを選択---</option>
@@ -494,7 +494,7 @@
                                 </span>
                                 <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && tag_add && !mes_show">
                                 <span class = "edit-add-field">
-                                    <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                    <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                     <a ng-click="openTagRemoveField(item, 'industry')" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
                                     <div>
                                         <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
@@ -519,7 +519,7 @@
                                 <span ng-if="currentUser.id==item.id && currentUserTag=='industry' && tag_remove && !mes_show">
                                     <span class = "edit-remove-field">
                                         <a ng-click="openTagAddField(item, 'preference')" href="javascript:"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
-                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o colorGo" aria-hidden="true"></i></a>
                                         <div class="edit-remove-padding">
                                             <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
                                                 <option selected="selected" value="" disabled>---タグを選択---</option>
@@ -559,7 +559,7 @@
             <thead>
                 <tr>
                     <th>ユーザー： {{ currentUser.name }}</th>
-                    <th><a href="javascript:" ng-click="closeMessageWindow()"><i class="fa fa-times-circle fa-2x" aria-hidden="true" style="float: right;color: #9E9E9E"></i></a></th>
+                    <th><a href="javascript:" ng-click="closeMessageWindow()"><i class="fa fa-times-circle-o colorGo fa-2x" aria-hidden="true" style="float: right;color: #9E9E9E"></i></a></th>
                 </tr>
             </thead>
             <tbody>

@@ -1,3 +1,5 @@
+//'use strict';
+
 var LINE_API_URL = 'http://ec2-52-36-83-202.us-west-2.compute.amazonaws.com:9000/api';
 
 angular.module('concierAdminApp',[])
@@ -36,6 +38,9 @@ angular.module('concierAdminApp',[])
     //↑$emitによって通知されるイベントは$onメソッドで受け取る。
 
     .controller('UserSearchCtrl',['$scope','$http','$filter',function($scope,$http,$filter){ 
+
+    $("#user_message_wrapper").draggable();
+
     $scope.serchQuery = {
         "type": "tag",
         "queryTag": "",
@@ -54,8 +59,11 @@ angular.module('concierAdminApp',[])
     $scope.userTag = [];
     $scope.currnentIndex = -1;
 
-    //↓タグ編集用
-    $scope.tag_add = true;
+    //↓ユーザー数や追加するタグ数、タグの数などの格納用
+    $scope.numOfUser=0;
+    $scope.numOfAdd=0;
+    $scope.numOfTag=0;
+
 
     //↓メッセージ操作用
     $scope.showMessage = false;
@@ -67,7 +75,8 @@ angular.module('concierAdminApp',[])
 
     //↓現在選択中のユーザー
     //↓メッセージ閲覧、タグ編集用
-    $scope.currentUser;
+    $scope.currentUser="";
+    $scope.currentUserTag="";
 
     //↓最小やり取り数
     $scope.minLoyalty = 3;
@@ -75,7 +84,7 @@ angular.module('concierAdminApp',[])
 
     //↓志望業界全表示／非表示判定用
     $scope.industryShow = false;
-    $scope.industryShowIcon = "▼"
+    $scope.industryShowIcon = "▼";
 
     //↓絞込み用の変数など
     //full//$scope.search = { univ_level:{}, grade:{}, preference:{}, major:{}, industry:{},operator:{}, status:{}, sex:{}, loyalty:0 , keyword:"", updated_date:"" };
@@ -86,12 +95,13 @@ angular.module('concierAdminApp',[])
     $scope.allFrags = { univ_level:true, grade:true, major:true, sex:true, preference:true, industry:true };
     $scope.nullTagUserFrags = { univ_level:true, grade:true, major:true, sex:true, preference:true, industry:true };
     $scope.all = true;
+    $scope.userNameText="";
 
     //↓ページャー機能用の変数など
     $scope.len = 50;
     $scope.start = 0;
-    $scope.searchedValue = "";
-    $scope.numOfPage = "";
+    $scope.searchedValue = 0;
+    $scope.numOfPage = 0;
     $scope.cur_page = 1;
     $scope.pager_len = 10;
     $scope.pager_start = 0;
@@ -115,10 +125,15 @@ angular.module('concierAdminApp',[])
     //↓タグ編集ボタン表示用
     $scope.tag_add = false;
     $scope.tag_remove = false;
+    $scope.mes_show=false;
+
+    //↓メッセージ用
+    $scope.userMessages="";
 
     $scope.asignee = localStorage.getItem("asignee");
 
     $http({
+        //url: LINE_API_URL+"/user_tag?productID="+$scope.selectedProductId+"&token=nishishinjuku",
         url: "tag_list.json",
         method:"GET",
         datatype:"json"
@@ -132,6 +147,7 @@ angular.module('concierAdminApp',[])
     $scope.userTag = d; //ここにユーザータグが入る
 
     $http({
+        //url: LINE_API_URL+"/product_user?productID="+$scope.selectedProductId+"&token=nishishinjuku",
         url: "user_list.json",
         method: "GET",
         dataType: "json"
@@ -325,7 +341,7 @@ angular.module('concierAdminApp',[])
 
     $scope.cancelEditTag = function(){
         $scope.currentUser = "";
-        currentUserTag = "";
+        $scope.currentUserTag = "";
     };
 
     $scope.getTagName = function(tagId){
@@ -591,36 +607,29 @@ angular.module('concierAdminApp',[])
 
 
     $scope.submitMessage = function(userId){
-
-    var asignee = $scope.asignee;
-    if(!asignee){   //asigneeが空であれば，何もせずに戻る
-      return;
-    }
-
-    localStorage.setItem("asignee", $scope.asignee);    //localStrageにキーがasignee，要素が$scope.asigneeの配列を保存する．
-
-    var messageText = $("#text_area_wrapper > #text_area").val();   //text_area_wrapperというidを持つタグの中のtext_areaというidを持つタグのvalueを取ってくる．
-
-    if (!messageText || messageText=="") {   //messageTextがからであれば，何もせずに戻る．
-      return;
-    }
-
-    var url = LINE_API_URL+"/response_message";
-    $http({
-      url: url,
-      method: "POST",
-      dataType: "json",
-      data: {"user": userId, "asignee": asignee, "message": messageText, "productId": $scope.selectedProductId}
-    }).
-    success(function(data, status, headers, config) {
-      $scope.messageSent = true;
-      $("#text_area_wrapper > #text_area").val("");   //valueを空にしている．
-
-    }).
-    error(function(data, status, headers, config) {
-      
-    });
-
+        var asignee = $scope.asignee;
+        if(!asignee){   //asigneeが空であれば，何もせずに戻る
+            return;
+        }
+        localStorage.setItem("asignee", $scope.asignee);    //localStrageにキーがasignee，要素が$scope.asigneeの配列を保存する．
+        var messageText = $("#text_area_wrapper > #text_area").val();   //text_area_wrapperというidを持つタグの中のtext_areaというidを持つタグのvalueを取ってくる．
+        if (!messageText || messageText=="") {   //messageTextがからであれば，何もせずに戻る．
+            return;
+        }
+        var url = LINE_API_URL+"/response_message";
+        $http({
+            url: url,
+            method: "POST",
+            dataType: "json",
+            data: {"user": userId, "asignee": asignee, "message": messageText, "productId": $scope.selectedProductId}
+        }).
+        success(function(data, status, headers, config) {
+            $scope.messageSent = true;
+            $("#text_area_wrapper > #text_area").val("");   //valueを空にしている．
+        }).
+        error(function(data, status, headers, config) {
+          
+        });
     };
 
     $scope.displayedResult = function(display, limit) {
