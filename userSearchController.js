@@ -112,12 +112,14 @@ angular.module('concierAdminApp',[])
     $scope.couter = 0;
     $scope.univGroupList = [{group:"東大・京大・東工大", univ_level:10}, {group:"一橋・旧帝・早慶・神大・筑波", univ_level:9}, {group:"関東上位校・ＭＡＲＣＨ", univ_level:8}, {group:"関関同立", univ_level:7}, {group:"日東駒専", univ_level:6}, {group:"その他", univ_level:0}];
 
-    $scope.show_edit_tag;
+    //↓タグ編集ボタン表示用
+    $scope.tag_add = false;
+    $scope.tag_remove = false;
 
     $scope.asignee = localStorage.getItem("asignee");
 
     $http({
-        url: 'tag_list.json',
+        url: "tag_list.json",
         method:"GET",
         datatype:"json"
     }).
@@ -130,7 +132,7 @@ angular.module('concierAdminApp',[])
     $scope.userTag = d; //ここにユーザータグが入る
 
     $http({
-        url: 'user_list.json',
+        url: "user_list.json",
         method: "GET",
         dataType: "json"
     }).
@@ -306,23 +308,24 @@ angular.module('concierAdminApp',[])
     };
 
     $scope.openTagAddField = function(user, tag){
-        $scope.show_edit_tag = true;
         $scope.currentUser = user;
         $scope.currentUserTag = tag;
+        $scope.tag_remove = false;
         $scope.tag_add = true;
+        $scope.mes_show=false;
     };
 
     $scope.openTagRemoveField = function(user, tag){
-        $scope.show_edit_tag = true;
         $scope.currentUser = user;
         $scope.currentUserTag = tag;
         $scope.tag_add = false;
+        $scope.tag_remove = true;
+        $scope.mes_show=false;
     };
 
     $scope.cancelEditTag = function(){
-        $scope.show_edit_tag = false;
-        $scope.show_edit_tag = true;
         $scope.currentUser = "";
+        currentUserTag = "";
     };
 
     $scope.getTagName = function(tagId){
@@ -565,6 +568,9 @@ angular.module('concierAdminApp',[])
             $scope.showMessage = true;
             //↓メッセージの送信はしない
             $scope.messageSent = false;
+            $scope.tag_add = false;
+            $scope.tag_remove = false;
+            $scope.mes_show = true;
         }).
         //↓エラーの時は何もしない
         error(function(data, status, headers, config) {
