@@ -357,17 +357,6 @@
                     </div>
                 </div>
 
-                <div>
-                    {{$scope.lineUserList}}
-                </div>
-                <div>
-                    {{0 == null}}
-                    {{0 == ""}}
-                    {{a; a == null}}
-                    {{a = 0; a == null}}
-                    {{a = ""; a == null}}
-                </div>
-
                 <div ng-repeat="item in filteredList = (lineUserList | filter:filterByTag| filter: filterByLoyalty| filter: selected.keyword| filter: filterByDate| filter: filterUser| limitTo: len: start | orderBy : runSort) track by $index" on-finish-render, class="list-group-item">
 
                     <div class="row">
@@ -385,42 +374,51 @@
                                 <a href="javascript:" ng-click="searchByTag(sortTag)">{{sortTag = getSortTag(ic.category, item.user_tag, item)}}</a>
                                 <div class="tag-wrapper" style="padding-top: 20px">
 
-                                            <!--↓追加用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category || !tag_add">
-                                                <a ng-click="openTagAddField(item, ic.category)" href="javascript:"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && tag_add">
-                                                <div>
-                                                    <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in userTag|filter: { category:ic.category }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="addNewTag()"  value="追加" class="btn btn-primary btn-xs"/>
-                                                    <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
-                                                </div>
-                                            </span>
+                                    <!--↓追加用-->
 
-                                            <!--↓削除用-->
-                                            <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category || tag_add">
-                                                <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
-                                            </span>
-                                            <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && !tag_add">
-                                                <div>
-                                                    <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
-                                                        <option selected="selected" value="" disabled>---タグを選択---</option>
-                                                        <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <input type="submit" ng-click="removeTag()" value="削除" class="btn btn-border btn-xs text-primary"/>
-                                                    <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
-                                                </div>
-                                            </span>
+                                    <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category">
+                                        <a ng-click="openTagAddField(item, ic.category)" href="javascript:"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                                    </span>
+                                    <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && tag_add">
+                                    <span style="position: absolute;z-index: 1;background-color: white">
+                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
+                                        <div>
+                                            <select name="selectedTag" ng-model="currentSelectedTag[currentUser.id]">
+                                                <option selected="selected" value="" disabled>---タグを選択---</option>
+                                                <option ng-repeat="tag in userTag|filter: { category:ic.category }" value="{{tag.id}}">{{tag.name}} / {{tag.categoryText}} </option>
+                                            </select>
+                                        </div>
+                                        <div style="padding: 3px 0px">
+                                            <input type="text" class="tag-text" ng-model="currentTagText[currentUser.id]" placeholder="新規タグ">
+                                        </div>
+                                        <div>
+                                            <input type="submit" ng-click="addNewTag()"  value="追加" class="btn btn-primary btn-xs"/>
+                                        </div>
+                                    </span>
+                                    <div style="padding-bottom: 90px;"></div>
+                                    </span>
+
+                                    <!--↓削除用-->
+                                    <span ng-if="currentUser.id!=item.id || currentUserTag!=ic.category">
+                                        <a ng-click="openTagRemoveField(item, ic.category)" href="javascript:"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
+                                    </span>
+                                    <span ng-if="currentUser.id==item.id && currentUserTag==ic.category && !tag_add">
+                                    <span style="position: absolute;z-index: 1;padding-right: 30px;background-color: white">
+                                        <a ng-click="openTagAddField(item, ic.category)" href="javascript:"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a>
+                                        <a href="javascript:" ng-click="cancelEditTag()"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+                                        <div style="padding-bottom: 3px">
+                                            <select name="selectedTagToRemove" ng-model="currentTagToRemove[currentUser.id]">
+                                                <option selected="selected" value="" disabled>---タグを選択---</option>
+                                                <option ng-repeat="tag in item.user_tag" value="{{tag}}">{{getTagName(tag)}}</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <input type="submit" ng-click="removeTag()" value="削除" class="btn btn-border btn-xs text-primary"/>
+                                        </div>
+                                    </span>
+                                    <div style="padding-bottom: 85px;"></div>
+                                    </span>
 
                                 </div>
 
